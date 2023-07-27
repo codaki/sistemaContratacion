@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
+import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -33,8 +33,6 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 
-  const collapsedWidth = "80px";
-
   return (
     <Box
       sx={{
@@ -53,10 +51,7 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#78edcf !important",
         },
-        // Add styles for the container to make it scrollable
-        height: "125vh",
       }}
-      
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
@@ -66,7 +61,7 @@ const Sidebar = () => {
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
-              color: colors.grey[100],
+              color: "#ffffff",
             }}
           >
             {!isCollapsed && (
@@ -75,9 +70,10 @@ const Sidebar = () => {
                 justifyContent="space-between"
                 alignItems="center"
                 ml="15px"
+                color= "white"
               >
-                <Typography variant="h3" color={colors.grey[900]}>
-                  Contratacion
+                <Typography variant="h3" color= "white">
+                 Contratacion
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                 <MenuOutlinedIcon style={{ color: "white" }} />
@@ -85,7 +81,6 @@ const Sidebar = () => {
               </Box>
             )}
           </MenuItem>
-
           {!isCollapsed && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
@@ -100,14 +95,14 @@ const Sidebar = () => {
               <Box textAlign="center">
                 <Typography
                   variant="h2"
-                  color={colors.grey[100]}
+                  color={colors.greenAccent[900]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                 Usuario
+                  Jefe
                 </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Postulante
+                <Typography variant="h5" color={colors.greenAccent[900]}>
+                  Admin
                 </Typography>
               </Box>
             </Box>
@@ -124,24 +119,19 @@ const Sidebar = () => {
 
             <Typography
               variant="h6"
-              color={colors.grey[900]}
+              color=""
               sx={{ m: "15px 0 5px 20px" }}
             >
-             Postulación
+              Postulantes
             </Typography>
+      
             <Item
-              title="Seleccionar Postulación"
-              to="/seleccionar-postulacion"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Subir Información"
-              to="/subir-informacion"
+              title="Lista de Postulantes v1"
+              to="/contacts"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              
             />
           </Box>
         </Menu>

@@ -7,6 +7,7 @@ import EmailIcon from '@mui/icons-material/Email';
 
 import KeyIcon from '@mui/icons-material/Key';
 import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
+import PopUpRegistro from "../../components/PopUps/PopUpRegistro";
 
 
 
@@ -169,9 +170,9 @@ function Auth() {
                 <Components.Button type="button" onClick={handleBackClick} style={{ borderColor: "white", color: "white", marginRight: "10px" }}>
                   Volver
                 </Components.Button>
-                <Components.Button type="button" onClick={submitRegister} style={{ backgroundColor: "#007B49", color: "white" }}>
-                  Registro
-                </Components.Button>
+                <PopUpRegistro type="button" onClick={submitRegister} style={{ backgroundColor: "#007B49", color: "white" }}>
+                  
+                </PopUpRegistro>
               </div>
             </div>
           </Components.Form>
