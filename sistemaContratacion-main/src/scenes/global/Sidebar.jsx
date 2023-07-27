@@ -101,7 +101,11 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
+<<<<<<< Updated upstream:sistemaContratacion-main/src/scenes/global/Sidebar.jsx
                  Usuario
+=======
+                  Usuario
+>>>>>>> Stashed changes:src/scenes/global/Sidebar.jsx
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   Postulante
