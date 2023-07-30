@@ -115,7 +115,9 @@ function Auth() {
     setCurrentPage("signin");
     setSignIn(true);
   };
-
+  const sendEmail = (email) => {
+    localStorage.setItem('email',email);
+  }
   return (
     <div className="authPage">
       <Components.Container
@@ -169,7 +171,7 @@ function Auth() {
                   <label htmlFor="email">
                     <EmailIcon />
                   </label>
-                  <Components.Input type="email" placeholder="Email" />
+                  <Components.Input type='email' placeholder='Email' onChange={(e) => sendEmail(e.target.value)}/>
                 </div>
               </div>
               <div className="row">
