@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import transporter from './transporter.js';
 //const app = express()
 //Comprobación de conexión de la base de datos
-/*db.connect((err) => {
+db.connect((err) => {
   if (err) {
     console.error(
       "Error en la conexión a la base de datos, error numero:",
@@ -14,7 +14,7 @@ import transporter from './transporter.js';
     return;
   }
   console.log("Conexión exitosa a la base de datos!");
-});*/
+});
 app.use(cors());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
