@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   Button,
@@ -13,7 +14,6 @@ import * as yup from "yup";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Header from "../../components/Header";
-import PopUpPostulacion from "../../components/PopUps/PopUpPostulacion";
 import { pedirPostulaciones } from "../../api/postulacion";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -24,7 +24,18 @@ import { pedirCampoAmplio } from "../../api/campoAmplio";
 import { pedirSede } from "../../api/sede";
 import { pedirDepartamento } from "../../api/departamento";
 import { pedirActividad } from "../../api/actividad";
-
+import { grey } from '@mui/material/colors';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Paper from '@mui/material/Paper';
+import Draggable from 'react-draggable';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
 
 const FormularioPostulacion = () => {
   const [postulacion,setPostulacion] = useState([])
@@ -77,6 +88,65 @@ const FormularioPostulacion = () => {
     });
   };
 
+  function PaperComponent(props) {
+    return (
+      <Draggable
+        handle="#draggable-dialog-title"
+        cancel={'[class*="MuiDialogContent-root"]'}
+      >
+        <Paper {...props} />
+      </Draggable>
+    );
+  }
+
+  const PopUpPostulacion = () => {
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    return (
+      <div>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Confirmar
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          PaperComponent={PaperComponent}
+          aria-labelledby="draggable-dialog-title"
+        >
+          <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+            Verifique los datos solo puede postular una vez por concurso, verifique los datos antes de enviar.
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <TableContainer component={Paper}>
+                <Table sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Personal</TableCell>
+                    <TableCell >Personal académico que desarrolla actividades de tercer nivel de grado y cuarto nivel</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Contratación</TableCell>
+                    <TableCell >TÉCNICO DE INVESTIGACIÓN NIVEL 1</TableCell>
+                  </TableRow>
+                </Table>
+              </TableContainer>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Validar</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  };
 
   useEffect(() => {
     const PedirPosutlacion = async () => {
