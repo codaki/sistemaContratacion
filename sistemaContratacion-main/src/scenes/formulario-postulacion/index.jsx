@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   Button,
@@ -13,8 +14,33 @@ import * as yup from "yup";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Header from "../../components/Header";
-import PopUpPostulacion from "../../components/PopUps/PopUpPostulacion";
 import { grey } from '@mui/material/colors';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Paper from '@mui/material/Paper';
+import Draggable from 'react-draggable';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+
+const formSchema = yup.object().shape({
+  postulation: yup.string().required("Campo requerido"),
+  contratacion: yup.string().required("Campo requerido"),
+  personalAcademico: yup.string().required("Campo requerido"),
+  textoVacio: yup.string().required("Campo requerido"),
+});
+
+const initialValues = {
+  postulation: "",
+  contratacion: "",
+  personalAcademico: "",
+  textoVacio: "",
+};
+
 const FormularioPostulacion = () => {
   const handleFormSubmit = (values) => {
     console.log(values);
@@ -24,8 +50,68 @@ const FormularioPostulacion = () => {
   const contractOptions = ["Opcion 1", "Opcion 2"];
   const academicOptions = ["Opcion 1", "Opcion 2"];
 
+  function PaperComponent(props) {
+    return (
+      <Draggable
+        handle="#draggable-dialog-title"
+        cancel={'[class*="MuiDialogContent-root"]'}
+      >
+        <Paper {...props} />
+      </Draggable>
+    );
+  }
+
+  const PopUpPostulacion = () => {
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+    return (
+      <div>
+        <Button variant="outlined" onClick={handleClickOpen}>
+          Confirmar
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          PaperComponent={PaperComponent}
+          aria-labelledby="draggable-dialog-title"
+        >
+          <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+            Verifique los datos solo puede postular una vez por concurso, verifique los datos antes de enviar.
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <TableContainer component={Paper}>
+                <Table sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Personal</TableCell>
+                    <TableCell >Personal académico que desarrolla actividades de tercer nivel de grado y cuarto nivel</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Contratación</TableCell>
+                    <TableCell >TÉCNICO DE INVESTIGACIÓN NIVEL 1</TableCell>
+                  </TableRow>
+                </Table>
+              </TableContainer>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Validar</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  };
+
   return (
-    <Box m="5vh" pt="0vh" >
+    <Box m="5vh" pt="0vh">
       <Header title="Formato de Documentos" subtitle="Complete el formulario" />
 
       <Formik
@@ -237,8 +323,10 @@ const FormularioPostulacion = () => {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-
               </Box>
+
+              {/* Include the PopUpPostulacion component here */}
+              <PopUpPostulacion />
 
               <Box display="flex" justifyContent="center" sx={{ backgroundColor: "success" }}>
                 <PopUpPostulacion type="submit" color="primary" variant="contained">
@@ -251,20 +339,6 @@ const FormularioPostulacion = () => {
       </Formik>
     </Box>
   );
-};
-
-const formSchema = yup.object().shape({
-  postulation: yup.string().required("Campo requerido"),
-  contratacion: yup.string().required("Campo requerido"),
-  personalAcademico: yup.string().required("Campo requerido"),
-  textoVacio: yup.string().required("Campo requerido"),
-});
-
-const initialValues = {
-  postulation: "",
-  contratacion: "",
-  personalAcademico: "",
-  textoVacio: "",
 };
 
 export default FormularioPostulacion;
