@@ -78,8 +78,8 @@ import styled from 'styled-components';
 
  export const Button = styled.button`
     border-radius: 20px;
-    border: 1px solid #ff4b2b;
-    background-color: #ff4b2b;
+    border: 1px solid #007b49;
+    background-color: #007b49;
     color: #ffffff;
     font-size: 12px;
     font-weight: bold;

@@ -14,7 +14,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Header from "../../components/Header";
 import PopUpPostulacion from "../../components/PopUps/PopUpPostulacion";
-
+import { grey } from '@mui/material/colors';
 const FormularioPostulacion = () => {
   const handleFormSubmit = (values) => {
     console.log(values);
@@ -25,7 +25,7 @@ const FormularioPostulacion = () => {
   const academicOptions = ["Opcion 1", "Opcion 2"];
 
   return (
-    <Box m="20px">
+    <Box m="5vh" pt="0vh" >
       <Header title="Formato de Documentos" subtitle="Complete el formulario" />
 
       <Formik
@@ -202,7 +202,45 @@ const FormularioPostulacion = () => {
                 </Card>
               </Box>
 
-              <Box display="flex" justifyContent="center">
+              <Box display="flex" justify-content="space-between" gap>
+                <Card sx={{ maxWidth: 220, backgroundColor: grey[300]}}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                      >
+                        Actividad Docencia
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+
+                <Card sx={{ maxWidth: 220, backgroundColor: grey[300] }}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        Actividad Investigación
+                      </Typography>
+  
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+
+                <Card sx={{ maxWidth: 220, backgroundColor: grey[300] }}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div" >
+                        Actividad Vinculación
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+
+              </Box>
+
+              <Box display="flex" justifyContent="center" sx={{ backgroundColor: "success" }}>
                 <PopUpPostulacion type="submit" color="primary" variant="contained">
                   Enviar
                 </PopUpPostulacion>

@@ -46,7 +46,7 @@ function App() {
           </main>
         </div>
       </ThemeProvider>
-    </ColorModeContext.Provider>) : (<Auth />)
+    </ColorModeContext.Provider>) : (<Home />)
   );
 }
 

@@ -1,8 +1,6 @@
 import { Box, IconButton, Menu, MenuItem, useTheme } from "@mui/material";
 import { useContext, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import LogoutIcon from "@mui/icons-material/Logout"; // You can use the appropriate logout icon
 
@@ -21,25 +19,22 @@ const Topbar = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="right" p={2}>
+    <Box
+      display="flex"
+      justifyContent="right"
+      p={2}
+      sx={{
+        backgroundColor: "#c2c5c8", // Cambiar el color de fondo a amarillo pastel
+      }}
+    >
       {/* SEARCH BAR */}
 
       {/* ICONS */}
       <Box display="flex">
-        <IconButton>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <SettingsOutlinedIcon />
-        </IconButton>
         <IconButton onClick={handleMenuOpen}>
           <PersonOutlinedIcon />
         </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
           {/* Add other menu items here if needed */}
           <MenuItem onClick={handleMenuClose}>
             <LogoutIcon sx={{ mr: 1 }} />

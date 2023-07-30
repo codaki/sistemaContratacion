@@ -36,7 +36,7 @@ export default function PopUpRegistro() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={handleClickOpen} style={{ backgroundColor: "#007b49" ,color: 'white'}}>
         Aceptar
       </Button>
       <Dialog

@@ -1,60 +1,35 @@
 import React, { useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useSelector, useDispatch } from 'react-redux'
-import { login } from '../../reducers/auth.slice'
-import * as Components from '../../components/Components';
-import EmailIcon from '@mui/icons-material/Email';
-
-import KeyIcon from '@mui/icons-material/Key';
-import ContactEmergencyIcon from '@mui/icons-material/ContactEmergency';
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../../reducers/auth.slice";
+import * as Components from "../../components/Components";
+import EmailIcon from "@mui/icons-material/Email";
+import isValidCI from "./validateCI";
+import KeyIcon from "@mui/icons-material/Key";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import PopUpRegistro from "../../components/PopUps/PopUpRegistro";
-
-
-
-function validateIdentificationNumber(identificationNumber) {
-  if (identificationNumber.length !== 10) {
-    return false;
-  }
-
-  if (identificationNumber.match(/^[0-9]+$/) === null) {
-    return false;
-  }
-
-  const verifierDigit = parseInt(identificationNumber.substr(9, 1));
-
-  let sum = 0;
-
-  for (let i = 0; i < 9; i++) {
-    const digit = parseInt(identificationNumber.substr(i, 1));
-    console.log(digit);
-
-    if (i % 2 === 0) {
-      const doubled = digit * 2;
-      sum += doubled >= 10 ? doubled - 9 : doubled;
-    } else {
-      sum += digit;
-    }
-  }
-
-  const modulus = sum % 10;
-  const higher = (10 - modulus) + sum;
-
-  console.log(higher, modulus, sum);
-
-  return modulus === 0 ? (verifierDigit === 0) : ((higher - sum) === verifierDigit);
-}
+import "./Auth.css";
 
 function Auth() {
   const [signIn, setSignIn] = React.useState(true);
-  const [fullName, setFullName] = React.useState('');
-  const [identificationNumber, setIdentificationNumber] = React.useState('');
-  const [identificationType, setIdentificationType] = React.useState('');
-  const [senescytTitle, setSenescytTitle] = React.useState('');
-  const [gender, setGender] = React.useState('');
+  const [identificationNumber, setIdentificationNumber] = React.useState("");
+  const [senescytTitle, setSenescytTitle] = React.useState("");
+  const [primerNombre, setPrimerNombre] = React.useState("");
+  const [segundoNombre, setSegundoNombre] = React.useState("");
+  const [primerApellido, setPrimerApellido] = React.useState("");
+  const [segundoApellido, setSegundoApellido] = React.useState("");
   const [formErrors, setFormErrors] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(false);
-  const auth = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const [sexo, setSexo] = React.useState("");
+  const [identificationType, setIdentificationType] = React.useState("Cédula");
+  const [recaptchaVerified, setRecaptchaVerified] = React.useState(false);
+  const recaptchaRef = React.createRef();
+
+  const handleRecaptchaVerify = () => {
+    setRecaptchaVerified(true);
+  };
 
   const identificationInput = React.useRef(null);
   const signinForm = {
@@ -63,7 +38,7 @@ function Auth() {
   };
 
   useEffect(() => {
-    setCurrentPage('signin');
+    setCurrentPage("signin");
   }, []);
 
   const submitSignin = () => {
@@ -79,193 +54,379 @@ function Auth() {
     dispatch(login());
   };
 
-
   const submitRegister = () => {
     setFormErrors([]);
-    setCurrentPage('signin');
+    setCurrentPage("signin");
     setSignIn(true);
   };
 
   const registerButtonClicked = () => {
-    setCurrentPage('signup');
+    setCurrentPage("signup");
     setSignIn(true);
-  }
+  };
 
   const registerNextClick = () => {
     if (identificationNumber.trim().length === 0) {
       return identificationInput.current.focus();
     }
 
-    if (!validateIdentificationNumber(identificationNumber)) {
-      return setFormErrors(['identificación inválida']);
+    // Utiliza la función isValidCI para validar el número de cédula
+    const isValidCedula = isValidCI(identificationNumber);
+    if (!isValidCedula) {
+      return setFormErrors(["Identificación inválida"]);
+    }
+
+    if (!recaptchaVerified) {
+      return setFormErrors(["Por favor, verifique el Recaptcha"]);
     }
 
     setFormErrors([]);
-    setFullName('DIEGO MEDARDO SAAVEDRA GARCIA');
-    setIdentificationType('Cédula');
-    setGender('MASCULINO');
-
+    setIdentificationType("Cédula");
     setSignIn(false);
   };
 
   const handleBackClick = () => {
-    setCurrentPage('signin');
+    setCurrentPage("signin");
     setSignIn(true);
-  }
+  };
+  const sendEmail = (email) => {
+    localStorage.setItem("email", email);
+  };
 
   return (
     <div className="authPage">
-      <Components.Container style={{ background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)" }}>
+      <Components.Container
+        style={{
+          background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
+        }}
+      >
         <Components.SignUpContainer signinIn={signIn}>
           <Components.Form id="createAccount">
-            <Components.Title>FORMULARIO DE ADMISIÓN PARA DOCENTES</Components.Title>
+            <Components.Title>
+              FORMULARIO DE ADMISIÓN PARA DOCENTES
+            </Components.Title>
             <div className="authForm">
-              <div className="row">
-                <label>Nombres Completos</label>
-                <span>{fullName}</span>
-              </div>
-              <div className="row">
-                <div className="col">
-                  <label>Tipo de identificación</label>
-                  <span>{identificationType}</span>
+              {/* Campos para los nombres */}
+              <div className="table">
+                <div className="row">
+                  <div className="cell">
+                    <label htmlFor="primerNombre">Primer Nombre</label>
+                    <input
+                      type="text"
+                      id="primerNombre"
+                      placeholder="Ingresa tu primer nombre"
+                      value={primerNombre}
+                      onChange={(e) => setPrimerNombre(e.target.value)}
+                    />
+                  </div>
+                  <div className="cell">
+                    <label htmlFor="segundoNombre">Segundo Nombre</label>
+                    <input
+                      type="text"
+                      id="segundoNombre"
+                      placeholder="Ingresa tu segundo nombre"
+                      value={segundoNombre}
+                      onChange={(e) => setSegundoNombre(e.target.value)}
+                    />
+                  </div>
                 </div>
-                <div className="col">
-                  <label>Número de identificación</label>
-                  <span>{identificationNumber}</span>
+                <div className="row">
+                  <div className="cell">
+                    <label htmlFor="primerApellido">Primer Apellido</label>
+                    <input
+                      type="text"
+                      id="primerApellido"
+                      placeholder="Ingresa tu primer apellido"
+                      value={primerApellido}
+                      onChange={(e) => setPrimerApellido(e.target.value)}
+                    />
+                  </div>
+                  <div className="cell">
+                    <label htmlFor="segundoApellido">Segundo Apellido</label>
+                    <input
+                      type="text"
+                      id="segundoApellido"
+                      placeholder="Ingresa tu segundo apellido"
+                      value={segundoApellido}
+                      onChange={(e) => setSegundoApellido(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="cell">
+                    <label>Tipo de identificación</label>
+                    <span>{identificationType}</span>
+                  </div>
+                  <div className="cell">
+                    <label>Número de identificación</label>
+                    <span>{identificationNumber}</span>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="cell">
+                    <label htmlFor="sexo">Sexo</label>
+                    <select
+                      id="sexo"
+                      value={sexo}
+                      onChange={(e) => setSexo(e.target.value)}
+                      className="inputField"
+                    >
+                      <option value="">Selecciona una opción</option>
+                      <option value="Femenino">Femenino</option>
+                      <option value="Masculino">Masculino</option>
+                    </select>
+                  </div>
                 </div>
               </div>
+
+              {/* Título Senescyt */}
               <div className="row">
-                <label htmlFor="gender">Sexo</label>
-                <span>{gender}</span>
-              </div>
-              <div className="row">
-                <label htmlFor="senescytTitle">Selecciona tu titulo Senescyt</label>
+                <label htmlFor="senescytTitle">
+                  Selecciona tu titulo Senescyt
+                </label>
                 <Components.TitleSelect
                   value={senescytTitle}
                   onChange={(e) => setSenescytTitle(e.target.value)}
                 >
-                  <option value=''>Selecciona tu título Senescyt</option>
-                  <option value='Magíster'>Magíster</option>
-                  <option value='Doctor/a'>Doctor/a</option>
-                  <option value='Licenciado/a'>Licenciado/a</option>
-                  <option value='Ingeniero/a'>Ingeniero/a</option>
-                  <option value='Arquitecto/a'>Arquitecto/a</option>
-                  <option value='Médico/a'>Médico/a</option>
+                  <option value="">Selecciona tu título Senescyt</option>
+                  <option value="Magíster">Magíster</option>
+                  <option value="Doctor/a">Doctor/a</option>
+                  <option value="Licenciado/a">Licenciado/a</option>
+                  <option value="Ingeniero/a">Ingeniero/a</option>
+                  <option value="Arquitecto/a">Arquitecto/a</option>
+                  <option value="Médico/a">Médico/a</option>
                 </Components.TitleSelect>
               </div>
-              <div className="row">
+              {/* Email */}
+              <div className="row scrollableSection">
                 <div className="col">
-                  <label htmlFor="email"><EmailIcon /></label>
-                  <Components.Input type='email' placeholder='Email' />
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <label htmlFor="email">
+                      <EmailIcon />
+                    </label>
+                    <span style={{ marginLeft: "-3px" }}>Email</span>
+                  </div>
+                  <Components.Input
+                    type="email"
+                    placeholder="Email"
+                    onChange={(e) => sendEmail(e.target.value)}
+                  />
                 </div>
               </div>
               <div className="row">
                 <div className="col">
-                  <label htmlFor="password"><KeyIcon /></label>
-                
-                  <Components.Input type='password' placeholder='Contraseña' />
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <label htmlFor="password">
+                      <KeyIcon />
+                    </label>
+                    <span style={{ marginLeft: "-3px" }}>Contraseña</span>
+                  </div>
+
+                  <Components.Input type="password" placeholder="Contraseña" />
                 </div>
               </div>
-              <div style={{ marginTop: '10px', display: 'flex', gap: '10px' }}>
-                <Components.Button type="button" onClick={handleBackClick} style={{ borderColor: "white", color: "white", marginRight: "10px" }}>
+              <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
+                <Components.Button
+                  type="button"
+                  onClick={handleBackClick}
+                  style={{
+                    borderColor: "white",
+                    color: "white",
+                    marginRight: "10px",
+                    borderRadius: 7,
+                  }}
+                >
                   Volver
                 </Components.Button>
-                <PopUpRegistro type="button" onClick={submitRegister} style={{ backgroundColor: "#007B49", color: "white" }}>
-                  
-                </PopUpRegistro>
+                <PopUpRegistro
+                  type="button"
+                  onClick={submitRegister}
+                  style={{ backgroundColor: "#007b49" }}
+                ></PopUpRegistro>
               </div>
             </div>
           </Components.Form>
         </Components.SignUpContainer>
 
         <Components.SignInContainer signinIn={signIn}>
-          {currentPage == 'signin' ? (
+          {currentPage == "signin" ? (
             <Components.Form>
-              <Components.Title>Formulario de Admisión para docentes</Components.Title>
+              <Components.Title>
+                Formulario de Admisión para docentes
+              </Components.Title>
               <Components.Subtitle></Components.Subtitle>
               <div className="authForm">
                 <div className="row">
                   <div className="col">
-                    <label htmlFor="email"><EmailIcon /></label>
-                    <Components.Input type='email' placeholder='Email' ref={signinForm.email} />
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label htmlFor="email">
+                        <EmailIcon />
+                      </label>
+                      <span style={{ marginLeft: "-3px" }}>Email</span>
+                    </div>
+                    <Components.Input
+                      type="email"
+                      placeholder="Email"
+                      ref={signinForm.email}
+                    />
                   </div>
                 </div>
                 <div className="row">
                   <div className="col">
-                    <label htmlFor="password"><KeyIcon /></label>
-                    <Components.Input type='password' placeholder='Contraseña' ref={signinForm.password} />
-                    
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label htmlFor="password">
+                        <KeyIcon />
+                      </label>
+                      <span style={{ marginLeft: "-3px" }}>Contraseña</span>
+                    </div>
+                    <Components.Input
+                      type="password"
+                      placeholder="Contraseña"
+                      ref={signinForm.password}
+                    />
                   </div>
                 </div>
-                {formErrors.length !== 0 ? (<div className="formErrors">
-                  <ul>
-                    {formErrors.map((error, index) => (
-                      <li>{error}</li>
-                    ))}
-                  </ul>
-                </div>) : null}
+                {formErrors.length !== 0 ? (
+                  <div className="formErrors">
+                    <ul>
+                      {formErrors.map((error, index) => (
+                        <li>{error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
                 {/* '6Ldicg4TAAAAAEIi-Tlg7YgHxcPCNVHvac92lrdX' */}
                 <div style={{ width: "50px", height: "25px" }}></div>
                 {/* Use anchor attribute to navigate to the "createAccount" section */}
                 <div>
                   <div className="row">
-                    <Components.Button onClick={submitSignin} type='button' anchor style={{ backgroundColor: "#007B49", color: "white", marginRight: '15px' }}>
+                    <Components.Button
+                      onClick={submitSignin}
+                      type="button"
+                      anchor
+                      style={{
+                        backgroundColor: "#007B49",
+                        color: "white",
+                        marginRight: "15px",
+                      }}
+                    >
                       Ingresar
                     </Components.Button>
-                    <Components.Button onClick={registerButtonClicked} type='button' anchor href="#createAccount" style={{ backgroundColor: "#007B49", color: "white" }}>
+                    <Components.Button
+                      onClick={registerButtonClicked}
+                      type="button"
+                      anchor
+                      href="#createAccount"
+                      style={{ backgroundColor: "#007B49", color: "white" }}
+                    >
                       Registro
                     </Components.Button>
                   </div>
                 </div>
               </div>
             </Components.Form>
-          ) : currentPage === 'signup' ? (
+          ) : currentPage === "signup" ? (
             <Components.Form>
-  <Components.Title>Registro</Components.Title>
-  <Components.Subtitle>Ingrese su cédula</Components.Subtitle>
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <Components.NumericInput
-      ref={identificationInput}
-      value={identificationNumber}
-      onChange={e => setIdentificationNumber(e.target.value)}
-      type='number'
-      placeholder='Cédula'
-      maxDigits={10}
-      style={{ marginRight: '10px' }}
-    />
-    <ContactEmergencyIcon style={{ color: '#777' }} />
-  </div>
-  {formErrors.length !== 0 ? (<div className="formErrors">
-    <ul>
-      {formErrors.map((error, index) => (
-        <li>{error}</li>
-      ))}
-    </ul>
-  </div>) : null}
-  <ReCAPTCHA sitekey="6Ldicg4TAAAAAMXRFd5wWjZa5ihYFlmb95106bPR" size="normal" />
-  {/* '6Ldicg4TAAAAAEIi-Tlg7YgHxcPCNVHvac92lrdX' */}
-  <div style={{ width: "50px", height: "25px" }}></div>
-  {/* Use anchor attribute to navigate to the "createAccount" section */}
-  <div className="row">
-    <Components.Button type="button" onClick={handleBackClick} style={{ borderColor: "white", color: "white", marginRight: "15px" }}>
-      Volver
-    </Components.Button>
-    <Components.Button onClick={registerNextClick} type='button' anchor href="#createAccount" style={{ backgroundColor: "#007B49", color: "white" }}>
-      Siguiente
-    </Components.Button>
-  </div>
-</Components.Form>
+              <Components.Title>Registro</Components.Title>
+              <Components.Subtitle>Ingrese su cédula</Components.Subtitle>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <Components.NumericInput
+                  ref={identificationInput}
+                  value={identificationNumber}
+                  onChange={(e) => setIdentificationNumber(e.target.value)}
+                  type="number"
+                  placeholder="Cédula"
+                  maxDigits={10}
+                  style={{ marginRight: "10px" }}
+                />
+                <ContactEmergencyIcon style={{ color: "#777" }} />
+              </div>
+              {formErrors.length !== 0 ? (
+                <div className="formErrors">
+                  <ul>
+                    {formErrors.map((error, index) => (
+                      <li>{error}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6Ldicg4TAAAAAMXRFd5wWjZa5ihYFlmb95106bPR"
+                size="normal"
+                onChange={handleRecaptchaVerify}
+              />
+
+              {/* '6Ldicg4TAAAAAEIi-Tlg7YgHxcPCNVHvac92lrdX' */}
+              <div style={{ width: "50px", height: "25px" }}></div>
+              {/* Use anchor attribute to navigate to the "createAccount" section */}
+              <div className="row">
+                <Components.Button
+                  type="button"
+                  onClick={handleBackClick}
+                  style={{
+                    borderColor: "white",
+                    color: "white",
+                    marginRight: "15px",
+                  }}
+                >
+                  Volver
+                </Components.Button>
+                <Components.Button
+                  onClick={registerNextClick}
+                  type="button"
+                  anchor
+                  href="#createAccount"
+                  style={{ backgroundColor: "#007B49", color: "white" }}
+                >
+                  Siguiente
+                </Components.Button>
+              </div>
+            </Components.Form>
           ) : null}
         </Components.SignInContainer>
 
-        <Components.OverlayContainer signinIn={signIn} style={{ background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)" }}>
+        <Components.OverlayContainer
+          signinIn={signIn}
+          style={{
+            background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
+          }}
+        >
           <Components.Overlay signinIn={signIn}>
-            <Components.LeftOverlayPanel signinIn={signIn} style={{ background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)", color: "white" }}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_ESPE.png" alt="ESPE" style={{ maxWidth: '300px', filter: 'drop-shadow(-10px 10px 5px rgba(0, 0, 0, 0.5))' }} />
+            <Components.LeftOverlayPanel
+              signinIn={signIn}
+              style={{
+                background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
+                color: "white",
+                marginLeft: "-44px", // Puedes ajustar el valor de marginLeft según tus necesidades
+              }}
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_ESPE.png"
+                alt="ESPE"
+                style={{
+                  maxWidth: "300px",
+                  filter: "drop-shadow(20px 10px 5px rgba(0, 0, 0, 0.6))",
+                }}
+              />
             </Components.LeftOverlayPanel>
 
-            <Components.RightOverlayPanel signinIn={signIn} style={{ background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)", color: "white" }}>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_ESPE.png" alt="ESPE" style={{ maxWidth: '300px', filter: 'drop-shadow(-10px 10px 5px rgba(0, 0, 0, 0.5))' }} />
+            <Components.RightOverlayPanel
+              signinIn={signIn}
+              style={{
+                background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
+                color: "white",
+                marginRight: "-44px", // Puedes ajustar el valor de marginRight según tus necesidades
+              }}
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_ESPE.png"
+                alt="ESPE"
+                style={{
+                  maxWidth: "350px",
+                  filter: "drop-shadow(-20px 10px 5px rgba(0, 0, 0, 0.6))",
+                }}
+              />
             </Components.RightOverlayPanel>
           </Components.Overlay>
         </Components.OverlayContainer>
