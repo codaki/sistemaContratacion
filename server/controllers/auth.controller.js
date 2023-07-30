@@ -75,6 +75,7 @@ export const verifyToken = async(req,res)=>{
     const q = "SELECT * FROM usu_usuario WHERE usu_codigo = $1";
     db.query(q, [user.id], (err, data) => {
       if (err) return res.status(500).json(err);
+      console.log(res)
       return res.json({
         //información que se recopila
         id: data.rows[0].usu_codigo,
