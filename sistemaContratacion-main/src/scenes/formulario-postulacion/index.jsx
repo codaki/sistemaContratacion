@@ -14,16 +14,6 @@ import * as yup from "yup";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Header from "../../components/Header";
-import { pedirPostulaciones } from "../../api/postulacion";
-import { useState } from "react";
-import { useEffect } from "react";
-import { pedirContratacion } from "../../api/contratacionTipo";
-import { pedirPersonalAcademico } from "../../api/personalAcademico";
-import { pedirCampoEspecifico } from "../../api/campoEspecifico";
-import { pedirCampoAmplio } from "../../api/campoAmplio";
-import { pedirSede } from "../../api/sede";
-import { pedirDepartamento } from "../../api/departamento";
-import { pedirActividad } from "../../api/actividad";
 import { grey } from '@mui/material/colors';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -36,6 +26,30 @@ import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
+import { pedirPostulaciones } from "../../api/postulacion";
+import { useState } from "react";
+import { useEffect } from "react";
+import { pedirContratacion } from "../../api/contratacionTipo";
+import { pedirPersonalAcademico } from "../../api/personalAcademico";
+import { pedirCampoEspecifico } from "../../api/campoEspecifico";
+import { pedirCampoAmplio } from "../../api/campoAmplio";
+import { pedirSede } from "../../api/sede";
+import { pedirDepartamento } from "../../api/departamento";
+import { pedirActividad } from "../../api/actividad";
+
+const formSchema = yup.object().shape({
+  postulation: yup.string().required("Campo requerido"),
+  contratacion: yup.string().required("Campo requerido"),
+  personalAcademico: yup.string().required("Campo requerido"),
+  textoVacio: yup.string().required("Campo requerido"),
+});
+
+const initialValues = {
+  postulation: "",
+  contratacion: "",
+  personalAcademico: "",
+  textoVacio: "",
+};
 
 const FormularioPostulacion = () => {
   const [postulacion,setPostulacion] = useState([])
@@ -129,13 +143,38 @@ const FormularioPostulacion = () => {
               <TableContainer component={Paper}>
                 <Table sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Personal</TableCell>
-                    <TableCell >Personal académico que desarrolla actividades de tercer nivel de grado y cuarto nivel</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Postulación</TableCell>
+                    <TableCell >202351</TableCell>
                   </TableRow>
                   <TableRow sx={{ textAlign: 'left', width: '100%' }}>
                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Contratación</TableCell>
-                    <TableCell >TÉCNICO DE INVESTIGACIÓN NIVEL 1</TableCell>
+                    <TableCell >Personal académico que desarrolla actividades de tercer nivel de grado y cuarto nivel</TableCell>
                   </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Campo Específico</TableCell>
+                    <TableCell >Base de Datos</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Campo Amplio</TableCell>
+                    <TableCell >Tecnología</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Sede</TableCell>
+                    <TableCell >Matriz</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Departamento</TableCell>
+                    <TableCell >Departamento de Ciencias Exactas</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Personal Académico</TableCell>
+                    <TableCell >Auxiliar Nivel 1</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Actividad</TableCell>
+                    <TableCell >Docencia</TableCell>
+                  </TableRow>
+
                 </Table>
               </TableContainer>
             </DialogContentText>
@@ -182,7 +221,7 @@ const FormularioPostulacion = () => {
   const [postulacion6Selected, setPostulacion6Selected] = useState(false);
   const [postulacion7Selected, setPostulacion7Selected] = useState(false);
   return (
-    <Box m="20px">
+    <Box m="5vh" pt="0vh">
       <Header title="Formato de Documentos" subtitle="Complete el formulario" />
 
       <Formik
@@ -440,7 +479,7 @@ const FormularioPostulacion = () => {
                 </Select>
               </Box>
               <Box display="flex" justify-content="space-between" gap>
-                <Card sx={{ maxWidth: 220 }}>
+                {/* <Card sx={{ maxWidth: 220 }}>
                   <CardActionArea>
                     <CardContent>
                       <Typography
@@ -472,34 +511,56 @@ const FormularioPostulacion = () => {
                       />
                     </CardContent>
                   </CardActionArea>
+                </Card> */}
+              </Box>
+
+              <Box display="flex" justify-content="space-between" gap>
+                <Card sx={{ maxWidth: 220, backgroundColor: grey[300]}}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                      >
+                        Actividad Docencia
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+
+                <Card sx={{ maxWidth: 220, backgroundColor: grey[300] }}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        Actividad Investigación
+                      </Typography>
+  
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+
+                <Card sx={{ maxWidth: 220, backgroundColor: grey[300] }}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div" >
+                        Actividad Vinculación
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
                 </Card>
               </Box>
 
-              <Box display="flex" justifyContent="center">
-                <PopUpPostulacion type="submit" color="primary" variant="contained" values={seleccionados}>
-                  Enviar
-                </PopUpPostulacion>
-              </Box>
+              {/* Include the PopUpPostulacion component here */}
+              <PopUpPostulacion />
+
+
             </Box>
           </form>
         )}
       </Formik>
     </Box>
   );
-};
-
-const formSchema = yup.object().shape({
-  postulation: yup.string().required("Campo requerido"),
-  contratacion: yup.string().required("Campo requerido"),
-  personalAcademico: yup.string().required("Campo requerido"),
-  textoVacio: yup.string().required("Campo requerido"),
-});
-
-const initialValues = {
-  postulation: "",
-  contratacion: "",
-  personalAcademico: "",
-  textoVacio: "",
 };
 
 export default FormularioPostulacion;

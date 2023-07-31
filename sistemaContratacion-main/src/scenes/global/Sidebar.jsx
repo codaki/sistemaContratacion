@@ -8,7 +8,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-
+import user from './user3.png'
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -54,9 +54,8 @@ const Sidebar = () => {
           color: "#78edcf !important",
         },
         // Add styles for the container to make it scrollable
-        height: "125vh",
+        height: "130vh",
       }}
-      
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
@@ -80,7 +79,7 @@ const Sidebar = () => {
                   Contratacion
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                <MenuOutlinedIcon style={{ color: "white" }} />
+                  <MenuOutlinedIcon style={{ color: "white" }} />
                 </IconButton>
               </Box>
             )}
@@ -90,21 +89,22 @@ const Sidebar = () => {
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
-                  alt="profile-user"
+                  alt="foto-de-perfil"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  
+                  src={user}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
               <Box textAlign="center">
                 <Typography
                   variant="h2"
-                  color={colors.grey[100]}
+                  color={colors.grey[900]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                 Usuario
+                  Usuario
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   Postulante
@@ -122,13 +122,13 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[900]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-             Postulación
-            </Typography>
+            {/* Conditional rendering based on 'isCollapsed' */}
+            {!isCollapsed && (
+              <Typography variant="h6" color={colors.grey[900]} sx={{ m: "15px 0 5px 20px" }}>
+                Postulación
+              </Typography>
+            )}
+
             <Item
               title="Seleccionar Postulación"
               to="/seleccionar-postulacion"

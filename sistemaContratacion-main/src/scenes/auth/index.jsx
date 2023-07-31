@@ -4,59 +4,39 @@ import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../reducers/auth.slice";
 import * as Components from "../../components/Components";
 import EmailIcon from "@mui/icons-material/Email";
+import isValidCI from "./validateCI";
 import { useAuth } from "../../context/AuthContext";
 import KeyIcon from "@mui/icons-material/Key";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import PopUpRegistro from "../../components/PopUps/PopUpRegistro";
-
-function validateIdentificationNumber(identificationNumber) {
-  if (identificationNumber.length !== 10) {
-    return false;
-  }
-
-  if (identificationNumber.match(/^[0-9]+$/) === null) {
-    return false;
-  }
-
-  const verifierDigit = parseInt(identificationNumber.substr(9, 1));
-
-  let sum = 0;
-
-  for (let i = 0; i < 9; i++) {
-    const digit = parseInt(identificationNumber.substr(i, 1));
-    console.log(digit);
-
-    if (i % 2 === 0) {
-      const doubled = digit * 2;
-      sum += doubled >= 10 ? doubled - 9 : doubled;
-    } else {
-      sum += digit;
-    }
-  }
-
-  const modulus = sum % 10;
-  const higher = 10 - modulus + sum;
-
-  console.log(higher, modulus, sum);
-
-  return modulus === 0 ? verifierDigit === 0 : higher - sum === verifierDigit;
-}
+import "./Auth.css";
 
 function Auth() {
   const [signIn, setSignIn] = React.useState(true);
-  const [fullName, setFullName] = React.useState("");
   const [identificationNumber, setIdentificationNumber] = React.useState("");
-  const [identificationType, setIdentificationType] = React.useState("");
   const [senescytTitle, setSenescytTitle] = React.useState("");
-  const [gender, setGender] = React.useState("");
+  const [primerNombre, setPrimerNombre] = React.useState("");
+  const [segundoNombre, setSegundoNombre] = React.useState("");
+  const [primerApellido, setPrimerApellido] = React.useState("");
+  const [segundoApellido, setSegundoApellido] = React.useState("");
   const [formErrors, setFormErrors] = React.useState([]);
+  const [valoresRegistro, setValoresRegistro] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(false);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [sexo, setSexo] = React.useState("");
+  const [identificationType, setIdentificationType] = React.useState("Cédula");
+  const [recaptchaVerified, setRecaptchaVerified] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const recaptchaRef = React.createRef();
+
+  const handleRecaptchaVerify = () => {
+    setRecaptchaVerified(true);
+  };
+
   const identificationInput = React.useRef(null);
-  const { signin, isAuthenticated, errors: registerErrors } = useAuth();
+  const { signin, signup, isAuthenticated, errors: registerErrors } = useAuth();
   const signinForm = {
     email: React.useRef(null),
     password: React.useRef(null),
@@ -77,7 +57,7 @@ function Auth() {
 
     setEmail(signinForm.email.current.value);
     setPassword(signinForm.password.current.value);
-    signin({ username: email, password: password });
+    signin({ correo: email, password: password });
 
     setFormErrors([]);
     dispatch(login());
@@ -85,6 +65,7 @@ function Auth() {
 
   const submitRegister = () => {
     setFormErrors([]);
+    
     setCurrentPage("signin");
     setSignIn(true);
   };
@@ -99,25 +80,45 @@ function Auth() {
       return identificationInput.current.focus();
     }
 
-    if (!validateIdentificationNumber(identificationNumber)) {
-      return setFormErrors(["identificación inválida"]);
+    const isValidCedula = isValidCI(identificationNumber);
+    if (!isValidCedula) {
+      return setFormErrors(["Identificación inválida"]);
+    }
+
+    if (!recaptchaVerified) {
+      return setFormErrors(["Por favor, verifique el Recaptcha"]);
     }
 
     setFormErrors([]);
-    setFullName("DIEGO MEDARDO SAAVEDRA GARCIA");
     setIdentificationType("Cédula");
-    setGender("MASCULINO");
-
     setSignIn(false);
   };
 
   const handleBackClick = () => {
+ 
+
+    signup({
+      tipoid: identificationType,
+      numid: identificationNumber,
+      sexo: sexo,
+      titulo: senescytTitle,
+      fecha: "2020-01-01",
+      correo: email,
+      password: password,
+      nombre1: primerNombre,
+      nombre2: segundoNombre,
+      apellido1: primerApellido,
+      apellido2: segundoApellido,
+    });
     setCurrentPage("signin");
+
     setSignIn(true);
   };
   const sendEmail = (email) => {
-    localStorage.setItem('email',email);
-  }
+    localStorage.setItem("email", email);
+    localStorage.setItem("password",password);
+  };
+
   return (
     <div className="authPage">
       <Components.Container
@@ -131,24 +132,80 @@ function Auth() {
               FORMULARIO DE ADMISIÓN PARA DOCENTES
             </Components.Title>
             <div className="authForm">
-              <div className="row">
-                <label>Nombres Completos</label>
-                <span>{fullName}</span>
-              </div>
-              <div className="row">
-                <div className="col">
-                  <label>Tipo de identificación</label>
-                  <span>{identificationType}</span>
+              {/* Campos para los nombres */}
+              <div className="table">
+                <div className="row">
+                  <div className="cell">
+                    <label htmlFor="primerNombre">Primer Nombre</label>
+                    <input
+                      type="text"
+                      id="primerNombre"
+                      placeholder="Ingresa tu primer nombre"
+                      value={primerNombre}
+                      onChange={(e) => setPrimerNombre(e.target.value)}
+                    />
+                  </div>
+                  <div className="cell">
+                    <label htmlFor="segundoNombre">Segundo Nombre</label>
+                    <input
+                      type="text"
+                      id="segundoNombre"
+                      placeholder="Ingresa tu segundo nombre"
+                      value={segundoNombre}
+                      onChange={(e) => setSegundoNombre(e.target.value)}
+                    />
+                  </div>
                 </div>
-                <div className="col">
-                  <label>Número de identificación</label>
-                  <span>{identificationNumber}</span>
+                <div className="row">
+                  <div className="cell">
+                    <label htmlFor="primerApellido">Primer Apellido</label>
+                    <input
+                      type="text"
+                      id="primerApellido"
+                      placeholder="Ingresa tu primer apellido"
+                      value={primerApellido}
+                      onChange={(e) => setPrimerApellido(e.target.value)}
+                    />
+                  </div>
+                  <div className="cell">
+                    <label htmlFor="segundoApellido">Segundo Apellido</label>
+                    <input
+                      type="text"
+                      id="segundoApellido"
+                      placeholder="Ingresa tu segundo apellido"
+                      value={segundoApellido}
+                      onChange={(e) => setSegundoApellido(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="cell">
+                    <label>Tipo de identificación</label>
+                    <span>{identificationType}</span>
+                  </div>
+                  <div className="cell">
+                    <label>Número de identificación</label>
+                    <span>{identificationNumber}</span>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="cell">
+                    <label htmlFor="sexo">Sexo</label>
+                    <select
+                      id="sexo"
+                      value={sexo}
+                      onChange={(e) => setSexo(e.target.value)}
+                      className="inputField"
+                    >
+                      <option value="">Selecciona una opción</option>
+                      <option value="Femenino">Femenino</option>
+                      <option value="Masculino">Masculino</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <div className="row">
-                <label htmlFor="gender">Sexo</label>
-                <span>{gender}</span>
-              </div>
+
+              {/* Título Senescyt */}
               <div className="row">
                 <label htmlFor="senescytTitle">
                   Selecciona tu titulo Senescyt
@@ -166,19 +223,30 @@ function Auth() {
                   <option value="Médico/a">Médico/a</option>
                 </Components.TitleSelect>
               </div>
-              <div className="row">
+              {/* Email */}
+              <div className="row scrollableSection">
                 <div className="col">
-                  <label htmlFor="email">
-                    <EmailIcon />
-                  </label>
-                  <Components.Input type='email' placeholder='Email' onChange={(e) => sendEmail(e.target.value)}/>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <label htmlFor="email">
+                      <EmailIcon />
+                    </label>
+                    <span style={{ marginLeft: "-3px" }}>Email</span>
+                  </div>
+                  <Components.Input
+                    type="email"
+                    placeholder="Email"
+                    onChange={(e) => sendEmail(e.target.value)}
+                  />
                 </div>
               </div>
               <div className="row">
                 <div className="col">
-                  <label htmlFor="password">
-                    <KeyIcon />
-                  </label>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <label htmlFor="password">
+                      <KeyIcon />
+                    </label>
+                    <span style={{ marginLeft: "-3px" }}>Contraseña</span>
+                  </div>
 
                   <Components.Input type="password" placeholder="Contraseña" />
                 </div>
@@ -191,6 +259,7 @@ function Auth() {
                     borderColor: "white",
                     color: "white",
                     marginRight: "10px",
+                    borderRadius: 7,
                   }}
                 >
                   Volver
@@ -198,7 +267,7 @@ function Auth() {
                 <PopUpRegistro
                   type="button"
                   onClick={submitRegister}
-                  style={{ backgroundColor: "#007B49", color: "white" }}
+                  style={{ backgroundColor: "#007b49" }}
                 ></PopUpRegistro>
               </div>
             </div>
@@ -215,9 +284,12 @@ function Auth() {
               <div className="authForm">
                 <div className="row">
                   <div className="col">
-                    <label htmlFor="email">
-                      <EmailIcon />
-                    </label>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label htmlFor="email">
+                        <EmailIcon />
+                      </label>
+                      <span style={{ marginLeft: "-3px" }}>Email</span>
+                    </div>
                     <Components.Input
                       type="email"
                       placeholder="Email"
@@ -227,9 +299,12 @@ function Auth() {
                 </div>
                 <div className="row">
                   <div className="col">
-                    <label htmlFor="password">
-                      <KeyIcon />
-                    </label>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label htmlFor="password">
+                        <KeyIcon />
+                      </label>
+                      <span style={{ marginLeft: "-3px" }}>Contraseña</span>
+                    </div>
                     <Components.Input
                       type="password"
                       placeholder="Contraseña"
@@ -302,9 +377,12 @@ function Auth() {
                 </div>
               ) : null}
               <ReCAPTCHA
+                ref={recaptchaRef}
                 sitekey="6Ldicg4TAAAAAMXRFd5wWjZa5ihYFlmb95106bPR"
                 size="normal"
+                onChange={handleRecaptchaVerify}
               />
+
               {/* '6Ldicg4TAAAAAEIi-Tlg7YgHxcPCNVHvac92lrdX' */}
               <div style={{ width: "50px", height: "25px" }}></div>
               {/* Use anchor attribute to navigate to the "createAccount" section */}
@@ -346,6 +424,7 @@ function Auth() {
               style={{
                 background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
                 color: "white",
+                marginLeft: "-44px", // Puedes ajustar el valor de marginLeft según tus necesidades
               }}
             >
               <img
@@ -353,7 +432,7 @@ function Auth() {
                 alt="ESPE"
                 style={{
                   maxWidth: "300px",
-                  filter: "drop-shadow(-10px 10px 5px rgba(0, 0, 0, 0.5))",
+                  filter: "drop-shadow(20px 10px 5px rgba(0, 0, 0, 0.6))",
                 }}
               />
             </Components.LeftOverlayPanel>
@@ -363,14 +442,15 @@ function Auth() {
               style={{
                 background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
                 color: "white",
+                marginRight: "-44px", // Puedes ajustar el valor de marginRight según tus necesidades
               }}
             >
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_ESPE.png"
                 alt="ESPE"
                 style={{
-                  maxWidth: "300px",
-                  filter: "drop-shadow(-10px 10px 5px rgba(0, 0, 0, 0.5))",
+                  maxWidth: "350px",
+                  filter: "drop-shadow(-20px 10px 5px rgba(0, 0, 0, 0.6))",
                 }}
               />
             </Components.RightOverlayPanel>
