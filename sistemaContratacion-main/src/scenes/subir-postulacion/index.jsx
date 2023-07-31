@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Box,
   Button,
@@ -20,12 +21,47 @@ const Formulario = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [pageCounts, setPageCounts] = useState({}); // Object to store page counts
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
+  const handleFormSubmit = async (values, { setSubmitting }) => {
+    try {
+      const files = [
+        "resume",
+        "cedula",
+        "votingCert",
+        "titleCert",
+        "teacherExp",
+        "teacherPublicImpediment",
+        "administrativeResponsabilities",
+        "profesionalExp",
+      ];
+      for (const id of files) {
+        const file = values[id];
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("idDocument", id);
+          formData.append("idPostulation", "your-postulation-id"); // Replace with actual postulation ID
+          const response = await axios.post(
+            "http://localhost:8800/api/informacion/upload",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          console.log("Upload response:", response.data);
+        }
+      }
+      setSubmitting(false);
+    } catch (error) {
+      console.log("Error uploading files:", error);
+      setSubmitting(false);
+    }
   };
 
-  const handleFileChange = (id) => async (event) => {
+  const handleFileChange = (id, setFieldValue) => (event) => {
     const file = event.target.files[0];
+    setFieldValue(id, file);
     if (file && file.type === "application/pdf") {
       const reader = new FileReader();
       reader.onload = async () => {
@@ -45,8 +81,15 @@ const Formulario = () => {
     }
   };
 
-  const formSchema = yup.object().shape({
-    // Add validation for other fields if needed
+  const formSchema = yup.object({
+    resume: yup.mixed().required("Requerido"),
+    cedula: yup.mixed().required("Requerido"),
+    votingCert: yup.mixed().required("Requerido"),
+    titleCert: yup.mixed().required("Requerido"),
+    teacherExp: yup.mixed().required("Requerido"),
+    teacherPublicImpediment: yup.mixed().required("Requerido"),
+    administrativeResponsabilities: yup.mixed().required("Requerido"),
+    profesionalExp: yup.mixed().required("Requerido"),
   });
 
   const uploadBoxStyle = {
@@ -75,6 +118,7 @@ const Formulario = () => {
           handleBlur,
           handleChange,
           handleSubmit,
+          setFieldValue,
         }) => (
           <form onSubmit={handleSubmit}>
             <TableContainer>
@@ -98,8 +142,11 @@ const Formulario = () => {
                       <input
                         type="file"
                         accept=".pdf"
-                        onChange={handleFileChange("resume")}
+                        onChange={handleFileChange("resume", setFieldValue)}
                       />
+                      {errors.resume && touched.resume && (
+                        <div>{errors.resume}</div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Box sx={uploadBoxStyle}>
@@ -120,8 +167,11 @@ const Formulario = () => {
                       <input
                         type="file"
                         accept=".pdf"
-                        onChange={handleFileChange("cedula")}
+                        onChange={handleFileChange("cedula", setFieldValue)}
                       />
+                      {errors.resume && touched.resume && (
+                        <div>{errors.resume}</div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Box sx={uploadBoxStyle}>
@@ -144,8 +194,11 @@ const Formulario = () => {
                       <input
                         type="file"
                         accept=".pdf"
-                        onChange={handleFileChange("votingCert")}
+                        onChange={handleFileChange("votingCert", setFieldValue)}
                       />
+                      {errors.resume && touched.resume && (
+                        <div>{errors.resume}</div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Box sx={uploadBoxStyle}>
@@ -168,8 +221,11 @@ const Formulario = () => {
                       <input
                         type="file"
                         accept=".pdf"
-                        onChange={handleFileChange("titleCert")}
+                        onChange={handleFileChange("titleCert", setFieldValue)}
                       />
+                      {errors.resume && touched.resume && (
+                        <div>{errors.resume}</div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Box sx={uploadBoxStyle}>
@@ -192,8 +248,11 @@ const Formulario = () => {
                       <input
                         type="file"
                         accept=".pdf"
-                        onChange={handleFileChange("teacherExp")}
+                        onChange={handleFileChange("teacherExp", setFieldValue)}
                       />
+                      {errors.resume && touched.resume && (
+                        <div>{errors.resume}</div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Box sx={uploadBoxStyle}>
@@ -217,8 +276,14 @@ const Formulario = () => {
                       <input
                         type="file"
                         accept=".pdf"
-                        onChange={handleFileChange("teacherPublicImpediment")}
+                        onChange={handleFileChange(
+                          "teacherPublicImpediment",
+                          setFieldValue
+                        )}
                       />
+                      {errors.resume && touched.resume && (
+                        <div>{errors.resume}</div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Box sx={uploadBoxStyle}>
@@ -243,9 +308,13 @@ const Formulario = () => {
                         type="file"
                         accept=".pdf"
                         onChange={handleFileChange(
-                          "administrativeResponsabilities"
+                          "administrativeResponsabilities",
+                          setFieldValue
                         )}
                       />
+                      {errors.resume && touched.resume && (
+                        <div>{errors.resume}</div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Box sx={uploadBoxStyle}>
@@ -269,8 +338,14 @@ const Formulario = () => {
                       <input
                         type="file"
                         accept=".pdf"
-                        onChange={handleFileChange("profesionalExp")}
+                        onChange={handleFileChange(
+                          "profesionalExp",
+                          setFieldValue
+                        )}
                       />
+                      {errors.resume && touched.resume && (
+                        <div>{errors.resume}</div>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Box sx={uploadBoxStyle}>
