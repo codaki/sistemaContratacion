@@ -8,7 +8,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-
+import user from './user3.png'
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -93,7 +93,7 @@ const Sidebar = () => {
                   width="100px"
                   height="100px"
                   
-                  src={`../../assets/user3.png`}
+                  src={user}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>

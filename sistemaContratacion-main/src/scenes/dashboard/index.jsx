@@ -54,9 +54,9 @@ const Dashboard = () => {
           >
           Para mayor información dale click al botón
           </Typography>
-          <Button variant="contained" color="primary" sx={{ flexGrow: 1 }}>
+          {/* <Button variant="contained" color="primary" sx={{ flexGrow: 1 }}>
               Botón 1
-            </Button>
+            </Button> */}
         </Box>
         <Box
             bgcolor="#f1f1f1"
@@ -72,7 +72,7 @@ const Dashboard = () => {
             backgroundSize: "cover",
             backgroundPosition: "-40vh 0",
             backgroundRepeat: "no-repeat", }}>
-            <Button variant="contained" color="primary" sx={{ flexGrow: 1 }}>
+            {/* <Button variant="contained" color="primary" sx={{ flexGrow: 1 }}>
               Botón 1
             </Button>
             <Button variant="contained" color="secondary" sx={{ flexGrow: 1 }}>
@@ -80,7 +80,7 @@ const Dashboard = () => {
             </Button>
             <Button variant="contained" color="secondary" sx={{ flexGrow: 1 }}>
               Botón 3
-            </Button>
+            </Button> */}
           </Box>
     
       </CustomBox>

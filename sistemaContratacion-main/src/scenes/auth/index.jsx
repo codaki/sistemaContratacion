@@ -20,6 +20,7 @@ function Auth() {
   const [primerApellido, setPrimerApellido] = React.useState("");
   const [segundoApellido, setSegundoApellido] = React.useState("");
   const [formErrors, setFormErrors] = React.useState([]);
+  const [valoresRegistro, setValoresRegistro] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(false);
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ function Auth() {
   };
 
   const identificationInput = React.useRef(null);
-  const { signin, isAuthenticated, errors: registerErrors } = useAuth();
+  const { signin, signup, isAuthenticated, errors: registerErrors } = useAuth();
   const signinForm = {
     email: React.useRef(null),
     password: React.useRef(null),
@@ -56,7 +57,7 @@ function Auth() {
 
     setEmail(signinForm.email.current.value);
     setPassword(signinForm.password.current.value);
-    signin({ username: email, password: password });
+    signin({ correo: email, password: password });
 
     setFormErrors([]);
     dispatch(login());
@@ -64,6 +65,7 @@ function Auth() {
 
   const submitRegister = () => {
     setFormErrors([]);
+    
     setCurrentPage("signin");
     setSignIn(true);
   };
@@ -93,16 +95,37 @@ function Auth() {
   };
 
   const handleBackClick = () => {
+ 
+
+    signup({
+      tipoid: identificationType,
+      numid: identificationNumber,
+      sexo: sexo,
+      titulo: senescytTitle,
+      fecha: "2020-01-01",
+      correo: email,
+      password: password,
+      nombre1: primerNombre,
+      nombre2: segundoNombre,
+      apellido1: primerApellido,
+      apellido2: segundoApellido,
+    });
     setCurrentPage("signin");
+
     setSignIn(true);
   };
   const sendEmail = (email) => {
     localStorage.setItem("email", email);
+    localStorage.setItem("password",password);
   };
 
   return (
     <div className="authPage">
-      <Components.Container style={{ background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)" }}>
+      <Components.Container
+        style={{
+          background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
+        }}
+      >
         <Components.SignUpContainer signinIn={signIn}>
           <Components.Form id="createAccount">
             <Components.Title>
@@ -203,7 +226,7 @@ function Auth() {
               {/* Email */}
               <div className="row scrollableSection">
                 <div className="col">
-                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <label htmlFor="email">
                       <EmailIcon />
                     </label>
@@ -218,7 +241,7 @@ function Auth() {
               </div>
               <div className="row">
                 <div className="col">
-                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <label htmlFor="password">
                       <KeyIcon />
                     </label>
@@ -261,7 +284,7 @@ function Auth() {
               <div className="authForm">
                 <div className="row">
                   <div className="col">
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
                       <label htmlFor="email">
                         <EmailIcon />
                       </label>
@@ -276,7 +299,7 @@ function Auth() {
                 </div>
                 <div className="row">
                   <div className="col">
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
                       <label htmlFor="password">
                         <KeyIcon />
                       </label>
@@ -303,10 +326,25 @@ function Auth() {
                 {/* Use anchor attribute to navigate to the "createAccount" section */}
                 <div>
                   <div className="row">
-                    <Components.Button onClick={submitSignin} type='button' anchor style={{ backgroundColor: "#007B49", color: "white", marginRight: '15px' }}>
+                    <Components.Button
+                      onClick={submitSignin}
+                      type="button"
+                      anchor
+                      style={{
+                        backgroundColor: "#007B49",
+                        color: "white",
+                        marginRight: "15px",
+                      }}
+                    >
                       Ingresar
                     </Components.Button>
-                    <Components.Button onClick={registerButtonClicked} type='button' anchor href="#createAccount" style={{ backgroundColor: "#007B49", color: "white" }}>
+                    <Components.Button
+                      onClick={registerButtonClicked}
+                      type="button"
+                      anchor
+                      href="#createAccount"
+                      style={{ backgroundColor: "#007B49", color: "white" }}
+                    >
                       Registro
                     </Components.Button>
                   </div>
@@ -315,7 +353,7 @@ function Auth() {
             </Components.Form>
           ) : currentPage === "signup" ? (
             <Components.Form>
-  <Components.Title>Registro</Components.Title>
+              <Components.Title>Registro</Components.Title>
               <Components.Subtitle>Ingrese su cédula</Components.Subtitle>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Components.NumericInput
@@ -381,7 +419,7 @@ function Auth() {
           }}
         >
           <Components.Overlay signinIn={signIn}>
-          <Components.LeftOverlayPanel
+            <Components.LeftOverlayPanel
               signinIn={signIn}
               style={{
                 background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
@@ -424,4 +462,3 @@ function Auth() {
 }
 
 export default Auth;
-

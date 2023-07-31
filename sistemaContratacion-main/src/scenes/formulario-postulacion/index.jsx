@@ -143,13 +143,38 @@ const FormularioPostulacion = () => {
               <TableContainer component={Paper}>
                 <Table sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Personal</TableCell>
-                    <TableCell >Personal académico que desarrolla actividades de tercer nivel de grado y cuarto nivel</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Postulación</TableCell>
+                    <TableCell >202351</TableCell>
                   </TableRow>
                   <TableRow sx={{ textAlign: 'left', width: '100%' }}>
                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Contratación</TableCell>
-                    <TableCell >TÉCNICO DE INVESTIGACIÓN NIVEL 1</TableCell>
+                    <TableCell >Personal académico que desarrolla actividades de tercer nivel de grado y cuarto nivel</TableCell>
                   </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Campo Específico</TableCell>
+                    <TableCell >Base de Datos</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Campo Amplio</TableCell>
+                    <TableCell >Tecnología</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Sede</TableCell>
+                    <TableCell >Matriz</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Departamento</TableCell>
+                    <TableCell >Departamento de Ciencias Exactas</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Personal Académico</TableCell>
+                    <TableCell >Auxiliar Nivel 1</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
+                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Actividad</TableCell>
+                    <TableCell >Docencia</TableCell>
+                  </TableRow>
+
                 </Table>
               </TableContainer>
             </DialogContentText>
@@ -454,7 +479,7 @@ const FormularioPostulacion = () => {
                 </Select>
               </Box>
               <Box display="flex" justify-content="space-between" gap>
-                <Card sx={{ maxWidth: 220 }}>
+                {/* <Card sx={{ maxWidth: 220 }}>
                   <CardActionArea>
                     <CardContent>
                       <Typography
@@ -486,7 +511,7 @@ const FormularioPostulacion = () => {
                       />
                     </CardContent>
                   </CardActionArea>
-                </Card>
+                </Card> */}
               </Box>
 
               <Box display="flex" justify-content="space-between" gap>
