@@ -5,6 +5,7 @@ import { login } from "../../reducers/auth.slice";
 import * as Components from "../../components/Components";
 import EmailIcon from "@mui/icons-material/Email";
 import isValidCI from "./validateCI";
+import { useAuth } from "../../context/AuthContext";
 import KeyIcon from "@mui/icons-material/Key";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import PopUpRegistro from "../../components/PopUps/PopUpRegistro";
@@ -25,6 +26,8 @@ function Auth() {
   const [sexo, setSexo] = React.useState("");
   const [identificationType, setIdentificationType] = React.useState("Cédula");
   const [recaptchaVerified, setRecaptchaVerified] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const recaptchaRef = React.createRef();
 
   const handleRecaptchaVerify = () => {
@@ -32,6 +35,7 @@ function Auth() {
   };
 
   const identificationInput = React.useRef(null);
+  const { signin, isAuthenticated, errors: registerErrors } = useAuth();
   const signinForm = {
     email: React.useRef(null),
     password: React.useRef(null),
@@ -49,6 +53,10 @@ function Auth() {
     if (signinForm.password.current.value.trim().length === 0) {
       return signinForm.password.current.focus();
     }
+
+    setEmail(signinForm.email.current.value);
+    setPassword(signinForm.password.current.value);
+    signin({ username: email, password: password });
 
     setFormErrors([]);
     dispatch(login());
@@ -70,7 +78,6 @@ function Auth() {
       return identificationInput.current.focus();
     }
 
-    // Utiliza la función isValidCI para validar el número de cédula
     const isValidCedula = isValidCI(identificationNumber);
     if (!isValidCedula) {
       return setFormErrors(["Identificación inválida"]);
@@ -95,11 +102,7 @@ function Auth() {
 
   return (
     <div className="authPage">
-      <Components.Container
-        style={{
-          background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
-        }}
-      >
+      <Components.Container style={{ background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)" }}>
         <Components.SignUpContainer signinIn={signIn}>
           <Components.Form id="createAccount">
             <Components.Title>
@@ -200,7 +203,7 @@ function Auth() {
               {/* Email */}
               <div className="row scrollableSection">
                 <div className="col">
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
                     <label htmlFor="email">
                       <EmailIcon />
                     </label>
@@ -215,7 +218,7 @@ function Auth() {
               </div>
               <div className="row">
                 <div className="col">
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
                     <label htmlFor="password">
                       <KeyIcon />
                     </label>
@@ -258,7 +261,7 @@ function Auth() {
               <div className="authForm">
                 <div className="row">
                   <div className="col">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                       <label htmlFor="email">
                         <EmailIcon />
                       </label>
@@ -273,7 +276,7 @@ function Auth() {
                 </div>
                 <div className="row">
                   <div className="col">
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                       <label htmlFor="password">
                         <KeyIcon />
                       </label>
@@ -300,25 +303,10 @@ function Auth() {
                 {/* Use anchor attribute to navigate to the "createAccount" section */}
                 <div>
                   <div className="row">
-                    <Components.Button
-                      onClick={submitSignin}
-                      type="button"
-                      anchor
-                      style={{
-                        backgroundColor: "#007B49",
-                        color: "white",
-                        marginRight: "15px",
-                      }}
-                    >
+                    <Components.Button onClick={submitSignin} type='button' anchor style={{ backgroundColor: "#007B49", color: "white", marginRight: '15px' }}>
                       Ingresar
                     </Components.Button>
-                    <Components.Button
-                      onClick={registerButtonClicked}
-                      type="button"
-                      anchor
-                      href="#createAccount"
-                      style={{ backgroundColor: "#007B49", color: "white" }}
-                    >
+                    <Components.Button onClick={registerButtonClicked} type='button' anchor href="#createAccount" style={{ backgroundColor: "#007B49", color: "white" }}>
                       Registro
                     </Components.Button>
                   </div>
@@ -327,7 +315,7 @@ function Auth() {
             </Components.Form>
           ) : currentPage === "signup" ? (
             <Components.Form>
-              <Components.Title>Registro</Components.Title>
+  <Components.Title>Registro</Components.Title>
               <Components.Subtitle>Ingrese su cédula</Components.Subtitle>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Components.NumericInput
@@ -393,7 +381,7 @@ function Auth() {
           }}
         >
           <Components.Overlay signinIn={signIn}>
-            <Components.LeftOverlayPanel
+          <Components.LeftOverlayPanel
               signinIn={signIn}
               style={{
                 background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
@@ -436,3 +424,4 @@ function Auth() {
 }
 
 export default Auth;
+
