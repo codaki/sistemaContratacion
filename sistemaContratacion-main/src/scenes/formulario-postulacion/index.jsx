@@ -1,5 +1,4 @@
 import React from 'react';
-import React from 'react';
 import {
   Box,
   Button,
@@ -27,6 +26,16 @@ import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
+import { pedirPostulaciones } from "../../api/postulacion";
+import { useState } from "react";
+import { useEffect } from "react";
+import { pedirContratacion } from "../../api/contratacionTipo";
+import { pedirPersonalAcademico } from "../../api/personalAcademico";
+import { pedirCampoEspecifico } from "../../api/campoEspecifico";
+import { pedirCampoAmplio } from "../../api/campoAmplio";
+import { pedirSede } from "../../api/sede";
+import { pedirDepartamento } from "../../api/departamento";
+import { pedirActividad } from "../../api/actividad";
 
 const formSchema = yup.object().shape({
   postulation: yup.string().required("Campo requerido"),
@@ -41,28 +50,6 @@ const initialValues = {
   personalAcademico: "",
   textoVacio: "",
 };
-import { pedirPostulaciones } from "../../api/postulacion";
-import { useState } from "react";
-import { useEffect } from "react";
-import { pedirContratacion } from "../../api/contratacionTipo";
-import { pedirPersonalAcademico } from "../../api/personalAcademico";
-import { pedirCampoEspecifico } from "../../api/campoEspecifico";
-import { pedirCampoAmplio } from "../../api/campoAmplio";
-import { pedirSede } from "../../api/sede";
-import { pedirDepartamento } from "../../api/departamento";
-import { pedirActividad } from "../../api/actividad";
-import { grey } from '@mui/material/colors';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Paper from '@mui/material/Paper';
-import Draggable from 'react-draggable';
-import Table from '@mui/material/Table';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 
 const FormularioPostulacion = () => {
   const [postulacion,setPostulacion] = useState([])
@@ -542,11 +529,7 @@ const FormularioPostulacion = () => {
               {/* Include the PopUpPostulacion component here */}
               <PopUpPostulacion />
 
-              <Box display="flex" justifyContent="center" sx={{ backgroundColor: "success" }}>
-                <PopUpPostulacion type="submit" color="primary" variant="contained">
-                  Enviar
-                </PopUpPostulacion>
-              </Box>
+
             </Box>
           </form>
         )}

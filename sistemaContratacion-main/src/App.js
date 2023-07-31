@@ -22,6 +22,7 @@ function App() {
 
   return (
     <AuthProvider>
+      {auth.isLogged ? (
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -43,7 +44,8 @@ function App() {
             </main>
           </div>
         </ThemeProvider>
-      </ColorModeContext.Provider>
+
+      </ColorModeContext.Provider>) : (<Auth />)}
     </AuthProvider>
   );
 }
