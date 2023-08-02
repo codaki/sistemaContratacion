@@ -10,16 +10,26 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Dialog,
 } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { PDFDocument } from "pdf-lib";
+import { Document, Page, pdfjs } from "react-pdf";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import CloseIcon from "@mui/icons-material/Close";
+import TextField from "@mui/material/TextField";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const Formulario = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [pageCounts, setPageCounts] = useState({}); // Object to store page counts
+  const [openPreview, setOpenPreview] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleFormSubmit = async (values, { setSubmitting }) => {
     try {
@@ -62,21 +72,30 @@ const Formulario = () => {
   const handleFileChange = (id, setFieldValue) => (event) => {
     const file = event.target.files[0];
     setFieldValue(id, file);
+
     if (file && file.type === "application/pdf") {
       const reader = new FileReader();
+
       reader.onload = async () => {
-        const pdfData = new Uint8Array(reader.result);
+        const arrayBuffer = reader.result;
+
+        // Guardar el Blob en lugar del ArrayBuffer en el estado
+        const blob = new Blob([new Uint8Array(arrayBuffer)]);
+        setFieldValue(id + "Blob", blob);
+
         try {
-          const pdf = await PDFDocument.load(pdfData);
+          const pdf = await PDFDocument.load(arrayBuffer);
           const pageCount = pdf.getPages().length;
+
           setPageCounts((prevCounts) => ({
             ...prevCounts,
-            [id]: pageCount, // Update the page count for this id
+            [id]: pageCount, // Actualizar el conteo de páginas para este id
           }));
         } catch (error) {
           console.log("Error reading the PDF file:", error);
         }
       };
+
       reader.readAsArrayBuffer(file);
     }
   };
@@ -102,14 +121,48 @@ const Formulario = () => {
     alignItems: "center",
   };
 
+  const files = [
+    {
+      id: "resume",
+      label: "Hoja de vida formato espe",
+    },
+    {
+      id: "cedula",
+      label: "Copia de cédula",
+    },
+    {
+      id: "votingCert",
+      label: "Certificado de votacion",
+    },
+    {
+      id: "titleCert",
+      label: "Certificado de registro de título",
+    },
+    {
+      id: "teacherExp",
+      label: "Experiencia de docente",
+    },
+    {
+      id: "teacherPublicImpediment",
+      label: "Certificado de no tener impedimento al ejercer cargo público",
+    },
+    {
+      id: "administrativeResponsabilities",
+      label: "Certificado de no tener responsabilidades administrativas",
+    },
+    {
+      id: "profesionalExp",
+      label: "Experiencia profesional",
+    },
+  ];
+
   return (
     <Box m="20px" display="flex" flexDirection="column" alignItems="center">
       <Header title="Subir Información" subtitle="Complete el formulario" />
-
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={{}}
-        validationSchema={formSchema}
+        // validationSchema={formSchema}
       >
         {({
           values,
@@ -128,235 +181,145 @@ const Formulario = () => {
                     <TableCell>Documento</TableCell>
                     <TableCell>Archivo</TableCell>
                     <TableCell>Número de páginas</TableCell>
+                    {Object.values(values).some(
+                      (value) => value instanceof File
+                    ) && <TableCell>Previsualización</TableCell>}
+                    {Object.values(values).some(
+                      (value) => value instanceof File
+                    ) && <TableCell>Eliminar</TableCell>}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {/* Hoja de vida formato espe */}
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="body1">
-                        Hoja de vida formato espe:
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange("resume", setFieldValue)}
-                      />
-                      {errors.resume && touched.resume && (
-                        <div>{errors.resume}</div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={uploadBoxStyle}>
-                        {pageCounts["resume"] > 0 && (
-                          <Typography variant="body2">
-                            {pageCounts["resume"]} páginas
-                          </Typography>
+                  {files.map(({ id, label }) => (
+                    <TableRow key={id}>
+                      <TableCell>
+                        <Typography variant="body1">{label}:</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <input
+                          type="file"
+                          accept=".pdf"
+                          onChange={handleFileChange(id, setFieldValue)}
+                        />
+                        {errors[id] && touched[id] && <div>{errors[id]}</div>}
+                      </TableCell>
+                      <TableCell>
+                        <Box sx={uploadBoxStyle}>
+                          {pageCounts[id] > 0 && (
+                            <Typography variant="body2">
+                              {pageCounts[id]} páginas
+                            </Typography>
+                          )}
+                        </Box>
+                      </TableCell>
+                      <TableCell>
+                        {values[id] && (
+                          <Button onClick={() => setOpenPreview(id)}>
+                            <VisibilityIcon />
+                          </Button>
                         )}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                  {/* Copia de cédula */}
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="body1">Copia de cédula:</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange("cedula", setFieldValue)}
-                      />
-                      {errors.resume && touched.resume && (
-                        <div>{errors.resume}</div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={uploadBoxStyle}>
-                        {pageCounts["cedula"] > 0 && (
-                          <Typography variant="body2">
-                            {pageCounts["cedula"]} páginas
-                          </Typography>
+                        <Dialog
+                          open={openPreview !== null}
+                          onClose={() => {
+                            setOpenPreview(null);
+                            setCurrentPage(1); // Reset the current page back to 1 when closing the dialog
+                          }}
+                        >
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                          >
+                            <Typography variant="h5">
+                              Page: {currentPage} / {pageCounts[openPreview]}
+                            </Typography>
+                            <Button onClick={() => setOpenPreview(null)}>
+                              <CloseIcon />
+                            </Button>
+                          </Box>
+                          <Document
+                            file={
+                              values[openPreview + "Blob"] instanceof Blob
+                                ? URL.createObjectURL(
+                                    values[openPreview + "Blob"]
+                                  )
+                                : null
+                            }
+                          >
+                            <Page
+                              pageNumber={currentPage}
+                              renderTextLayer={false}
+                              renderAnnotationLayer={false}
+                            />
+                          </Document>
+                          <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            mt={2}
+                          >
+                            <Button
+                              onClick={() => {
+                                setCurrentPage((prevPageNumber) =>
+                                  Math.max(prevPageNumber - 1, 1)
+                                );
+                              }}
+                              disabled={currentPage === 1}
+                            >
+                              Previous Page
+                            </Button>
+                            <TextField
+                              type="number"
+                              value={currentPage}
+                              onChange={(e) => {
+                                const pageNumber = Math.max(
+                                  1,
+                                  Math.min(
+                                    e.target.value,
+                                    pageCounts[openPreview]
+                                  )
+                                );
+                                setCurrentPage(pageNumber);
+                              }}
+                            />
+                            <Button
+                              onClick={() => {
+                                setCurrentPage((prevPageNumber) =>
+                                  Math.min(
+                                    prevPageNumber + 1,
+                                    pageCounts[openPreview]
+                                  )
+                                );
+                              }}
+                              disabled={currentPage === pageCounts[openPreview]}
+                            >
+                              Next Page
+                            </Button>
+                          </Box>
+                        </Dialog>
+                      </TableCell>
+                      <TableCell>
+                        {values[id] && (
+                          <Button
+                            onClick={() => {
+                              // Remove the file from the form values
+                              setFieldValue(id, undefined);
+                              setFieldValue(id + "Blob", undefined);
+
+                              // Remove the page count for this file
+                              setPageCounts((prevCounts) => {
+                                const newCounts = { ...prevCounts };
+                                delete newCounts[id];
+                                return newCounts;
+                              });
+                            }}
+                          >
+                            <DeleteIcon />
+                          </Button>
                         )}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                  {/* Certificado de votación */}
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="body1">
-                        Certificado de votación:
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange("votingCert", setFieldValue)}
-                      />
-                      {errors.resume && touched.resume && (
-                        <div>{errors.resume}</div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={uploadBoxStyle}>
-                        {pageCounts["votingCert"] > 0 && (
-                          <Typography variant="body2">
-                            {pageCounts["votingCert"]} páginas
-                          </Typography>
-                        )}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                  {/* Certificado de registro de título */}
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="body1">
-                        Certificado de registro de título:
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange("titleCert", setFieldValue)}
-                      />
-                      {errors.resume && touched.resume && (
-                        <div>{errors.resume}</div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={uploadBoxStyle}>
-                        {pageCounts["titleCert"] > 0 && (
-                          <Typography variant="body2">
-                            {pageCounts["titleCert"]} páginas
-                          </Typography>
-                        )}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                  {/* Experiencia de docente */}
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="body1">
-                        Experiencia de docente:
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange("teacherExp", setFieldValue)}
-                      />
-                      {errors.resume && touched.resume && (
-                        <div>{errors.resume}</div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={uploadBoxStyle}>
-                        {pageCounts["teacherExp"] > 0 && (
-                          <Typography variant="body2">
-                            {pageCounts["teacherExp"]} páginas
-                          </Typography>
-                        )}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                  {/* Certificado de no tener impedimento al ejercer cargo público */}
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="body1">
-                        Certificado de no tener impedimento al ejercer cargo
-                        público:
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange(
-                          "teacherPublicImpediment",
-                          setFieldValue
-                        )}
-                      />
-                      {errors.resume && touched.resume && (
-                        <div>{errors.resume}</div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={uploadBoxStyle}>
-                        {pageCounts["teacherPublicImpediment"] > 0 && (
-                          <Typography variant="body2">
-                            {pageCounts["teacherPublicImpediment"]} páginas
-                          </Typography>
-                        )}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                  {/* Certificado de no tener responsabilidades administrativas: */}
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="body1">
-                        Certificado de no tener responsabilidades
-                        administrativas:
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange(
-                          "administrativeResponsabilities",
-                          setFieldValue
-                        )}
-                      />
-                      {errors.resume && touched.resume && (
-                        <div>{errors.resume}</div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={uploadBoxStyle}>
-                        {pageCounts["administrativeResponsabilities"] > 0 && (
-                          <Typography variant="body2">
-                            {pageCounts["administrativeResponsabilities"]}{" "}
-                            páginas
-                          </Typography>
-                        )}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                  {/* Experiencia profesional */}
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant="body1">
-                        Experiencia profesional:
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <input
-                        type="file"
-                        accept=".pdf"
-                        onChange={handleFileChange(
-                          "profesionalExp",
-                          setFieldValue
-                        )}
-                      />
-                      {errors.resume && touched.resume && (
-                        <div>{errors.resume}</div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={uploadBoxStyle}>
-                        {pageCounts["profesionalExp"] > 0 && (
-                          <Typography variant="body2">
-                            {pageCounts["profesionalExp"]} páginas
-                          </Typography>
-                        )}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>
