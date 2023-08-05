@@ -156,7 +156,7 @@ const FormularioPostulacion = () => {
                   </TableRow>
                   <TableRow sx={{ textAlign: 'left', width: '100%' }}>
                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Campo Amplio</TableCell>
-                    <TableCell >Tecnología</TableCell>
+                    <TableCell >seleccionados.postulacion</TableCell>
                   </TableRow>
                   <TableRow sx={{ textAlign: 'left', width: '100%' }}>
                     <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Sede</TableCell>
