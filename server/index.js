@@ -23,25 +23,37 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post("/send-email", (req, res) => {
+app.post("/send-email", async (req, res) => {
   const { email, otp } = req.body;
+
+  // Verificar si el correo y el OTP son válidos
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ message: "Correo o código de verificación inválido" });
+  }
+
   // Configurar el correo electrónico a enviar
   const mailOptions = {
-    from: "gicalapaqui@espe.edu.ec",
+    from: 'Recursos humanos <gicalapaqui@espe.edu.ec>',
     to: email,
     subject: "Código de verificación",
     html: `<h1>Ingrese este código para verificar su correo electrónico</h1><br><h2>El código es:</h2>${otp}`,
   };
-  // Enviar el correo electrónico usando el transporter
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error sending email" });
-    } else {
-      res.json({ message: "Código enviado" });
-    }
-  });
+
+  try {
+    // Enviar el correo electrónico usando el transporter
+    await transporter.sendMail(mailOptions);
+    res.json({ message: "Código enviado" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error sending email" });
+  }
 });
+
+// Función para validar el formato de correo electrónico
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
 
 //Conexión a un puerto para el servidor
 app.listen(8800);
