@@ -5,7 +5,6 @@ import {
   TextField,
   Select,
   MenuItem,
-  Typography,
   CardActionArea,
   CardActions,
 } from "@mui/material";
@@ -20,12 +19,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
-import Table from '@mui/material/Table';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
+
+import { Table, TableBody, TableCell, TableContainer, TableRow, Paper, AppBar, Toolbar, Typography, TableHead } from '@mui/material';
+
 import { pedirPostulaciones } from "../../api/postulacion";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -64,6 +61,12 @@ const FormularioPostulacion = () => {
     console.log(values);
   };
 
+  const arregloDeDatos = [
+    { nombre: "Juan", edad: 30, correo: "juan@example.com" },
+    { nombre: "María", edad: 25, correo: "maria@example.com" },
+    { nombre: "Carlos", edad: 40, correo: "carlos@example.com" },
+    { nombre: "Ana", edad: 28, correo: "ana@example.com" },
+  ];
   const [seleccionados, setSeleccionados] = useState({
     postulation: "",
     contratacion: "",
@@ -74,6 +77,14 @@ const FormularioPostulacion = () => {
     sede: "",
     actividad: "",
   });
+
+  const formatDataForTable = (data) => {
+    // Aquí puedes realizar cualquier formato necesario según la estructura del arreglo
+    // Por ejemplo, si el arreglo es un arreglo de objetos con las propiedades 'nombre', 'edad' y 'correo'
+    // Puedes devolver un arreglo de arreglos con las filas de la tabla
+    return data.map((item) => [item.nombre, item.edad, item.correo]);
+  };
+
 
   // Función para manejar el clic en el botón "Enviar"
   const handleEnviarClick = (values) => {
@@ -553,7 +564,27 @@ const FormularioPostulacion = () => {
 
               {/* Include the PopUpPostulacion component here */}
               <PopUpPostulacion />
-
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Nombre</TableCell>
+                      <TableCell>Edad</TableCell>
+                      <TableCell>Correo</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {/* Utiliza el bucle map para mostrar los datos del arreglo en la tabla */}
+                    {formatDataForTable(arregloDeDatos).map((row, index) => (
+                      <TableRow key={index}>
+                        {row.map((cell, cellIndex) => (
+                          <TableCell key={cellIndex}>{cell}</TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
 
             </Box>
           </form>
