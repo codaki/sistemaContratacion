@@ -13,6 +13,7 @@ import Home from "./scenes/home/Home";
 import FormularioPostulacion from "./scenes/formulario-postulacion";
 import login from "./pages/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
+import Candidatos from "./scenes/tabla-candidatos";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -40,6 +41,7 @@ function App() {
                   element={<FormularioPostulacion />}
                 />
                 <Route path="/subir-informacion" element={<Formulario />} />
+                <Route path="/tabla-candidatos" element={<Candidatos />} />
               </Routes>
             </main>
           </div>
