@@ -9,6 +9,10 @@ import Paper from "@mui/material/Paper";
 import Draggable from "react-draggable";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+
 
 function PaperComponent(props) {
   return (
@@ -23,45 +27,61 @@ function PaperComponent(props) {
 
 export default function PopUpRegistro() {
   const [open, setOpen] = React.useState(false);
+  const [openCorreo, setOpenCorreo] = React.useState(false);
+  const [openCorreoValido, setOpenCorreovalido] = React.useState(false);
+  const [openCodigoInvalido, setOpenCodigoInvalido] = React.useState(false);
+  const [openCorreoInvalido, setOpenCorreoInvalido] = React.useState(false);
   const [otp, setOTP] = React.useState("");
   const [otpInput, setOTPInput] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [correoEnviado,setCorreoEnviado] = React.useState(false);
 
+
+  
+ 
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleCloseCorreo = () => {
+    setOpenCorreo(false);
+    setOpen(true);
+  };
+  const handleCloseCorreoValido = () => {
+    setOpenCorreovalido(false);
+  };
+  const handleCloseCodigoInvalido = () => {
+    setOpenCodigoInvalido(false);
+  };
+  const handleCloseCorreoInvalido = () => {
+    setOpenCorreoInvalido(false);
   };
   const handleSendOTP = () => {
     // Generar un número aleatorio como OTP
     const otp_val = Math.floor(Math.random() * 10000);
     setOTP(otp_val);
-    //console.log(email,otp);
     axios
       .post("http://localhost:8800/send-email", {
         email: localStorage.getItem("email"),
         otp: otp_val,
       })
       .then((response) => {
-        alert(response.data.message);
+        setOpenCorreo(true);
       })
       .catch((error) => {
         console.error(error);
-        alert("Error sending email");
+        setOpenCorreoInvalido(true);
       });
   };
 
   const handleVerifyOTP = () => {
     if (otpInput == otp) {
-      alert("Correo electrónico verificado!");
+      setOpenCorreovalido(true);
       setCurrentPage("signin");
     } else {
-      alert("Código inválido");
+      setOpenCodigoInvalido(true);
     }
   };
   const handleClickOpenAndSendOTP = () => {
-    handleClickOpen();
     handleSendOTP();
   };
   const handleCloseAndVerifyOTP = () => {
@@ -79,6 +99,40 @@ export default function PopUpRegistro() {
       >
         Aceptar
       </Button>
+      <Dialog
+        open={openCorreo}
+        onClose={handleCloseCorreo}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: "move", display: 'flex', flexDirection: 'column', alignItems: 'center' }} id="draggable-dialog-title">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+            <MailOutlineIcon fontSize="large" />
+          </div>
+          <div style={{ textAlign: 'center' }}>Se ha enviado un código de verificación a su correo electrónico.</div>
+        </DialogTitle>
+          
+        <DialogActions>
+          <Button onClick={handleCloseCorreo}>Cerrar</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openCorreoInvalido}
+        onClose={handleCloseCorreoInvalido}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: "move", display: 'flex', flexDirection: 'column', alignItems: 'center' }} id="draggable-dialog-title">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+            <ErrorOutlineIcon fontSize="large" />
+          </div>
+          <div style={{ textAlign: 'center' }}>Error al enviar código de verificación, por favor compruebe que su correo esté correcto.</div>
+        </DialogTitle>
+          
+        <DialogActions>
+          <Button onClick={handleCloseCorreoInvalido}>Cerrar</Button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -102,6 +156,40 @@ export default function PopUpRegistro() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseAndVerifyOTP}>Validar</Button>
+        </DialogActions>
+  </Dialog>
+  <Dialog
+        open={openCorreoValido}
+        onClose={handleCloseCorreoValido}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: "move", display: 'flex', flexDirection: 'column', alignItems: 'center' }} id="draggable-dialog-title">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+            <CheckCircleOutlineOutlinedIcon fontSize="large" />
+          </div>
+          <div style={{ textAlign: 'center' }}>Correo verificado.</div>
+        </DialogTitle>
+          
+        <DialogActions>
+          <Button onClick={handleCloseCorreoValido}>Cerrar</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openCodigoInvalido}
+        onClose={handleCloseCodigoInvalido}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: "move", display: 'flex', flexDirection: 'column', alignItems: 'center' }} id="draggable-dialog-title">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+            <ErrorOutlineIcon fontSize="large" />
+          </div>
+          <div style={{ textAlign: 'center' }}>Código incorrecto.</div>
+        </DialogTitle>
+          
+        <DialogActions>
+          <Button onClick={handleCloseCodigoInvalido}>Cerrar</Button>
         </DialogActions>
       </Dialog>
     </div>
