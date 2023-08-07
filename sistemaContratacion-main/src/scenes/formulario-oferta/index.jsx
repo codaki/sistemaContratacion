@@ -32,8 +32,8 @@ const FormulariOferta = () => {
 
   return (
     <div className="register">
-    <Header title="Formulario Oferta" subtitle="Complete el formulario" />
-    <Box
+    
+    <Box 
         component="form"
         bgcolor={'rgba(255, 255, 255, 0.7)'}
         sx={{
@@ -45,6 +45,7 @@ const FormulariOferta = () => {
         }}
         onSubmit={handleSubmit}
       >
+        <Header title="Formulario Oferta" subtitle="Complete el formulario" />
         <label>Periodo Postulación:</label>
         <TextField
           name="post_periodo"

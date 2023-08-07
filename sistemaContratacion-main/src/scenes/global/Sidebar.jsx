@@ -10,7 +10,7 @@ import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import RecentActorsRoundedIcon from '@mui/icons-material/RecentActorsRounded';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import user from './user3.png'
+import user from './usuario2.png'
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -42,6 +42,7 @@ const Sidebar = () => {
       sx={{
         "& .pro-sidebar-inner": {
           background: `#006935 !important`,
+       
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -55,8 +56,7 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#78edcf !important",
         },
-        // Add styles for the container to make it scrollable
-        height: "130vh",
+height : "150vh"
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
