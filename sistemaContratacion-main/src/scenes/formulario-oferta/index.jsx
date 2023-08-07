@@ -111,7 +111,7 @@ const FormulariOferta = () => {
           margin="normal"
           required
         />
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+        <Button type="submit" variant="contained" color="secondary" sx={{ mt: 2, p: 2}}>
           Enviar
         </Button>
       </Box>
