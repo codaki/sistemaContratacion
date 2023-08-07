@@ -63,6 +63,10 @@ export default function PopUpRegistro() {
       .post("http://localhost:8800/send-email", {
         email: localStorage.getItem("email"),
         otp: otp_val,
+        nombre:localStorage.getItem('nombre'),
+        apellido: localStorage.getItem('apellido'),
+        titulo:localStorage.getItem('titulo'),
+        cedula:localStorage.getItem('cedula')
       })
       .then((response) => {
         setOpenCorreo(true);
