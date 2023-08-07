@@ -16,6 +16,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CloseIcon from '@mui/icons-material/Close';
 import Navbar from './Navbar';
+import PopUpSeguridad from '../../components/PopUps/PopUpSeguridad';
 
 export default function Home() {
 
@@ -47,6 +48,7 @@ export default function Home() {
 
   return (
     <>
+    <PopUpSeguridad open={open} onClose={handleClose} />
     <Navbar/>
       <div className="authPage">
         <Box alignContent={"center"}>
