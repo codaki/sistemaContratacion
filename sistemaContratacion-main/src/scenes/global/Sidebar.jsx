@@ -9,6 +9,7 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import RecentActorsRoundedIcon from '@mui/icons-material/RecentActorsRounded';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import user from './user3.png'
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -144,10 +145,17 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-                      <Item
+              <Item
               title="Tabla Candidatos"
               to="/tabla-candidatos"
               icon={<RecentActorsRoundedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Oferta"
+              to="/formulario-oferta"
+              icon={< AppRegistrationIcon/>}
               selected={selected}
               setSelected={setSelected}
             />
