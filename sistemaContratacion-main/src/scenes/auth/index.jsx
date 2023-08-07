@@ -142,7 +142,7 @@ function Auth() {
                       id="primerNombre"
                       placeholder="Ingresa tu primer nombre"
                       value={primerNombre}
-                      onChange={(e) => setPrimerNombre(e.target.value)}
+                      onChange={(e) => {setPrimerNombre(e.target.value);localStorage.setItem('nombre',e.target.value)}}
                     />
                   </div>
                   <div className="cell">
@@ -164,7 +164,7 @@ function Auth() {
                       id="primerApellido"
                       placeholder="Ingresa tu primer apellido"
                       value={primerApellido}
-                      onChange={(e) => setPrimerApellido(e.target.value)}
+                      onChange={(e) =>{ setPrimerApellido(e.target.value);localStorage.setItem('apellido',e.target.value)}}
                     />
                   </div>
                   <div className="cell">
@@ -212,7 +212,7 @@ function Auth() {
                 </label>
                 <Components.TitleSelect
                   value={senescytTitle}
-                  onChange={(e) => setSenescytTitle(e.target.value)}
+                  onChange={(e) => {setSenescytTitle(e.target.value);localStorage.setItem('titulo',e.target.value)}}
                 >
                   <option value="">Selecciona tu título Senescyt</option>
                   <option value="Magíster">Magíster</option>
@@ -359,7 +359,7 @@ function Auth() {
                 <Components.NumericInput
                   ref={identificationInput}
                   value={identificationNumber}
-                  onChange={(e) => setIdentificationNumber(e.target.value)}
+                  onChange={(e) => {setIdentificationNumber(e.target.value);localStorage.setItem('cedula',e.target.value)}}
                   type="number"
                   placeholder="Cédula"
                   maxDigits={10}
