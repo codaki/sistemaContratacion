@@ -9,6 +9,7 @@ import { useAuth } from "../../context/AuthContext";
 import KeyIcon from "@mui/icons-material/Key";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import PopUpRegistro from "../../components/PopUps/PopUpRegistro";
+import PrivacidadDeDatos from "../../components/PopUps/PrivacidadDeDatos";
 import "./Auth.css";
 
 function Auth() {
@@ -20,10 +21,7 @@ function Auth() {
   const [primerApellido, setPrimerApellido] = React.useState("");
   const [segundoApellido, setSegundoApellido] = React.useState("");
   const [formErrors, setFormErrors] = React.useState([]);
-  const [valoresRegistro, setValoresRegistro] = React.useState([]);
-  const [currentPage, setCurrentPage] = React.useState(false);
-  const auth = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = React.useState("signin");
   const [sexo, setSexo] = React.useState("");
   const [identificationType, setIdentificationType] = React.useState("Cédula");
   const [recaptchaVerified, setRecaptchaVerified] = React.useState(false);
@@ -31,16 +29,15 @@ function Auth() {
   const [password, setPassword] = React.useState("");
   const recaptchaRef = React.createRef();
 
-  const handleRecaptchaVerify = () => {
-    setRecaptchaVerified(true);
-  };
-
   const identificationInput = React.useRef(null);
   const { signin, signup, isAuthenticated, errors: registerErrors } = useAuth();
   const signinForm = {
     email: React.useRef(null),
     password: React.useRef(null),
   };
+
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setCurrentPage("signin");
@@ -57,15 +54,22 @@ function Auth() {
 
     setEmail(signinForm.email.current.value);
     setPassword(signinForm.password.current.value);
-    signin({ correo: email, password: password });
 
     setFormErrors([]);
-    dispatch(login());
+
+    dispatch(login())
+      .then(() => {
+        // Si el inicio de sesión es exitoso, abre el popup de privacidad de datos
+        handleOpenPrivacyPopup();
+      })
+      .catch((error) => {
+        // Manejar errores si es necesario
+      });
   };
 
   const submitRegister = () => {
     setFormErrors([]);
-    
+
     setCurrentPage("signin");
     setSignIn(true);
   };
@@ -95,8 +99,6 @@ function Auth() {
   };
 
   const handleBackClick = () => {
- 
-
     signup({
       tipoid: identificationType,
       numid: identificationNumber,
@@ -111,12 +113,42 @@ function Auth() {
       apellido2: segundoApellido,
     });
     setCurrentPage("signin");
-
     setSignIn(true);
   };
+
   const sendEmail = (email) => {
     localStorage.setItem("email", email);
-    localStorage.setItem("password",password);
+    localStorage.setItem("password", password);
+  };
+
+  const [showPrivacyPopup, setShowPrivacyPopup] = React.useState(false); // Estado para controlar la apertura del popup de privacidad de datos
+
+  const handleRecaptchaVerify = () => {
+    setRecaptchaVerified(true);
+  };
+
+  // Función para abrir el popup de privacidad de datos
+  const handleOpenPrivacyPopup = () => {
+    setShowPrivacyPopup(true);
+  };
+
+  // Función para cerrar el popup de privacidad de datos
+  const handleClosePrivacyPopup = () => {
+    setShowPrivacyPopup(false);
+  };
+
+  // Función para manejar la aceptación de la privacidad de datos
+  const handleAcceptPrivacy = () => {
+    handleClosePrivacyPopup();
+    submitSignin(); // Realizar el inicio de sesión después de aceptar la privacidad de datos
+  };
+
+  // Función para manejar el rechazo de la privacidad de datos
+  const handleRejectPrivacy = () => {
+    handleClosePrivacyPopup(); // Cerrar el popup de privacidad de datos
+    setRecaptchaVerified(false); // Restablecer el estado de recaptchaVerified
+    setCurrentPage("signin"); // Regresar al formulario de inicio de sesión
+    setSignIn(true); // Restablecer el estado de signIn
   };
 
   return (
@@ -127,155 +159,169 @@ function Auth() {
         }}
       >
         <Components.SignUpContainer signinIn={signIn}>
-          <Components.Form id="createAccount">
-            <Components.Title>
-              FORMULARIO DE ADMISIÓN PARA DOCENTES
-            </Components.Title>
-            <div className="authForm">
-              {/* Campos para los nombres */}
-              <div className="table">
-                <div className="row">
-                  <div className="cell">
-                    <label htmlFor="primerNombre">Primer Nombre</label>
-                    <input
-                      type="text"
-                      id="primerNombre"
-                      placeholder="Ingresa tu primer nombre"
-                      value={primerNombre}
-                      onChange={(e) => {setPrimerNombre(e.target.value);localStorage.setItem('nombre',e.target.value)}}
-                    />
+          {currentPage === "signup" && (
+            <Components.Form id="createAccount">
+              <Components.Title>
+                FORMULARIO DE ADMISIÓN PARA DOCENTES
+              </Components.Title>
+              <div className="authForm">
+                {/* Campos para los nombres */}
+                <div className="table">
+                  <div className="row">
+                    <div className="cell">
+                      <label htmlFor="primerNombre">Primer Nombre</label>
+                      <input
+                        type="text"
+                        id="primerNombre"
+                        placeholder="Ingresa tu primer nombre"
+                        value={primerNombre}
+                        onChange={(e) => setPrimerNombre(e.target.value)}
+                      />
+                    </div>
+                    <div className="cell">
+                      <label htmlFor="segundoNombre">Segundo Nombre</label>
+                      <input
+                        type="text"
+                        id="segundoNombre"
+                        placeholder="Ingresa tu segundo nombre"
+                        value={segundoNombre}
+                        onChange={(e) => setSegundoNombre(e.target.value)}
+                      />
+                    </div>
                   </div>
-                  <div className="cell">
-                    <label htmlFor="segundoNombre">Segundo Nombre</label>
-                    <input
-                      type="text"
-                      id="segundoNombre"
-                      placeholder="Ingresa tu segundo nombre"
-                      value={segundoNombre}
-                      onChange={(e) => setSegundoNombre(e.target.value)}
-                    />
+                  <div className="row">
+                    <div className="cell">
+                      <label htmlFor="primerApellido">Primer Apellido</label>
+                      <input
+                        type="text"
+                        id="primerApellido"
+                        placeholder="Ingresa tu primer apellido"
+                        value={primerApellido}
+                        onChange={(e) => setPrimerApellido(e.target.value)}
+                      />
+                    </div>
+                    <div className="cell">
+                      <label htmlFor="segundoApellido">
+                        Segundo Apellido
+                      </label>
+                      <input
+                        type="text"
+                        id="segundoApellido"
+                        placeholder="Ingresa tu segundo apellido"
+                        value={segundoApellido}
+                        onChange={(e) => setSegundoApellido(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="cell">
+                      <label>Tipo de identificación</label>
+                      <span>{identificationType}</span>
+                    </div>
+                    <div className="cell">
+                      <label>Número de identificación</label>
+                      <span>{identificationNumber}</span>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="cell">
+                      <label htmlFor="sexo">Sexo</label>
+                      <select
+                        id="sexo"
+                        value={sexo}
+                        onChange={(e) => setSexo(e.target.value)}
+                        className="inputField"
+                      >
+                        <option value="">Selecciona una opción</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="cell">
-                    <label htmlFor="primerApellido">Primer Apellido</label>
-                    <input
-                      type="text"
-                      id="primerApellido"
-                      placeholder="Ingresa tu primer apellido"
-                      value={primerApellido}
-                      onChange={(e) =>{ setPrimerApellido(e.target.value);localStorage.setItem('apellido',e.target.value)}}
-                    />
-                  </div>
-                  <div className="cell">
-                    <label htmlFor="segundoApellido">Segundo Apellido</label>
-                    <input
-                      type="text"
-                      id="segundoApellido"
-                      placeholder="Ingresa tu segundo apellido"
-                      value={segundoApellido}
-                      onChange={(e) => setSegundoApellido(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="cell">
-                    <label>Tipo de identificación</label>
-                    <span>{identificationType}</span>
-                  </div>
-                  <div className="cell">
-                    <label>Número de identificación</label>
-                    <span>{identificationNumber}</span>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="cell">
-                    <label htmlFor="sexo">Sexo</label>
-                    <select
-                      id="sexo"
-                      value={sexo}
-                      onChange={(e) => setSexo(e.target.value)}
-                      className="inputField"
-                    >
-                      <option value="">Selecciona una opción</option>
-                      <option value="Femenino">Femenino</option>
-                      <option value="Masculino">Masculino</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
 
-              {/* Título Senescyt */}
-              <div className="row">
-                <label htmlFor="senescytTitle">
-                  Selecciona tu titulo Senescyt
-                </label>
-                <Components.TitleSelect
-                  value={senescytTitle}
-                  onChange={(e) => {setSenescytTitle(e.target.value);localStorage.setItem('titulo',e.target.value)}}
-                >
-                  <option value="">Selecciona tu título Senescyt</option>
-                  <option value="Magíster">Magíster</option>
-                  <option value="Doctor/a">Doctor/a</option>
-                  <option value="Licenciado/a">Licenciado/a</option>
-                  <option value="Ingeniero/a">Ingeniero/a</option>
-                  <option value="Arquitecto/a">Arquitecto/a</option>
-                  <option value="Médico/a">Médico/a</option>
-                </Components.TitleSelect>
-              </div>
-              {/* Email */}
-              <div className="row scrollableSection">
-                <div className="col">
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <label htmlFor="email">
-                      <EmailIcon />
-                    </label>
-                    <span style={{ marginLeft: "-3px" }}>Email</span>
-                  </div>
-                  <Components.Input
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => sendEmail(e.target.value)}
-                  />
+                {/* Título Senescyt */}
+                <div className="row">
+                  <label htmlFor="senescytTitle">
+                    Selecciona tu titulo Senescyt
+                  </label>
+                  <Components.TitleSelect
+                    value={senescytTitle}
+                    onChange={(e) => setSenescytTitle(e.target.value)}
+                  >
+                    <option value="">Selecciona tu título Senescyt</option>
+                    <option value="Magíster">Magíster</option>
+                    <option value="Doctor/a">Doctor/a</option>
+                    <option value="Licenciado/a">Licenciado/a</option>
+                    <option value="Ingeniero/a">Ingeniero/a</option>
+                    <option value="Arquitecto/a">Arquitecto/a</option>
+                    <option value="Médico/a">Médico/a</option>
+                  </Components.TitleSelect>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col">
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <label htmlFor="password">
-                      <KeyIcon />
-                    </label>
-                    <span style={{ marginLeft: "-3px" }}>Contraseña</span>
+                {/* Email */}
+                <div className="row scrollableSection">
+                  <div className="col">
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label htmlFor="email">
+                        <EmailIcon />
+                      </label>
+                      <span style={{ marginLeft: "-3px" }}>Email</span>
+                    </div>
+                    <Components.Input
+                      type="email"
+                      placeholder="Email"
+                      onChange={(e) => sendEmail(e.target.value)}
+                    />
                   </div>
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label htmlFor="password">
+                        <KeyIcon />
+                      </label>
+                      <span style={{ marginLeft: "-3px" }}>Contraseña</span>
+                    </div>
 
-                  <Components.Input type="password" placeholder="Contraseña" />
+                    <Components.Input
+                      type="password"
+                      placeholder="Contraseña"
+                    />
+                  </div>
+                </div>
+                <div
+                  style={{ marginTop: "10px", display: "flex", gap: "10px" }}
+                >
+                  {/* Agregamos el botón para abrir el popup de privacidad de datos */}
+                  <Components.Button
+                    type="button"
+                    onClick={handleBackClick}
+                    style={{
+                      borderColor: "Black",
+                      color: "white",
+                      marginRight: "10px",
+                      borderRadius: 7,
+                    }}
+                  >
+                    Atras
+                  </Components.Button>
+                  {/* Movemos el PopUpRegistro y usamos un botón normal */}
+                  <PopUpRegistro
+                    type="button"
+                    onClick={submitSignin}
+                    style={{ backgroundColor: "#007b49" }}
+                  >
+                    Ingresar
+                  </PopUpRegistro>
                 </div>
               </div>
-              <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-                <Components.Button
-                  type="button"
-                  onClick={handleBackClick}
-                  style={{
-                    borderColor: "white",
-                    color: "white",
-                    marginRight: "10px",
-                    borderRadius: 7,
-                  }}
-                >
-                  Volver
-                </Components.Button>
-                <PopUpRegistro
-                  type="button"
-                  onClick={submitRegister}
-                  style={{ backgroundColor: "#007b49" }}
-                ></PopUpRegistro>
-              </div>
-            </div>
-          </Components.Form>
+            </Components.Form>
+          )}
         </Components.SignUpContainer>
 
+        {/* Sección de inicio de sesión */}
         <Components.SignInContainer signinIn={signIn}>
-          {currentPage == "signin" ? (
+          {currentPage === "signin" && (
             <Components.Form>
               <Components.Title>
                 Formulario de Admisión para docentes
@@ -312,27 +358,28 @@ function Auth() {
                     />
                   </div>
                 </div>
-                {formErrors.length !== 0 ? (
+                {formErrors.length !== 0 && (
                   <div className="formErrors">
                     <ul>
                       {formErrors.map((error, index) => (
-                        <li>{error}</li>
+                        <li key={index}>{error}</li>
                       ))}
                     </ul>
                   </div>
-                ) : null}
+                )}
                 {/* '6Ldicg4TAAAAAEIi-Tlg7YgHxcPCNVHvac92lrdX' */}
                 <div style={{ width: "50px", height: "25px" }}></div>
                 {/* Use anchor attribute to navigate to the "createAccount" section */}
                 <div>
                   <div className="row">
+                    {/* Botón "Ingresar" */}
                     <Components.Button
-                      onClick={submitSignin}
+                      onClick={handleOpenPrivacyPopup}
                       type="button"
                       anchor
                       style={{
                         backgroundColor: "#007B49",
-                        color: "white",
+                        color: "black",
                         marginRight: "15px",
                       }}
                     >
@@ -343,7 +390,7 @@ function Auth() {
                       type="button"
                       anchor
                       href="#createAccount"
-                      style={{ backgroundColor: "#007B49", color: "white" }}
+                      style={{ backgroundColor: "#007B49", color: "black" }}
                     >
                       Registro
                     </Components.Button>
@@ -351,65 +398,7 @@ function Auth() {
                 </div>
               </div>
             </Components.Form>
-          ) : currentPage === "signup" ? (
-            <Components.Form>
-              <Components.Title>Registro</Components.Title>
-              <Components.Subtitle>Ingrese su cédula</Components.Subtitle>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Components.NumericInput
-                  ref={identificationInput}
-                  value={identificationNumber}
-                  onChange={(e) => {setIdentificationNumber(e.target.value);localStorage.setItem('cedula',e.target.value)}}
-                  type="number"
-                  placeholder="Cédula"
-                  maxDigits={10}
-                  style={{ marginRight: "10px" }}
-                />
-                <ContactEmergencyIcon style={{ color: "#777" }} />
-              </div>
-              {formErrors.length !== 0 ? (
-                <div className="formErrors">
-                  <ul>
-                    {formErrors.map((error, index) => (
-                      <li>{error}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey="6Ldicg4TAAAAAMXRFd5wWjZa5ihYFlmb95106bPR"
-                size="normal"
-                onChange={handleRecaptchaVerify}
-              />
-
-              {/* '6Ldicg4TAAAAAEIi-Tlg7YgHxcPCNVHvac92lrdX' */}
-              <div style={{ width: "50px", height: "25px" }}></div>
-              {/* Use anchor attribute to navigate to the "createAccount" section */}
-              <div className="row">
-                <Components.Button
-                  type="button"
-                  onClick={handleBackClick}
-                  style={{
-                    borderColor: "white",
-                    color: "white",
-                    marginRight: "15px",
-                  }}
-                >
-                  Volver
-                </Components.Button>
-                <Components.Button
-                  onClick={registerNextClick}
-                  type="button"
-                  anchor
-                  href="#createAccount"
-                  style={{ backgroundColor: "#007B49", color: "white" }}
-                >
-                  Siguiente
-                </Components.Button>
-              </div>
-            </Components.Form>
-          ) : null}
+          )}
         </Components.SignInContainer>
 
         <Components.OverlayContainer
@@ -456,6 +445,12 @@ function Auth() {
             </Components.RightOverlayPanel>
           </Components.Overlay>
         </Components.OverlayContainer>
+        {/* Agregamos el componente PrivacidadDeDatos */}
+        <PrivacidadDeDatos
+          open={showPrivacyPopup}
+          handleClose={handleRejectPrivacy}
+          handleAccept={handleAcceptPrivacy}
+        />
       </Components.Container>
     </div>
   );
