@@ -15,6 +15,9 @@ import login from "./pages/LoginPage";
 import { AuthProvider } from "./context/AuthContext";
 import Candidatos from "./scenes/tabla-candidatos";
 import FormulariOferta from "./scenes/formulario-oferta";
+import FormularioPeriodo from "./scenes/formulario-postulacion/PeriodoPostlacionForm";
+import FormularioSede from "./scenes/formulario-postulacion/SedeForm";
+import FormularioPacad from "./scenes/formulario-postulacion/PersonalAcadForm";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -45,6 +48,14 @@ function App() {
                   path="/formulario-oferta"
                   element={<FormulariOferta />}
                 />
+                <Route path="/formulario-periodo" element={<FormularioPeriodo />} />
+
+
+                <Route path="/formulario-sede" element={<FormularioSede />} />
+
+                <Route path="/formulario-pacademico" element={<FormularioPacad />} />
+
+
                 <Route path="/subir-informacion" element={<Formulario />} />
                 <Route path="/tabla-candidatos" element={<Candidatos />} />
               </Routes>

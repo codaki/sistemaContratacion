@@ -159,6 +159,62 @@ height : "150vh"
               selected={selected}
               setSelected={setSelected}
             />
+            <Item
+              title="Formulario Periodo"
+              to="/formulario-periodo"
+              icon={< AppRegistrationIcon/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Tipo de Contratacion"
+              to="/formulario-contratacion"
+              icon={< AppRegistrationIcon/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Campo especifico"
+              to="/formulario-cespecifico"
+              icon={< AppRegistrationIcon/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Campo Amplio"
+              to="/formulario-camplio"
+              icon={< AppRegistrationIcon/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Sede"
+              to="/formulario-sede"
+              icon={< AppRegistrationIcon/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Departamento"
+              to="/formulario-departamento"
+              icon={< AppRegistrationIcon/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Personal Academico"
+              to="/formulario-pacademico"
+              icon={< AppRegistrationIcon/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Actividad"
+              to="/formulario-actividad"
+              icon={< AppRegistrationIcon/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
           </Box>
         </Menu>
       </ProSidebar>
