@@ -12,7 +12,7 @@ import axios from "axios";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
-
+import CloseIcon from '@mui/icons-material/Close'; // Icono de "x"
 
 function PaperComponent(props) {
   return (
@@ -25,20 +25,17 @@ function PaperComponent(props) {
   );
 }
 
-export default function PopUpRegistro() {
+export default function ElegantPopUpRegistro() {
   const [open, setOpen] = React.useState(false);
   const [openCorreo, setOpenCorreo] = React.useState(false);
-  const [openCorreoValido, setOpenCorreovalido] = React.useState(false);
+  const [openCorreoValido, setOpenCorreoValido] = React.useState(false);
   const [openCodigoInvalido, setOpenCodigoInvalido] = React.useState(false);
   const [openCorreoInvalido, setOpenCorreoInvalido] = React.useState(false);
   const [otp, setOTP] = React.useState("");
   const [otpInput, setOTPInput] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(false);
-  const [correoEnviado,setCorreoEnviado] = React.useState(false);
+  const [correoEnviado, setCorreoEnviado] = React.useState(false);
 
-
-  
- 
   const handleClose = () => {
     setOpen(false);
   };
@@ -47,7 +44,7 @@ export default function PopUpRegistro() {
     setOpen(true);
   };
   const handleCloseCorreoValido = () => {
-    setOpenCorreovalido(false);
+    setOpenCorreoValido(false);
   };
   const handleCloseCodigoInvalido = () => {
     setOpenCodigoInvalido(false);
@@ -79,7 +76,7 @@ export default function PopUpRegistro() {
 
   const handleVerifyOTP = () => {
     if (otpInput == otp) {
-      setOpenCorreovalido(true);
+      setOpenCorreoValido(true);
       setCurrentPage("signin");
     } else {
       setOpenCodigoInvalido(true);
@@ -89,7 +86,6 @@ export default function PopUpRegistro() {
     handleSendOTP();
   };
   const handleCloseAndVerifyOTP = () => {
-
     handleClose();
     handleVerifyOTP();
   };
@@ -115,9 +111,10 @@ export default function PopUpRegistro() {
           </div>
           <div style={{ textAlign: 'center' }}>Se ha enviado un código de verificación a su correo electrónico.</div>
         </DialogTitle>
-          
         <DialogActions>
-          <Button onClick={handleCloseCorreo}>Cerrar</Button>
+          <Button onClick={handleCloseCorreo}>
+            <CloseIcon />
+          </Button>
         </DialogActions>
       </Dialog>
       <Dialog
@@ -132,9 +129,11 @@ export default function PopUpRegistro() {
           </div>
           <div style={{ textAlign: 'center' }}>Error al enviar código de verificación, por favor compruebe que su correo esté correcto.</div>
         </DialogTitle>
-          
         <DialogActions>
-          <Button onClick={handleCloseCorreoInvalido}>Cerrar</Button>
+          <Button onClick={handleCloseCorreoInvalido}>
+            <CloseIcon />
+            Cerrar
+          </Button>
         </DialogActions>
       </Dialog>
       <Dialog

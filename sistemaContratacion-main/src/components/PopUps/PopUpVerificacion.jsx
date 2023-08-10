@@ -19,36 +19,16 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-function BootstrapDialogTitle(props) {
-  const { children, onClose, ...other } = props;
+const CustomDialogTitle = styled(DialogTitle)(({ theme }) => ({
+  padding: theme.spacing(2),
+  '& .MuiTypography-root': {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+}));
 
-  return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-      {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </DialogTitle>
-  );
-}
-
-BootstrapDialogTitle.propTypes = {
-  children: PropTypes.node,
-  onClose: PropTypes.func.isRequired,
-};
-
-export default function PopUpVerificacion() {
+function PopUpVerificacion() {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -68,16 +48,32 @@ export default function PopUpVerificacion() {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-        YA HA SELECCIONADO SU PROCESO DE POSTULACIÓN
-        </BootstrapDialogTitle>
+        <CustomDialogTitle id="customized-dialog-title" onClose={handleClose}>
+          YA HA SELECCIONADO SU PROCESO DE POSTULACIÓN
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              padding: 0,
+              marginRight: '-8px',
+              marginTop: '-8px',
+              marginLeft: 'auto',
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </CustomDialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-          NO SE PERMITE REALIZAR OTRO PROCESO DE POSTULACIÓN AL MISMO USUARIO DURANTE EL MISMO CONCURSO DE MÉRITOS  Y OPOSICIÓN
+            NO SE PERMITE REALIZAR OTRO PROCESO DE POSTULACIÓN AL MISMO USUARIO DURANTE EL MISMO CONCURSO DE MÉRITOS Y OPOSICIÓN
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button
+            autoFocus
+            onClick={handleClose}
+            startIcon={<CloseIcon />}
+          >
             Salir
           </Button>
         </DialogActions>
@@ -85,3 +81,5 @@ export default function PopUpVerificacion() {
     </div>
   );
 }
+
+export default PopUpVerificacion;
