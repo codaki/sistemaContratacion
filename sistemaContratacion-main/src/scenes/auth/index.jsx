@@ -9,7 +9,11 @@ import { useAuth } from "../../context/AuthContext";
 import KeyIcon from "@mui/icons-material/Key";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import PopUpRegistro from "../../components/PopUps/PopUpRegistro";
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import "./Auth.css";
+import PopUpSeguro from "../../components/PopUps/PopUpSeguro";
 
 function Auth() {
   const [signIn, setSignIn] = React.useState(true);
@@ -126,6 +130,7 @@ function Auth() {
           background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
         }}
       >
+        
         <Components.SignUpContainer signinIn={signIn}>
           <Components.Form id="createAccount">
             <Components.Title>
@@ -251,6 +256,7 @@ function Auth() {
                   <Components.Input type="password" placeholder="Contraseña" />
                 </div>
               </div>
+<PopUpSeguro></PopUpSeguro>
               <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
                 <Components.Button
                   type="button"
@@ -281,6 +287,7 @@ function Auth() {
                 Formulario de Admisión para docentes
               </Components.Title>
               <Components.Subtitle></Components.Subtitle>
+              
               <div className="authForm">
                 <div className="row">
                   <div className="col">
