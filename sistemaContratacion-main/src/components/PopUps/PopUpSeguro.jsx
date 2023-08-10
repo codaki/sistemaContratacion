@@ -9,7 +9,8 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -60,9 +61,13 @@ export default function PopUpSeguro() {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Intentar otra vez
-      </Button>
+      <FormControlLabel
+        onClick={handleClickOpen}
+        control={<Checkbox defaultChecked />}
+        style={{ color: "#1976D2" }}
+        label="Acepto los términos y condiciones"
+      />
+
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -76,10 +81,42 @@ export default function PopUpSeguro() {
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Esta seguro que los datos enviados son los correctos, estos datos
-            serán enviados y posteriormente no podrán ser modificados. si envia
-            cualquier documento de manera erronea puede ser descalificado del
-            concurso.{" "}
+            Te informamos que nuestro sitio web respeta y cumple con la Ley
+            Orgánica de Protección de Datos Personales y garantía de los
+            derechos digitales. La privacidad y seguridad de tus datos
+            personales son de suma importancia para nosotros.{" "}
+          </Typography>
+          <Typography gutterBottom>
+            Al utilizar nuestro sitio web, es posible que recopilemos cierta
+            información sobre ti. Esto incluye datos como tu nombre, dirección
+            de correo electrónico, dirección IP y otros datos relevantes
+            necesarios para brindarte nuestros servicios.{" "}
+          </Typography>
+          <Typography gutterBottom>
+            Queremos asegurarte que toda la información que nos proporcionas se
+            utilizará únicamente con el propósito específico para el cual fue
+            recopilada. No compartiremos ni venderemos tus datos personales a
+            terceros sin tu consentimiento expreso.{" "}
+          </Typography>
+          <Typography gutterBottom>
+            Además, garantizamos que tus derechos digitales también serán
+            respetados. Tienes derecho a acceder, modificar, corregir o eliminar
+            tus datos personales de nuestra base de datos en cualquier momento.{" "}
+          </Typography>
+          <Typography gutterBottom>
+            Al continuar utilizando nuestro sitio web, aceptas nuestra Política
+            de Privacidad y el uso de cookies. Puedes obtener más información
+            sobre cómo utilizamos los datos y las cookies en nuestra página de
+            Política de Privacidad.{" "}
+          </Typography>
+          <Typography gutterBottom>
+            Si tienes alguna pregunta o inquietud sobre cómo manejamos tus datos
+            personales, no dudes en contactarnos a través de los canales de
+            soporte proporcionados en el sitio web.{" "}
+          </Typography>
+          <Typography gutterBottom>
+            Gracias por confiar en nosotros y por tu compromiso con la
+            protección de tus datos personales y derechos digitales.{" "}
           </Typography>
         </DialogContent>
         <DialogActions>
