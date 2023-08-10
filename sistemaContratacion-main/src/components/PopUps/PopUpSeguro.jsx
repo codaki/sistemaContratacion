@@ -11,45 +11,50 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+
+const ElegantBootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
   },
   "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
+  },
+  "& .MuiPaper-root": {
+    borderRadius: theme.spacing(2),
   },
 }));
 
-function BootstrapDialogTitle(props) {
+function ElegantBootstrapDialogTitle(props) {
   const { children, onClose, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+    <DialogTitle sx={{ m: 0, p: 3 }} {...other}>
       {children}
-      {onClose ? (
+      {onClose && (
         <IconButton
           aria-label="close"
           onClick={onClose}
           sx={{
             position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
+            right: theme => theme.spacing(1),
+            top: theme => theme.spacing(1),
+            color: theme => theme.palette.grey[500],
           }}
         >
           <CloseIcon />
         </IconButton>
-      ) : null}
+      )}
     </DialogTitle>
   );
 }
 
-BootstrapDialogTitle.propTypes = {
+ElegantBootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
 
-export default function PopUpSeguro() {
+export default function ElegantPopUpSeguro() {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -64,67 +69,47 @@ export default function PopUpSeguro() {
       <FormControlLabel
         onClick={handleClickOpen}
         control={<Checkbox defaultChecked />}
-        style={{ color: "#1976D2" }}
+        sx={{ color: "#1976D2" }}
         label="Acepto los términos y condiciones"
       />
 
-      <BootstrapDialog
+      <ElegantBootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <BootstrapDialogTitle
+        <ElegantBootstrapDialogTitle
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          ¿Está seguro?
-        </BootstrapDialogTitle>
+          Confirmación de Registro
+        </ElegantBootstrapDialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Te informamos que nuestro sitio web respeta y cumple con la Ley
-            Orgánica de Protección de Datos Personales y garantía de los
-            derechos digitales. La privacidad y seguridad de tus datos
-            personales son de suma importancia para nosotros.{" "}
-          </Typography>
-          <Typography gutterBottom>
-            Al utilizar nuestro sitio web, es posible que recopilemos cierta
-            información sobre ti. Esto incluye datos como tu nombre, dirección
-            de correo electrónico, dirección IP y otros datos relevantes
-            necesarios para brindarte nuestros servicios.{" "}
-          </Typography>
-          <Typography gutterBottom>
-            Queremos asegurarte que toda la información que nos proporcionas se
-            utilizará únicamente con el propósito específico para el cual fue
-            recopilada. No compartiremos ni venderemos tus datos personales a
-            terceros sin tu consentimiento expreso.{" "}
-          </Typography>
-          <Typography gutterBottom>
-            Además, garantizamos que tus derechos digitales también serán
-            respetados. Tienes derecho a acceder, modificar, corregir o eliminar
-            tus datos personales de nuestra base de datos en cualquier momento.{" "}
-          </Typography>
-          <Typography gutterBottom>
-            Al continuar utilizando nuestro sitio web, aceptas nuestra Política
-            de Privacidad y el uso de cookies. Puedes obtener más información
-            sobre cómo utilizamos los datos y las cookies en nuestra página de
-            Política de Privacidad.{" "}
-          </Typography>
-          <Typography gutterBottom>
-            Si tienes alguna pregunta o inquietud sobre cómo manejamos tus datos
-            personales, no dudes en contactarnos a través de los canales de
-            soporte proporcionados en el sitio web.{" "}
-          </Typography>
-          <Typography gutterBottom>
-            Gracias por confiar en nosotros y por tu compromiso con la
-            protección de tus datos personales y derechos digitales.{" "}
+          Gracias por registrarte para participar en el proceso de contratación docente 2023 de la Universidad de las Fuerzas Armadas (ESPE). 
+          Queremos asegurarte que la privacidad y seguridad de tus datos personales son de suma importancia para nosotros.
+          <br/>
+          Tus datos serán tratados con el máximo cuidado y confidencialidad. 
+          Entendemos la sensibilidad de la información que nos proporcionas y queremos garantizarte que estos datos serán utilizados únicamente 
+          con el propósito específico para el cual fueron recopilados: el proceso de selección y contratación docente para el año 2023.
+          <br/>
+          En ningún caso compartiremos, venderemos ni divulgaremos tus datos personales a terceros sin tu consentimiento expreso. 
+          Cumpliremos con todas las disposiciones legales y reglamentarias relacionadas con la protección de datos personales.
+          <br/>
+          Tu participación es fundamental para el éxito de nuestro proceso de contratación docente, y tu confianza en nosotros es valiosa. 
+          Si tienes alguna pregunta o inquietud acerca del manejo de tus datos personales, no dudes en contactarnos a través de los canales 
+          de soporte proporcionados en nuestro sitio web.
+          <br/>
+          Agradecemos tu compromiso con la ESPE y tu interés en formar parte de nuestro equipo docente. 
+          Esperamos contar contigo en este importante proceso.{" "}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button autoFocus onClick={handleClose} startIcon={<CheckCircleIcon />}>
             Confirmar
           </Button>
         </DialogActions>
-      </BootstrapDialog>
+      </ElegantBootstrapDialog>
     </div>
   );
 }
