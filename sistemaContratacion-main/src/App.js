@@ -18,6 +18,11 @@ import FormulariOferta from "./scenes/formulario-oferta";
 import FormularioPeriodo from "./scenes/formulario-postulacion/PeriodoPostlacionForm";
 import FormularioSede from "./scenes/formulario-postulacion/SedeForm";
 import FormularioPacad from "./scenes/formulario-postulacion/PersonalAcadForm";
+import FormularioDept from "./scenes/formulario-postulacion/DepartamentoForm";
+import FormularioContratacion from "./scenes/formulario-postulacion/ContratacionForm";
+import FormularioCaEspecifico from "./scenes/formulario-postulacion/CampoEspecificoForm";
+import FormularioCaAmplio from "./scenes/formulario-postulacion/CampoAmplioForm";
+import FormularioActividad from "./scenes/formulario-postulacion/ActividadForm";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -49,12 +54,13 @@ function App() {
                   element={<FormulariOferta />}
                 />
                 <Route path="/formulario-periodo" element={<FormularioPeriodo />} />
-
-
+                <Route path="/formulario-contratacion" element={<FormularioContratacion />} />
+                <Route path="/formulario-cespecifico" element={<FormularioCaEspecifico />} />
+                <Route path="/formulario-camplio" element={<FormularioCaAmplio />} />
                 <Route path="/formulario-sede" element={<FormularioSede />} />
-
+                <Route path="/formulario-departamento" element={<FormularioDept />} />
                 <Route path="/formulario-pacademico" element={<FormularioPacad />} />
-
+                <Route path="/formulario-actividad" element={<FormularioActividad />} />
 
                 <Route path="/subir-informacion" element={<Formulario />} />
                 <Route path="/tabla-candidatos" element={<Candidatos />} />
