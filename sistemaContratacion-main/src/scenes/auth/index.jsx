@@ -14,6 +14,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import "./Auth.css";
 import PopUpSeguro from "../../components/PopUps/PopUpSeguro";
+import PrivacidadDeDatos from "../../components/PopUps/PrivacidadDeDatos";
+
 
 function Auth() {
   const [signIn, setSignIn] = React.useState(true);
@@ -34,6 +36,37 @@ function Auth() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const recaptchaRef = React.createRef();
+
+  const [showPrivacyPopup, setShowPrivacyPopup] = React.useState(false);
+
+  // Function to open the privacy popup
+  const handleOpenPrivacyPopup = () => {
+    setShowPrivacyPopup(true);
+  };
+
+  // Function to close the privacy popup
+  const handleClosePrivacyPopup = () => {
+    setShowPrivacyPopup(false);
+    // Solo llamamos a handleRejectPrivacy si el popup se cierra por rechazo
+    if (!recaptchaVerified) {
+      handleRejectPrivacy();
+    }
+  };
+
+  // Función para manejar la aceptación de la privacidad de datos
+  const handleAcceptPrivacy = () => {
+    handleClosePrivacyPopup();
+    submitSignin(); // Realizar el inicio de sesión después de aceptar la privacidad de datos
+  };
+
+  const handleRejectPrivacy = () => {
+    console.log("El usuario ha rechazado la privacidad de datos");
+    setCurrentPage("signin");
+    setSignIn(true);
+    setEmail(""); // Limpiar email si es necesario
+    setPassword(""); // Limpiar contraseña si es necesario
+    setShowPrivacyPopup(false); // Cerrar el popup de privacidad de datos
+  };
 
   const handleRecaptchaVerify = () => {
     setRecaptchaVerified(true);
@@ -69,7 +102,7 @@ function Auth() {
 
   const submitRegister = () => {
     setFormErrors([]);
-    
+
     setCurrentPage("signin");
     setSignIn(true);
   };
@@ -99,7 +132,7 @@ function Auth() {
   };
 
   const handleBackClick = () => {
- 
+
 
     signup({
       tipoid: identificationType,
@@ -120,7 +153,7 @@ function Auth() {
   };
   const sendEmail = (email) => {
     localStorage.setItem("email", email);
-    localStorage.setItem("password",password);
+    localStorage.setItem("password", password);
   };
 
   return (
@@ -130,7 +163,7 @@ function Auth() {
           background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
         }}
       >
-        
+
         <Components.SignUpContainer signinIn={signIn}>
           <Components.Form id="createAccount">
             <Components.Title>
@@ -147,7 +180,7 @@ function Auth() {
                       id="primerNombre"
                       placeholder="Ingresa tu primer nombre"
                       value={primerNombre}
-                      onChange={(e) => {setPrimerNombre(e.target.value);localStorage.setItem('nombre',e.target.value)}}
+                      onChange={(e) => { setPrimerNombre(e.target.value); localStorage.setItem('nombre', e.target.value) }}
                     />
                   </div>
                   <div className="cell">
@@ -169,7 +202,7 @@ function Auth() {
                       id="primerApellido"
                       placeholder="Ingresa tu primer apellido"
                       value={primerApellido}
-                      onChange={(e) =>{ setPrimerApellido(e.target.value);localStorage.setItem('apellido',e.target.value)}}
+                      onChange={(e) => { setPrimerApellido(e.target.value); localStorage.setItem('apellido', e.target.value) }}
                     />
                   </div>
                   <div className="cell">
@@ -217,7 +250,7 @@ function Auth() {
                 </label>
                 <Components.TitleSelect
                   value={senescytTitle}
-                  onChange={(e) => {setSenescytTitle(e.target.value);localStorage.setItem('titulo',e.target.value)}}
+                  onChange={(e) => { setSenescytTitle(e.target.value); localStorage.setItem('titulo', e.target.value) }}
                 >
                   <option value="">Selecciona tu título Senescyt</option>
                   <option value="Magíster">Magíster</option>
@@ -256,7 +289,7 @@ function Auth() {
                   <Components.Input type="password" placeholder="Contraseña" />
                 </div>
               </div>
-<PopUpSeguro></PopUpSeguro>
+              <PopUpSeguro></PopUpSeguro>
               <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
                 <Components.Button
                   type="button"
@@ -287,7 +320,7 @@ function Auth() {
                 Formulario de Admisión para docentes
               </Components.Title>
               <Components.Subtitle></Components.Subtitle>
-              
+
               <div className="authForm">
                 <div className="row">
                   <div className="col">
@@ -334,7 +367,7 @@ function Auth() {
                 <div>
                   <div className="row">
                     <Components.Button
-                      onClick={submitSignin}
+                      onClick={handleOpenPrivacyPopup}
                       type="button"
                       anchor
                       style={{
@@ -356,6 +389,12 @@ function Auth() {
                     </Components.Button>
                   </div>
                 </div>
+                {/* Agregamos el componente PrivacidadDeDatos */}
+                <PrivacidadDeDatos
+                  open={showPrivacyPopup}
+                  handleClose={handleRejectPrivacy}
+                  handleAccept={handleAcceptPrivacy}
+                />
               </div>
             </Components.Form>
           ) : currentPage === "signup" ? (
@@ -366,7 +405,7 @@ function Auth() {
                 <Components.NumericInput
                   ref={identificationInput}
                   value={identificationNumber}
-                  onChange={(e) => {setIdentificationNumber(e.target.value);localStorage.setItem('cedula',e.target.value)}}
+                  onChange={(e) => { setIdentificationNumber(e.target.value); localStorage.setItem('cedula', e.target.value) }}
                   type="number"
                   placeholder="Cédula"
                   maxDigits={10}
