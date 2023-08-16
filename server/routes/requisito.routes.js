@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getRequisito } from "../controllers/requisito.controller.js";
+import { getRequisito,createRequisito,updateRequisito,deleteRequisito } from "../controllers/requisito.controller.js";
 
 const router = Router();
 

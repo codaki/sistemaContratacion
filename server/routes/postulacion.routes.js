@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   createPostulacion,
-  getPostulacion,
+  getPostulacion,updatePostulacion,deletePostulacion
 } from "../controllers/postulacion.controller.js";
 
 const router = Router();

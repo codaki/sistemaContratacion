@@ -3,6 +3,7 @@ import {
   deletePersonalAcademico,
   getPersonalAcademico,
   updatePersonalAcademico,
+  createPersonalAcademico,
 } from "../controllers/personal_academico.controller.js";
 
 const router = Router();
