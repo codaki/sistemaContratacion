@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Header from '../../components/Header';
+import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Header from "../../components/Header";
+import { crearOferta } from "../../api/oferta";
 
 const FormulariOferta = () => {
   const [formData, setFormData] = useState({
-    post_periodo: '',
-    connombre: '',
-    cenombre: '',
-    canombre: '',
-    sedenombre: '',
-    deptnombre: '',
-    panombre: '',
-    actnombre: '',
+    post_periodo: "",
+    connombre: "",
+    cenombre: "",
+    canombre: "",
+    sedenombre: "",
+    deptnombre: "",
+    panombre: "",
+    actnombre: "",
+    ohnombre: "",
+    ovnombre: "",
   });
 
   const handleChange = (event) => {
@@ -24,24 +27,22 @@ const FormulariOferta = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
-    console.log(formData);
+    const success = await crearOferta(formData);
   };
 
   return (
     <div className="register">
-    
-    <Box 
+      <Box
         component="form"
-        bgcolor={'rgba(255, 255, 255, 0.7)'}
+        bgcolor={"rgba(255, 255, 255, 0.7)"}
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          maxWidth: '800px',
-          margin: '0 auto',
-          padding: '16px',
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "800px",
+          margin: "0 auto",
+          padding: "16px",
         }}
         onSubmit={handleSubmit}
       >
@@ -111,7 +112,28 @@ const FormulariOferta = () => {
           margin="normal"
           required
         />
-        <Button type="submit" variant="contained" color="secondary" sx={{ mt: 2, p: 2}}>
+        <label>Oferta Vacantes:</label>
+        <TextField
+          name="ovnombre"
+          value={formData.ovnombre}
+          onChange={handleChange}
+          margin="normal"
+          required
+        />
+        <label>Oferta Horas:</label>
+        <TextField
+          name="ohnombre"
+          value={formData.ohnombre}
+          onChange={handleChange}
+          margin="normal"
+          required
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="secondary"
+          sx={{ mt: 2, p: 2 }}
+        >
           Enviar
         </Button>
       </Box>

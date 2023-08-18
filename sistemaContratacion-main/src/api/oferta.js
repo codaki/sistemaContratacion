@@ -2,14 +2,14 @@ import axios from "axios";
 
 const API = "http://localhost:8800/api";
 
-export const pedirSede = () =>
-  axios.get(`${API}/sede`, {
+export const pedirOferta = () =>
+  axios.get(`${API}/oferta`, {
     withCredentials: true,
   });
 
-export const crearSede = async (formData) => {
+export const crearOferta = async (formData) => {
   try {
-    const response = await axios.post(`${API}/sede`, formData, {
+    const response = await axios.post(`${API}/oferta`, formData, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -17,10 +17,10 @@ export const crearSede = async (formData) => {
     });
 
     if (response.status === 201) {
-      console.log("Sede creada con éxito");
+      console.log("Oferta creada con éxito");
       return true;
     } else {
-      console.error("Error al crear la sede");
+      console.error("Error al crear la oferta");
       return false;
     }
   } catch (error) {
@@ -29,9 +29,9 @@ export const crearSede = async (formData) => {
   }
 };
 
-export const editarSede = async (sede_id, formData) => {
+export const editarOferta = async (oferta_id, formData) => {
   try {
-    const response = await axios.put(`${API}/sede/${sede_id}`, formData, {
+    const response = await axios.put(`${API}/oferta/${oferta_id}`, formData, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -39,10 +39,10 @@ export const editarSede = async (sede_id, formData) => {
     });
 
     if (response.status === 200) {
-      console.log(`Sede con ID ${sede_id} actualizada con éxito`);
+      console.log(`Oferta con ID ${oferta_id} actualizada con éxito`);
       return true;
     } else {
-      console.error(`Error al actualizar la sede con ID ${sede_id}`);
+      console.error(`Error al actualizar la oferta con ID ${oferta_id}`);
       return false;
     }
   } catch (error) {
@@ -51,17 +51,17 @@ export const editarSede = async (sede_id, formData) => {
   }
 };
 
-export const eliminarSede = async (sede_id) => {
+export const eliminarOferta = async (oferta_id) => {
   try {
-    const response = await axios.delete(`${API}/sede/${sede_id}`, {
+    const response = await axios.delete(`${API}/oferta/${oferta_id}`, {
       withCredentials: true,
     });
 
     if (response.status === 200) {
-      console.log(`Sede con ID ${sede_id} eliminada con éxito`);
+      console.log(`Oferta con ID ${oferta_id} eliminada con éxito`);
       return true;
     } else {
-      console.error(`Error al eliminar la sede con ID ${sede_id}`);
+      console.error(`Error al eliminar la oferta con ID ${oferta_id}`);
       return false;
     }
   } catch (error) {

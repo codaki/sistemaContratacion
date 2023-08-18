@@ -22,6 +22,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { subirInformacion } from "../../api/informacion";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -50,16 +51,12 @@ const Formulario = () => {
           formData.append("file", file);
           formData.append("idDocument", id);
           formData.append("idPostulation", "your-postulation-id"); // Replace with actual postulation ID
-          const response = await axios.post(
-            "http://localhost:8800/api/informacion/upload",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          console.log("Upload response:", response.data);
+          const uploadResult = await subirInformacion(formData);
+          if (uploadResult) {
+            console.log(`Archivo ${id} subido con éxito`);
+          } else {
+            console.error(`Error al subir el archivo ${id}`);
+          }
         }
       }
       setSubmitting(false);

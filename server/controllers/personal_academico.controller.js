@@ -9,12 +9,12 @@ export const getPersonalAcademico = (req, res) => {
 };
 
 export const createPersonalAcademico = (req, res) => {
-  const { pa_id, pa_nombre, pa_descripcion } = req.body;
+  const { pa_nombre, pa_descripcion } = req.body;
   const q = `
-        INSERT INTO personal_academico (pa_id, pa_nombre, pa_descripcion)
-        VALUES ($1, $2, $3);
+        INSERT INTO personal_academico ( pa_nombre, pa_descripcion)
+        VALUES ($1, $2);
     `;
-  const values = [pa_id, pa_nombre, pa_descripcion];
+  const values = [pa_nombre, pa_descripcion];
 
   db.query(q, values, (err, data) => {
     if (err) return res.status(500).send(err);
