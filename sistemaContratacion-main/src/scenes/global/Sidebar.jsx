@@ -152,6 +152,13 @@ height : "150vh"
               selected={selected}
               setSelected={setSelected}
             />
+                         <Item
+              title="Calificaciones"
+              to="/tablas-calificacion"
+              icon={<RecentActorsRoundedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Item
               title="Oferta"
               to="/formulario-oferta"

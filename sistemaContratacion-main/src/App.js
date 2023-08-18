@@ -23,6 +23,7 @@ import FormularioContratacion from "./scenes/formulario-postulacion/Contratacion
 import FormularioCaEspecifico from "./scenes/formulario-postulacion/CampoEspecificoForm";
 import FormularioCaAmplio from "./scenes/formulario-postulacion/CampoAmplioForm";
 import FormularioActividad from "./scenes/formulario-postulacion/ActividadForm";
+import { Calificaciones } from "./scenes/tablas-calificacion";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -64,6 +65,7 @@ function App() {
 
                 <Route path="/subir-informacion" element={<Formulario />} />
                 <Route path="/tabla-candidatos" element={<Candidatos />} />
+                <Route path="/tablas-calificacion" element={<Calificaciones/>} />
               </Routes>
             </main>
           </div>
