@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
+import axios from 'axios';
 
 const FormularioDept = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +21,12 @@ const FormularioDept = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
+    axios.post('http://localhost:8800/api/departamento', formData);
     console.log(formData);
+    setFormData({
+      dept_nombre: '',
+      dept_descripcion: '',
+    });
   };
 
   return (
