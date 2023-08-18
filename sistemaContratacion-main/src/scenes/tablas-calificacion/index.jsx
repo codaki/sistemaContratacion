@@ -1,11 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Header from "../../components/Header";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import CssBaseline from "@mui/material/CssBaseline";
+
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,7 +11,6 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Formik, Form } from "formik";
 
 export const FormacionComponent = () => {
   return <div>Contenido de Formación</div>;
