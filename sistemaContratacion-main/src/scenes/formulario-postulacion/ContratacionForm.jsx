@@ -3,15 +3,16 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
+import axios from 'axios';
 
 const FormularioContratacion = () => {
-  const [formData, setFormData] = useState({
+  const [body, setBody] = useState({
     con_nombre: '',
   });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
+    setBody((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -20,13 +21,18 @@ const FormularioContratacion = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
-    console.log(formData);
+    axios.post('http://localhost:8800/api/contratacion', body);
+    console.log(body);
+
+    // Limpiar el valor del TextField
+    setBody({
+      con_nombre: '',
+    });
   };
 
   return (
     <div className="register">
-    
-    <Box 
+      <Box
         component="form"
         bgcolor={'rgba(255, 255, 255, 0.7)'}
         sx={{
@@ -42,13 +48,13 @@ const FormularioContratacion = () => {
         <label>Contratación:</label>
         <TextField
           name="con_nombre"
-          value={formData.con_nombre}
+          value={body.con_nombre} // Establece el valor actual del estado
           onChange={handleChange}
           margin="normal"
           required
         />
 
-        <Button type="submit" variant="contained" color="secondary" sx={{ mt: 2, p: 2}}>
+        <Button type="submit" variant="contained" color="secondary" sx={{ mt: 2, p: 2 }}>
           Enviar
         </Button>
       </Box>
