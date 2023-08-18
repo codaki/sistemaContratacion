@@ -1,6 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material';
 import Header from "../../components/Header";
+
 
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
@@ -21,8 +23,65 @@ export const DocenciaComponent = () => {
 };
 
 export const ProduccionComponent = () => {
-  return <div>Contenido de Producción académica</div>;
+  return (
+    <div>
+      <TableContainer component={Paper}>
+        <Table style={{ borderCollapse: 'collapse' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell colSpan={7} align="center">
+                <span>AUXILIAR NIVEL 1 DE PERSONAL ACADEMICO QUE DESARROLLA ACTIVIDADES  DE TERCER NIVEL DE GRADO Y CUARTO NIVEL</span>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>ORD</TableCell>
+              <TableCell>ITEM</TableCell>
+              <TableCell>REQUISITOS</TableCell>
+              <TableCell>TITULOS/EXPERIENCIA/CURSOS/OTROS</TableCell>
+              <TableCell>DETALLE/TIEMPO</TableCell>
+              <TableCell colSpan={2}>PUNTAJE</TableCell>
+              <TableCell>OBSERVACIONES</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell rowSpan={4}></TableCell>
+              <TableCell>Mínimo Obligatorio</TableCell>
+              <TableCell>Máximo</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          
+          <TableBody>
+            <TableRow>
+              <TableCell rowSpan={4}>4</TableCell>
+              <TableCell rowSpan={4}>Item 1</TableCell>
+              <TableCell rowSpan={4}>Requisitos 1</TableCell>
+              <TableCell rowSpan={4}>Títulos/Experiencia/Cursos/Otros 1</TableCell>
+              <TableCell rowSpan={4}>Detalle/Tiempo 1</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+              <TableCell rowSpan={4}>Observaciones 1</TableCell>
+            </TableRow>
+
+
+            <TableRow>
+              
+              <TableCell align="right" rowSpan={4}>Total</TableCell>
+
+                 
+            </TableRow>
+            
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
 };
+
+export default ProduccionComponent;
 
 export const ExperienciaComponent = () => {
   return <div>Contenido de Experiencia Laboral</div>;
