@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
+import axios from 'axios';
 
 const FormularioCaAmplio = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,13 @@ const FormularioCaAmplio = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
+    axios.post('http://localhost:8800/api/campoAmplio', formData);
     console.log(formData);
+    // Limpiar el valor del TextField
+    setFormData({
+      ca_nombre: '',
+      ca_descripcion: '',
+    });
   };
 
   return (
