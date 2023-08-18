@@ -13,6 +13,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CloseIcon from '@mui/icons-material/Close'; // Icono de "x"
+import { useAuth } from "../../context/AuthContext";
 
 function PaperComponent(props) {
   return (
@@ -35,7 +36,8 @@ export default function ElegantPopUpRegistro() {
   const [otpInput, setOTPInput] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(false);
   const [correoEnviado, setCorreoEnviado] = React.useState(false);
-
+  
+  const { signup} = useAuth();
   const handleClose = () => {
     setOpen(false);
   };
@@ -44,7 +46,29 @@ export default function ElegantPopUpRegistro() {
     setOpen(true);
   };
   const handleCloseCorreoValido = () => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+
+    const fechaRegistro = `${year}-${month}-${day}`;
+
+    //enviar datos delo registro
+    signup({
+      tipoid: 'Cédula',
+      numid: localStorage.getItem('cedula'),
+      sexo: localStorage.getItem('sexo'),
+      titulo: localStorage.getItem('titulo'),
+      fecha: fechaRegistro,
+      correo: localStorage.getItem('email'),
+      password: localStorage.getItem('password'),
+      nombre1: localStorage.getItem('nombre'),
+      nombre2: localStorage.getItem('nombre2'),
+      apellido1: localStorage.getItem('apellido'),
+      apellido2: localStorage.getItem('apellido2'),
+    });
     setOpenCorreoValido(false);
+    window.location.reload();
   };
   const handleCloseCodigoInvalido = () => {
     setOpenCodigoInvalido(false);
