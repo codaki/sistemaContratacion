@@ -13,7 +13,10 @@ import { registerSchema,loginSchema } from "../schemas/auth.schema.js";
 import { db } from "../db.js";
 const router = Router();
 //End point de autoización 
-router.post("/register",validateSchema(registerSchema), register);
+router.post("/register", (req, res, next) => {
+  validateSchema(registerSchema);
+  register(req, res);
+});
 // router.get("/prueba",(req,res)=>{
 //   const q = "SELECT * FROM usu_usuario";
 //   db.query(q, (err, data) => {
