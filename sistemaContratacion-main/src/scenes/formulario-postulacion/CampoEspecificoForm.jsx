@@ -3,10 +3,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
+import { MenuItem, Select } from '@mui/material';
 
 const FormularioCaEspecifico = () => {
   const [formData, setFormData] = useState({
     ce_nombre: '',
+    opciones: [],
     ce_descripcion: '',
   });
 
@@ -15,6 +17,14 @@ const FormularioCaEspecifico = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleMultiSelectChange = (event) => {
+    const selectedOptions = Array.from(event.target.selectedOptions, (option) => option.value);
+    setFormData((prevData) => ({
+      ...prevData,
+      opciones: selectedOptions,
     }));
   };
 
@@ -49,6 +59,20 @@ const FormularioCaEspecifico = () => {
           margin="normal"
           required
         />
+        <label>Campo Amplio:</label>
+        <Select
+          name="opciones"
+          multiple
+          value={formData.opciones}
+          onChange={handleMultiSelectChange}
+          margin="normal"
+          required
+          inputProps={{ 'aria-label': 'Seleccionar opciones' }}
+        >
+          <MenuItem value="opcion1">Opción 1</MenuItem>
+          <MenuItem value="opcion2">Opción 2</MenuItem>
+          <MenuItem value="opcion3">Opción 3</MenuItem>
+        </Select>
         <label>Descripción:</label>
         <TextField
           name="ce_descripcion"
