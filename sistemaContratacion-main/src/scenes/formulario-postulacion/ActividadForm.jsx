@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
+import axios from 'axios';
 
 const FormularioActividad = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,12 @@ const FormularioActividad = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
+    axios.post('http://localhost:8800/api/actividad', formData);
     console.log(formData);
+    setFormData({
+      act_nombre: '',
+      act_descripcion: '',
+    });
   };
 
   return (
