@@ -174,11 +174,18 @@ function Auth() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === 'email') {
+        sendEmail(value); // Llamar a la función sendEmail() si el nombre es 'email'
+        console.log(value)
+    }
+
     setFormSignIn((prevForm) => ({
-      ...prevForm,
-      [name]: value,
+        ...prevForm,
+        [name]: value,
     }));
-  };
+};
+
 
   const [tipoIdentificacion, setTipoIdentificacion] = useState("");
 
