@@ -307,7 +307,7 @@ function Auth() {
                 variant="standard"
                 type="email"
                 name="email"
-                value={formSignIn.password}
+                value={formSignIn.email}
                 onChange={handleInputChange}
                 InputProps={{
                   startAdornment: (
