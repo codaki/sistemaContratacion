@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../reducers/auth.slice";
@@ -7,15 +7,20 @@ import EmailIcon from "@mui/icons-material/Email";
 import isValidCI from "./validateCI";
 import { useAuth } from "../../context/AuthContext";
 import KeyIcon from "@mui/icons-material/Key";
+import TextField from "@mui/material/TextField";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Autocomplete from "@mui/material/Autocomplete";
+import InputAdornment from "@mui/material/InputAdornment";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import PopUpRegistro from "../../components/PopUps/PopUpRegistro";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import "./Auth.css";
 import PopUpSeguro from "../../components/PopUps/PopUpSeguro";
 import PrivacidadDeDatos from "../../components/PopUps/PrivacidadDeDatos";
-
+import { useNavigate } from "react-router-dom";
+import { setCookie } from "./Utils";
+import { Box } from "@mui/material";
+import { Button } from "@mui/material";
+import BadgeIcon from "@mui/icons-material/Badge";
 
 function Auth() {
   const [signIn, setSignIn] = React.useState(true);
@@ -31,11 +36,14 @@ function Auth() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [sexo, setSexo] = React.useState("");
-  const [identificationType, setIdentificationType] = React.useState("Cédula");
   const [recaptchaVerified, setRecaptchaVerified] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const recaptchaRef = React.createRef();
+
+  const buttonStyles = {
+    width: "150px", // Puedes ajustar el ancho como prefieras
+  };
 
   const [showPrivacyPopup, setShowPrivacyPopup] = React.useState(false);
 
@@ -73,7 +81,7 @@ function Auth() {
   };
 
   const identificationInput = React.useRef(null);
-  const { signin, signup, isAuthenticated, errors: registerErrors } = useAuth();
+  const { signin, signup } = useAuth();
   const signinForm = {
     email: React.useRef(null),
     password: React.useRef(null),
@@ -83,21 +91,26 @@ function Auth() {
     setCurrentPage("signin");
   }, []);
 
+  const navigate = useNavigate();
+
   const submitSignin = () => {
-    if (signinForm.email.current.value.trim().length === 0) {
-      return signinForm.email.current.focus();
-    }
+    // if (signinForm.email.current.value.trim().length === 0) {
+    //   return signinForm.email.current.focus();
+    // }
 
-    if (signinForm.password.current.value.trim().length === 0) {
-      return signinForm.password.current.focus();
-    }
+    // if (signinForm.password.current.value.trim().length === 0) {
+    //   return signinForm.password.current.focus();
+    // }
 
-    setEmail(signinForm.email.current.value);
-    setPassword(signinForm.password.current.value);
+    console.log(formSignIn);
+    setEmail(formSignIn.email);
+    setPassword(formSignIn.password);
     signin({ correo: email, password: password });
 
-    setFormErrors([]);
+    setCookie("auth", true, 30);
+
     dispatch(login());
+    navigate("/");
   };
 
   const submitRegister = () => {
@@ -117,25 +130,23 @@ function Auth() {
       return identificationInput.current.focus();
     }
 
-    const isValidCedula = isValidCI(identificationNumber);
-    if (!isValidCedula) {
-      return setFormErrors(["Identificación inválida"]);
-    }
+    // const isValidCedula = isValidCI(identificationNumber);
+    // if (!isValidCedula) {
+    //   return setFormErrors(["Identificación inválida"]);
+    // }
 
     if (!recaptchaVerified) {
       return setFormErrors(["Por favor, verifique el Recaptcha"]);
     }
 
     setFormErrors([]);
-    setIdentificationType("Cédula");
+    //set("Cédula");
     setSignIn(false);
   };
 
   const handleBackClick = () => {
-
-
     signup({
-      tipoid: identificationType,
+      tipoid: tipoIdentificacion,
       numid: identificationNumber,
       sexo: sexo,
       titulo: senescytTitle,
@@ -156,6 +167,25 @@ function Auth() {
     localStorage.setItem("password", password);
   };
 
+  const [formSignIn, setFormSignIn] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormSignIn((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
+
+  const [tipoIdentificacion, setTipoIdentificacion] = useState("");
+
+  const handleTipoIdentificacionChange = (event, newValue) => {
+    setTipoIdentificacion(newValue); // Actualiza el estado con la selección del usuario
+  };
+
   return (
     <div className="authPage">
       <Components.Container
@@ -163,7 +193,6 @@ function Auth() {
           background: "linear-gradient(180deg, #007B49 0%, #00A650 100%)",
         }}
       >
-
         <Components.SignUpContainer signinIn={signIn}>
           <Components.Form id="createAccount">
             <Components.Title>
@@ -180,7 +209,10 @@ function Auth() {
                       id="primerNombre"
                       placeholder="Ingresa tu primer nombre"
                       value={primerNombre}
-                      onChange={(e) => { setPrimerNombre(e.target.value); localStorage.setItem('nombre', e.target.value) }}
+                      onChange={(e) => {
+                        setPrimerNombre(e.target.value);
+                        localStorage.setItem("nombre", e.target.value);
+                      }}
                     />
                   </div>
                   <div className="cell">
@@ -202,7 +234,10 @@ function Auth() {
                       id="primerApellido"
                       placeholder="Ingresa tu primer apellido"
                       value={primerApellido}
-                      onChange={(e) => { setPrimerApellido(e.target.value); localStorage.setItem('apellido', e.target.value) }}
+                      onChange={(e) => {
+                        setPrimerApellido(e.target.value);
+                        localStorage.setItem("apellido", e.target.value);
+                      }}
                     />
                   </div>
                   <div className="cell">
@@ -219,7 +254,7 @@ function Auth() {
                 <div className="row">
                   <div className="cell">
                     <label>Tipo de identificación</label>
-                    <span>{identificationType}</span>
+                    <span>{tipoIdentificacion}</span>
                   </div>
                   <div className="cell">
                     <label>Número de identificación</label>
@@ -250,7 +285,10 @@ function Auth() {
                 </label>
                 <Components.TitleSelect
                   value={senescytTitle}
-                  onChange={(e) => { setSenescytTitle(e.target.value); localStorage.setItem('titulo', e.target.value) }}
+                  onChange={(e) => {
+                    setSenescytTitle(e.target.value);
+                    localStorage.setItem("titulo", e.target.value);
+                  }}
                 >
                   <option value="">Selecciona tu título Senescyt</option>
                   <option value="Magíster">Magíster</option>
@@ -262,59 +300,77 @@ function Auth() {
                 </Components.TitleSelect>
               </div>
               {/* Email */}
-              <div className="row scrollableSection">
-                <div className="col">
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <label htmlFor="email">
+              <TextField
+                label="Email"
+                fullWidth
+                margin="normal"
+                variant="standard"
+                type="email"
+                name="email"
+                value={formSignIn.password}
+                onChange={handleInputChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
                       <EmailIcon />
-                    </label>
-                    <span style={{ marginLeft: "-3px" }}>Email</span>
-                  </div>
-                  <Components.Input
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => sendEmail(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col">
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <label htmlFor="password">
-                      <KeyIcon />
-                    </label>
-                    <span style={{ marginLeft: "-3px" }}>Contraseña</span>
-                  </div>
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
-                  <Components.Input type="password" placeholder="Contraseña" />
-                </div>
-              </div>
-              <PopUpSeguro></PopUpSeguro>
-              <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
-                <Components.Button
-                  type="button"
+              <TextField
+                label="Contraseña"
+                fullWidth
+                margin="normal"
+                variant="standard"
+                type="password"
+                name="password"
+                value={formSignIn.password}
+                onChange={handleInputChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <KeyIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <PopUpSeguro />
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                marginTop="10px"
+              >
+                <Button
                   onClick={handleBackClick}
+                  type="button"
+                  variant="outlined"
                   style={{
+                    width: "150px", // Puedes ajustar el ancho como prefieras
                     borderColor: "white",
-                    color: "white",
                     marginRight: "10px",
                     borderRadius: 7,
                   }}
                 >
                   Volver
-                </Components.Button>
+                </Button>
                 <PopUpRegistro
-                  type="button"
                   onClick={submitRegister}
-                  style={{ backgroundColor: "#007b49" }}
-                ></PopUpRegistro>
-              </div>
+                  type="button"
+                  variant="contained"
+                  style={{
+                    width: "150px", // Puedes ajustar el ancho como prefieras
+                    backgroundColor: "#007b49",
+                  }}
+                />
+              </Box>
             </div>
           </Components.Form>
         </Components.SignUpContainer>
 
         <Components.SignInContainer signinIn={signIn}>
-          {currentPage == "signin" ? (
+          {currentPage === "signin" ? (
             <Components.Form>
               <Components.Title>
                 Formulario de Admisión para docentes
@@ -322,72 +378,85 @@ function Auth() {
               <Components.Subtitle></Components.Subtitle>
 
               <div className="authForm">
-                <div className="row">
-                  <div className="col">
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <label htmlFor="email">
-                        <EmailIcon />
-                      </label>
-                      <span style={{ marginLeft: "-3px" }}>Email</span>
-                    </div>
-                    <Components.Input
-                      type="email"
-                      placeholder="Email"
-                      ref={signinForm.email}
-                    />
-                  </div>
+                <div
+                  style={{
+                    width: "80%",
+                    margin: "0 auto",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextField
+                    label="Correo Electrónico"
+                    fullWidth
+                    margin="normal"
+                    name="email"
+                    variant="standard"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircle />
+                        </InputAdornment>
+                      ),
+                    }}
+                    value={formSignIn.email}
+                    onChange={handleInputChange}
+                  />
                 </div>
-                <div className="row">
-                  <div className="col">
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <label htmlFor="password">
-                        <KeyIcon />
-                      </label>
-                      <span style={{ marginLeft: "-3px" }}>Contraseña</span>
-                    </div>
-                    <Components.Input
-                      type="password"
-                      placeholder="Contraseña"
-                      ref={signinForm.password}
-                    />
-                  </div>
+
+                <div
+                  style={{
+                    width: "80%",
+                    margin: "0 auto",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextField
+                    label="Contraseña"
+                    fullWidth
+                    margin="normal"
+                    variant="standard"
+                    type="password"
+                    name="password"
+                    value={formSignIn.password}
+                    onChange={handleInputChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <KeyIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
                 </div>
-                {formErrors.length !== 0 ? (
-                  <div className="formErrors">
-                    <ul>
-                      {formErrors.map((error, index) => (
-                        <li>{error}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-                {/* '6Ldicg4TAAAAAEIi-Tlg7YgHxcPCNVHvac92lrdX' */}
-                <div style={{ width: "50px", height: "25px" }}></div>
+
                 {/* Use anchor attribute to navigate to the "createAccount" section */}
                 <div>
-                  <div className="row">
-                    <Components.Button
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    gap={2}
+                  >
+                    <Button
                       onClick={handleOpenPrivacyPopup}
                       type="button"
-                      anchor
+                      variant="contained"
                       style={{
                         backgroundColor: "#007B49",
                         color: "white",
-                        marginRight: "15px",
                       }}
                     >
                       Ingresar
-                    </Components.Button>
-                    <Components.Button
+                    </Button>
+                    <Button
                       onClick={registerButtonClicked}
                       type="button"
-                      anchor
-                      href="#createAccount"
+                      variant="contained"
                       style={{ backgroundColor: "#007B49", color: "white" }}
                     >
                       Registro
-                    </Components.Button>
-                  </div>
+                    </Button>
+                  </Box>
                 </div>
                 {/* Agregamos el componente PrivacidadDeDatos */}
                 <PrivacidadDeDatos
@@ -400,18 +469,52 @@ function Auth() {
           ) : currentPage === "signup" ? (
             <Components.Form>
               <Components.Title>Registro</Components.Title>
-              <Components.Subtitle>Ingrese su cédula</Components.Subtitle>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Components.NumericInput
-                  ref={identificationInput}
-                  value={identificationNumber}
-                  onChange={(e) => { setIdentificationNumber(e.target.value); localStorage.setItem('cedula', e.target.value) }}
-                  type="number"
-                  placeholder="Cédula"
-                  maxDigits={10}
-                  style={{ marginRight: "10px" }}
+              <Components.Subtitle>
+                Ingrese su cédula o pasaporte
+              </Components.Subtitle>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={["Cédula", "Pasaporte"]}
+                  value={tipoIdentificacion} // Establece el valor seleccionado
+                  onChange={handleTipoIdentificacionChange} // Maneja el cambio de selección
+                  sx={{ width: 220, fontSize: 8 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Tipo de identificación"
+                      style={{ fontSize: 8 }}
+                    />
+                  )}
                 />
-                <ContactEmergencyIcon style={{ color: "#777" }} />
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    marginBottom: 2,
+                  }}
+                >
+                  <BadgeIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                  <TextField
+                    id="input-with-sx"
+                    label={`Número de ${
+                      tipoIdentificacion || "identificación"
+                    }`}
+                    variant="standard"
+                    onChange={(e) => {
+                      setIdentificationNumber(e.target.value);
+                      localStorage.setItem("cedula", e.target.value);
+                    }}
+                  />
+                </Box>
               </div>
               {formErrors.length !== 0 ? (
                 <div className="formErrors">
@@ -432,28 +535,32 @@ function Auth() {
               {/* '6Ldicg4TAAAAAEIi-Tlg7YgHxcPCNVHvac92lrdX' */}
               <div style={{ width: "50px", height: "25px" }}></div>
               {/* Use anchor attribute to navigate to the "createAccount" section */}
-              <div className="row">
-                <Components.Button
-                  type="button"
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                gap={2}
+              >
+                <Button
                   onClick={handleBackClick}
+                  type="button"
+                  variant="outlined"
                   style={{
                     borderColor: "white",
-                    color: "white",
-                    marginRight: "15px",
+                    color: "green",
                   }}
                 >
                   Volver
-                </Components.Button>
-                <Components.Button
+                </Button>
+                <Button
                   onClick={registerNextClick}
                   type="button"
-                  anchor
-                  href="#createAccount"
+                  variant="contained"
                   style={{ backgroundColor: "#007B49", color: "white" }}
                 >
                   Siguiente
-                </Components.Button>
-              </div>
+                </Button>
+              </Box>
             </Components.Form>
           ) : null}
         </Components.SignInContainer>
