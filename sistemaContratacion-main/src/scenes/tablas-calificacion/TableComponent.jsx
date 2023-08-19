@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -6,9 +7,20 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TextField,
 } from "@mui/material";
 
 export const TableComponent = ({ data }) => {
+  const [calificaciones, setCalificaciones] = useState(
+    new Array(data.length).fill("")
+  );
+
+  const handleCalificacionChange = (index, value) => {
+    const newCalificaciones = [...calificaciones];
+    newCalificaciones[index] = value;
+    setCalificaciones(newCalificaciones);
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -20,6 +32,7 @@ export const TableComponent = ({ data }) => {
             <TableCell>Mínimo</TableCell>
             <TableCell>Máximo</TableCell>
             <TableCell>Observaciones</TableCell>
+            <TableCell>Calificación</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -85,6 +98,14 @@ export const TableComponent = ({ data }) => {
                     </TableRow>
                   ))}
                 </>
+              </TableCell>
+              <TableCell>
+                <TextField
+                  value={calificaciones[index]}
+                  onChange={(e) =>
+                    handleCalificacionChange(index, e.target.value)
+                  }
+                />
               </TableCell>
             </TableRow>
           ))}
