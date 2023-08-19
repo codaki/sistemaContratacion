@@ -105,12 +105,29 @@ const dataProd = [
       "Solicitud de al Servicio Nacional Derechos e Intelectuales",
     ],
     detalleTiempo: [
-      "2 articulos, obras de relevancia dentro de los ültimos cuatro anos",
+      "2 articulos, obras de relevancia dentro de los ültimos cuatro años",
     ],
     minimo: [5.5],
     maximo: [6.5],
     observaciones: [
       "Por cada articulo adicional al requisito minimo exigido se sumarå 025 puntos, hasta el måximo puntaje indicado",
+    ],
+  },
+];
+const dataExperiencia = [
+  {
+    requisito:
+      "Acreditar al menos doce (12) meses de experiencia en el ejercicio de su profesión. Esta experiencia se podrá acreditar con experiencia en instituciones de educación superior siempre que haya ejercicio real de la profesión.",
+    titulos: [
+      "Esperiencia del ejercicio de la profesión",
+    ],
+    detalleTiempo: [
+      "12 meses",
+    ],
+    minimo: [3.00],
+    maximo: [3.50],
+    observaciones: [
+      "El puntaje adicional, se asignará proporcionalmente de acuerdo al número de meses de experiencia, hata 36 meses, si suma más se pondrá el máximo puntaje indicado",
     ],
   },
 ];
@@ -139,7 +156,7 @@ function getStepContent(step) {
     case 2:
       return <TableComponent data={dataProd} />;
     case 3:
-      return <ExperienciaComponent />;
+      return <TableComponent data={dataExperiencia}/>;
     default:
       throw new Error("Unknown step");
   }
