@@ -229,7 +229,7 @@ function Auth() {
                       id="segundoNombre"
                       placeholder="Ingresa tu segundo nombre"
                       value={segundoNombre}
-                      onChange={(e) => setSegundoNombre(e.target.value)}
+                      onChange={(e) => {setSegundoNombre(e.target.value);localStorage.setItem("nombre2", e.target.value);}}
                     />
                   </div>
                 </div>
@@ -254,7 +254,7 @@ function Auth() {
                       id="segundoApellido"
                       placeholder="Ingresa tu segundo apellido"
                       value={segundoApellido}
-                      onChange={(e) => setSegundoApellido(e.target.value)}
+                      onChange={(e) => {setSegundoApellido(e.target.value);localStorage.setItem("apellido2", e.target.value);}}
                     />
                   </div>
                 </div>
@@ -274,7 +274,7 @@ function Auth() {
                     <select
                       id="sexo"
                       value={sexo}
-                      onChange={(e) => setSexo(e.target.value)}
+                      onChange={(e) => {setSexo(e.target.value);localStorage.setItem("sexo", e.target.value);}}
                       className="inputField"
                     >
                       <option value="">Selecciona una opción</option>
