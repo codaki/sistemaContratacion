@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
+import Autocomplete from '@mui/material/Autocomplete';
+import axios from 'axios';
+
 import { MenuItem, Select } from '@mui/material';
 
+import { pedirCampoAmplio } from "../../api/campoAmplio";
+
+
 const FormularioCaEspecifico = () => {
+  const [campoAmplioList,setCampoAmplioList] = useState([]); 
   const [formData, setFormData] = useState({
     ce_nombre: '',
-    opciones: [],
+    ca_id: '',
     ce_descripcion: '',
   });
 
@@ -20,19 +27,29 @@ const FormularioCaEspecifico = () => {
     }));
   };
 
-  const handleMultiSelectChange = (event) => {
-    const selectedOptions = Array.from(event.target.selectedOptions, (option) => option.value);
-    setFormData((prevData) => ({
-      ...prevData,
-      opciones: selectedOptions,
-    }));
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
+    axios.post('http://localhost:8800/api/campoEspecifico', formData);
     console.log(formData);
+    // Limpiar el valor del TextField
+    setFormData({
+      ce_nombre: '',
+      ce_descripcion: '',
+      ca_id: ''
+    });
   };
+  useEffect(() => {
+    const PedirPosutlacion = async () => {
+      try {
+        const res = await pedirCampoAmplio();
+        setCampoAmplioList(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    PedirPosutlacion();
+  }, []);
 
   return (
     <div className="register">
@@ -61,18 +78,25 @@ const FormularioCaEspecifico = () => {
         />
         <label>Campo Amplio:</label>
         <Select
-          name="opciones"
-          multiple
-          value={formData.opciones}
-          onChange={handleMultiSelectChange}
-          margin="normal"
-          required
-          inputProps={{ 'aria-label': 'Seleccionar opciones' }}
-        >
-          <MenuItem value="opcion1">Opción 1</MenuItem>
-          <MenuItem value="opcion2">Opción 2</MenuItem>
-          <MenuItem value="opcion3">Opción 3</MenuItem>
-        </Select>
+                  fullWidth
+                  
+                  onChange={(event) => {
+                    handleChange(event); // Default handleChange function to update the selected value
+                  }}
+                  name="ca_id"
+                  
+                >
+                  {campoAmplioList.length > 0 ? (
+                    campoAmplioList.map((option) => (
+                      <MenuItem key={option.ca_id} value={option.ca_id}>
+                      {option.ca_nombre}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>Cargando campos...</MenuItem>
+                  )}
+                </Select>
+
         <label>Descripción:</label>
         <TextField
           name="ce_descripcion"
