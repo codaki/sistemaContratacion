@@ -130,10 +130,10 @@ function Auth() {
       return identificationInput.current.focus();
     }
 
-    // const isValidCedula = isValidCI(identificationNumber);
-    // if (!isValidCedula) {
-    //   return setFormErrors(["Identificación inválida"]);
-    // }
+    const isValidCedula = isValidCI(identificationNumber);
+     if (!isValidCedula) {
+       return setFormErrors(["Identificación inválida"]);
+     }
 
     if (!recaptchaVerified) {
       return setFormErrors(["Por favor, verifique el Recaptcha"]);
