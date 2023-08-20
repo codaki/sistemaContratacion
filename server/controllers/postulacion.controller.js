@@ -9,9 +9,9 @@ export const getPostulacion = (req, res) => {
 };
 
 export const createPostulacion = (req, res) => {
-  const { post_id, post_periodo } = req.body;
-  const q = "INSERT INTO postulacion (post_id, post_periodo) VALUES ($1, $2);";
-  const values = [post_id, post_periodo];
+  const { post_periodo } = req.body;
+  const q = "INSERT INTO postulacion (post_periodo) VALUES ($1);";
+  const values = [post_periodo];
 
   db.query(q, values, (err, data) => {
     if (err) return res.status(500).send(err);
