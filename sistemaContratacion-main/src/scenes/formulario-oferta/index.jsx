@@ -24,9 +24,9 @@ const FormulariOferta = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
+    const success = await crearOferta(formData);
     console.log(formData);
   };
 
