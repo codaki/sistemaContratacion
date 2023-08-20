@@ -90,7 +90,7 @@ export const TableComponent = ({ data }) => {
                 )}
               </TableCell>
 
-              <TableCell style={{minWidth:250}}>
+              <TableCell style={{minWidth:150}}>
                 <>
                   {row.observaciones.map((titulo, i) => (
                     <TableRow key={index}>
@@ -99,7 +99,8 @@ export const TableComponent = ({ data }) => {
                   ))}
                 </>
               </TableCell>
-              <TableCell>
+              
+              <TableCell style={{minWidth:250}}>
                 <TextField
                   value={calificaciones[index]}
                   onChange={(e) =>

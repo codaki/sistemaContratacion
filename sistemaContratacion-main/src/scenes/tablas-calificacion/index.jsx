@@ -129,16 +129,9 @@ const dataExperiencia = [
     observaciones: [
       "El puntaje adicional, se asignará proporcionalmente de acuerdo al número de meses de experiencia, hata 36 meses, si suma más se pondrá el máximo puntaje indicado",
     ],
+    calificaciones: [5.0],
   },
 ];
-
-export const ProduccionComponent = () => {
-  return <div>Contenido de Producción académica</div>;
-};
-
-export const ExperienciaComponent = () => {
-  return <div>Contenido de Experiencia Laboral</div>;
-};
 
 const steps = [
   "Formación",
