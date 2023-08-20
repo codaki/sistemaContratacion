@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
+import { crearPersonalAcademico } from '../../api/personalAcademico';
 
 const FormularioPacad = () => {
   const [formData, setFormData] = useState({
@@ -18,9 +19,9 @@ const FormularioPacad = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
+    const succes = await crearPersonalAcademico(formData);
     console.log(formData);
   };
 

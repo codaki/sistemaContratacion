@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
 import axios from 'axios';
+import { crearContratacionTipo } from '../../api/contratacionTipo';
 
 const FormularioContratacion = () => {
   const [body, setBody] = useState({
@@ -18,10 +19,10 @@ const FormularioContratacion = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
-    axios.post('http://localhost:8800/api/contratacion', body);
+    const success = await crearContratacionTipo(FormData);
     console.log(body);
 
     // Limpiar el valor del TextField
