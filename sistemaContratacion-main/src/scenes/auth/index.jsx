@@ -152,6 +152,7 @@ function Auth() {
       sexo: sexo,
       titulo: senescytTitle,
       fecha: "2020-01-01",
+      fecha: fechaNacimiento,
       correo: email,
       password: password,
       nombre1: primerNombre,
