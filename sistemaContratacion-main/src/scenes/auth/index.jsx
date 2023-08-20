@@ -40,6 +40,7 @@ function Auth() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const recaptchaRef = React.createRef();
+  const [fechaNacimiento, setFechaNacimiento] = React.useState("");
 
   const buttonStyles = {
     width: "150px", // Puedes ajustar el ancho como prefieras
@@ -283,6 +284,17 @@ function Auth() {
                     </select>
                   </div>
                 </div>
+              </div>
+              <div className="row">
+                <div className="cell">
+                  <label htmlFor="fechaNacimiento">Fecha de Nacimiento</label>
+                  <input
+                    type="date"
+                    id="fechaNacimiento"
+                    value={fechaNacimiento}
+                    onChange={(e) => setFechaNacimiento(e.target.value)}
+                  />
+                </div>
               </div>
 
               {/* Título Senescyt */}
