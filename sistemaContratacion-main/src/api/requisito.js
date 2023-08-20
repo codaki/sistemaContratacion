@@ -2,14 +2,14 @@ import axios from "axios";
 
 const API = "http://localhost:8800/api";
 
-export const pedirPostulaciones = () =>
-  axios.get(`${API}/postulacion`, {
+export const pedirRequisitos = () =>
+  axios.get(`${API}/requisito`, {
     withCredentials: true,
   });
 
-export const crearPostulacion = async (formData) => {
+export const crearRequisito = async (formData) => {
   try {
-    const response = await axios.post(`${API}/postulacion`, formData, {
+    const response = await axios.post(`${API}/requisito`, formData, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -17,10 +17,10 @@ export const crearPostulacion = async (formData) => {
     });
 
     if (response.status === 201) {
-      console.log("Postulación creada con éxito");
+      console.log("Requisito creado con éxito");
       return true;
     } else {
-      console.error("Error al crear la postulación");
+      console.error("Error al crear el requisito");
       return false;
     }
   } catch (error) {
@@ -29,10 +29,10 @@ export const crearPostulacion = async (formData) => {
   }
 };
 
-export const editarPostulacion = async (postulacion_id, formData) => {
+export const editarRequisito = async (requisito_id, formData) => {
   try {
     const response = await axios.put(
-      `${API}/postulacion/${postulacion_id}`,
+      `${API}/requisito/${requisito_id}`,
       formData,
       {
         headers: {
@@ -43,10 +43,10 @@ export const editarPostulacion = async (postulacion_id, formData) => {
     );
 
     if (response.status === 200) {
-      console.log(`Postulación con ID ${postulacion_id} actualizada con éxito`);
+      console.log(`Requisito con ID ${requisito_id} actualizado con éxito`);
       return true;
     } else {
-      console.error(`Error al actualizar la postulación con ID ${postulacion_id}`);
+      console.error(`Error al actualizar el requisito con ID ${requisito_id}`);
       return false;
     }
   } catch (error) {
@@ -55,20 +55,20 @@ export const editarPostulacion = async (postulacion_id, formData) => {
   }
 };
 
-export const eliminarPostulacion = async (postulacion_id) => {
+export const eliminarRequisito = async (requisito_id) => {
   try {
     const response = await axios.delete(
-      `${API}/postulacion/${postulacion_id}`,
+      `${API}/requisito/${requisito_id}`,
       {
         withCredentials: true,
       }
     );
 
     if (response.status === 200) {
-      console.log(`Postulación con ID ${postulacion_id} eliminada con éxito`);
+      console.log(`Requisito con ID ${requisito_id} eliminado con éxito`);
       return true;
     } else {
-      console.error(`Error al eliminar la postulación con ID ${postulacion_id}`);
+      console.error(`Error al eliminar el requisito con ID ${requisito_id}`);
       return false;
     }
   } catch (error) {
@@ -76,5 +76,3 @@ export const eliminarPostulacion = async (postulacion_id) => {
     return false;
   }
 };
-
-  
