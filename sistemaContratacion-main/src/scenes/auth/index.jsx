@@ -106,7 +106,7 @@ function Auth() {
     console.log(formSignIn);
     setEmail(formSignIn.email);
     setPassword(formSignIn.password);
-    signin({ correo: email, password: password });
+    signin({ correo: formSignIn.email, password: formSignIn.password });
 
     setCookie("auth", true, 30);
 

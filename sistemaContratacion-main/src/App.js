@@ -25,7 +25,7 @@ import FormularioCaAmplio from "./scenes/formulario-postulacion/CampoAmplioForm"
 import FormularioActividad from "./scenes/formulario-postulacion/ActividadForm";
 import { Calificaciones } from "./scenes/tablas-calificacion";
 import { getCookie } from "./Utils";
-
+import { ProtectedRoute } from "./ProtectedRoute";
 
 function App() {
   const [theme, colorMode] = useMode();
