@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
+import { crearPostulacion } from '../../api/postulacion';
 
 const FormularioPeriodo = () => {
   const [formData, setFormData] = useState({
@@ -17,9 +18,9 @@ const FormularioPeriodo = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
+    const succes = await crearPostulacion(formData);
     console.log(formData);
   };
 

@@ -18,11 +18,12 @@ const FormularioSede = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Aquí se puede enviar los datos a un servidor o realizar alguna acción.
+    const success = await crearPersonalAcademico(formData);
     console.log(formData);
   };
+  
 
   return (
     <div className="register">
