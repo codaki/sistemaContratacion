@@ -140,6 +140,7 @@ const steps = [
   "Experiencia profesional",
 ];
 
+
 function getStepContent(step) {
   switch (step) {
     case 0:
@@ -222,6 +223,7 @@ export const Calificaciones = () => {
                   onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
+                  
                   {activeStep === steps.length - 1
                     ? "Confirmar Calificación"
                     : "Siguiente"}
