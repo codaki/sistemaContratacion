@@ -62,10 +62,10 @@ const FormularioPostulacion = () => {
   };
 
   const arregloDeDatos = [
-    { nombre: "Juan", edad: 30, correo: "juan@example.com" },
-    { nombre: "María", edad: 25, correo: "maria@example.com" },
-    { nombre: "Carlos", edad: 40, correo: "carlos@example.com" },
-    { nombre: "Ana", edad: 28, correo: "ana@example.com" },
+    { nombre: "Juan", edad: 30, },
+    { nombre: "María", edad: 25,},
+    { nombre: "Carlos", edad: 40,},
+    { nombre: "Ana", edad: 28, },
   ];
   const [seleccionados, setSeleccionados] = useState({
     postulation: "",
@@ -82,7 +82,7 @@ const FormularioPostulacion = () => {
     // Aquí puedes realizar cualquier formato necesario según la estructura del arreglo
     // Por ejemplo, si el arreglo es un arreglo de objetos con las propiedades 'nombre', 'edad' y 'correo'
     // Puedes devolver un arreglo de arreglos con las filas de la tabla
-    return data.map((item) => [item.nombre, item.edad, item.correo]);
+    return data.map((item) => [item.nombre, item.edad]);
   };
 
 
@@ -568,9 +568,8 @@ const FormularioPostulacion = () => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Nombre</TableCell>
-                      <TableCell>Edad</TableCell>
-                      <TableCell>Correo</TableCell>
+                      <TableCell>Vacantes</TableCell>
+                      <TableCell>Tiempo</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>

@@ -18,6 +18,8 @@ export const register = (req, res) => {
     apellido2
   } = req.body;
   let genero;
+  console.log(password)
+  console.log(nombre1,nombre2)
   // verificación de usuario existente
   const selectQuery = "SELECT * FROM candidato WHERE cand_correo = $1";
   db.query(selectQuery, [correo], (err, data) => {
@@ -27,6 +29,8 @@ export const register = (req, res) => {
     }
     // Encriptado de contraseña
     const salt = bcrypt.genSaltSync(10);
+    console.log("AQUIIIIIII")
+    console.log(password)
     const hash = bcrypt.hashSync(password, salt);
     // Inserción de datos
     if(sexo==='Masculino'){
@@ -38,6 +42,7 @@ export const register = (req, res) => {
       "INSERT INTO candidato(cand_tipo_identificacion,cand_num_identificacion,cand_sexo,cand_titulo,cand_fecha_nacimiento,cand_correo,cand_password,cand_nombre1,cand_nombre2,cand_apellido1,cand_apellido2) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)";
     const values = [tipoid, numid, genero, titulo, fecha, correo, hash, nombre1, nombre2, apellido1, apellido2];
     console.log(values)
+    console.log(password)
     db.query(insertQuery, values, (err, data) => {
       if (err) return res.status(500).json(err);
       return res.status(200).json("Se creó el usuario");
@@ -57,11 +62,17 @@ export const login = (req, res) => {
     if (data.length === 0)
       return res.status(404).json(["Usuario no registrado!"]);
     //Comparación de contraseña
+    console.log(data)
+    console.log(data.rows)
+    console.log(data.rows[0])
+    console.log(data.rows[0].cand_password)
+      console.log(req.body.password)
     const isPasswordCorrect = bcrypt.compareSync(
       req.body.password,
       //Nombre del atributo como está en la base
       data.rows[0].cand_password
     );
+    console.log(isPasswordCorrect)
     //Comprobación de contraseña
     if (!isPasswordCorrect)
       return res.status(400).json(["Usuario o Contraseña incorrecta!"]);

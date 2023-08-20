@@ -5,6 +5,8 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import LogoutIcon from "@mui/icons-material/Logout"; // You can use the appropriate logout icon
 import { useNavigate } from "react-router-dom";
 import { deleteCookie } from "./Utils";
+import { useAuth } from "../../context/AuthContext";
+
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -14,17 +16,18 @@ const Topbar = () => {
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const handleLogout = () =>{
     deleteCookie('auth')
+    logout()
     navigate('/login')
   }
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
+  
   return (
     <Box
       display="flex"

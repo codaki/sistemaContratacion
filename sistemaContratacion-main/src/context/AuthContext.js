@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const signin = async (user) => {
     try {
+      console.log(user)
       const res = await loginRequest(user);
       setUser(res.data);
       setIsAuthenticated(true);
@@ -40,6 +41,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (user) => {
     try {
+      console.log(user)
       const res = await registerRequest(user);
       setUser(res.data);
     } catch (error) {
@@ -68,7 +70,12 @@ export const AuthProvider = ({ children }) => {
     };
     checkLogin();
   }, []);
-
+  
+  const logout = () => {
+    Cookies.remove("token");
+    setUser(null);
+    setIsAuthenticated(false);
+  };
 
   
 
@@ -81,6 +88,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         errors,
         signin,
+        logout,
         loading,
       }}
     >
