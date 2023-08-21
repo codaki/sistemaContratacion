@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Header from '../../components/Header';
+import { crearSede } from '../../api/sede';
 
 const FormularioSede = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ const FormularioSede = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const success = await crearPersonalAcademico(formData);
+    const success = await crearSede(formData);
     console.log(formData);
   };
   
