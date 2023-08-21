@@ -49,7 +49,7 @@ function App() {
                 <Topbar setIsSidebar={setIsSidebar} />
                 <Routes>
                   <Route path="/home" element={<Home />} />
-                  <Route path="/login" element={<Home />} />
+                  
                   <Route path="/autenticacion" element={<Auth />} />
                   <Route path="/" element={<Dashboard />} />
                   <Route
@@ -60,6 +60,8 @@ function App() {
                     path="/formulario-oferta"
                     element={<FormulariOferta />}
                   />
+
+                  
                   <Route
                     path="/formulario-periodo"
                     element={<FormularioPeriodo />}
