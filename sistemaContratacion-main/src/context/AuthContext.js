@@ -28,11 +28,17 @@ export const AuthProvider = ({ children }) => {
 
   const signin = async (user) => {
     try {
-      console.log(user)
       const res = await loginRequest(user);
-      setUser(res.data);
-      setIsAuthenticated(true);
-      console.log(res);
+      //etUser(res.data);
+      
+      const isAdmin = res.data.cand_correo.endsWith("espe.edu.ec");
+      const newUser = {
+        ...res.data,
+        role: isAdmin ? "admin" : "candidato",};
+        console.log(newUser);
+        setUser(newUser);
+        setIsAuthenticated(true);
+        console.log(user)
     } catch (error) {
       console.log(error)
       setErrors(error.response.data);
@@ -58,19 +64,25 @@ export const AuthProvider = ({ children }) => {
       }
       try {
         const res = await  verifyTokenRequest(cookies.token);
-        console.log(res);
         if (!res.data) return setIsAuthenticated(false);
+        const isAdmin = res.data.correo.endsWith("espe.edu.ec");
+        const newUser = {
+          ...res.data,
+          role: isAdmin ? "admin" : "candidato",};
+          setUser(newUser);
+          console.log(user)
         setIsAuthenticated(true);
-        setUser(res.data);
         setLoading(false);
+        
       } catch (error) {
+        console.log(error)
         setIsAuthenticated(false);
         setLoading(false);
       }
     };
     checkLogin();
   }, []);
-  
+
   const logout = () => {
     Cookies.remove("token");
     setUser(null);

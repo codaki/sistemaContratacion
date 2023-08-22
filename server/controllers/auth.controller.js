@@ -62,17 +62,11 @@ export const login = (req, res) => {
     if (data.length === 0)
       return res.status(404).json(["Usuario no registrado!"]);
     //Comparación de contraseña
-    console.log(data)
-    console.log(data.rows)
-    console.log(data.rows[0])
-    console.log(data.rows[0].cand_password)
-      console.log(req.body.password)
     const isPasswordCorrect = bcrypt.compareSync(
       req.body.password,
       //Nombre del atributo como está en la base
       data.rows[0].cand_password
     );
-    console.log(isPasswordCorrect)
     //Comprobación de contraseña
     if (!isPasswordCorrect)
       return res.status(400).json(["Usuario o Contraseña incorrecta!"]);
@@ -108,7 +102,6 @@ export const verifyToken = async(req,res)=>{
     const q = "SELECT * FROM candidato WHERE cand_id = $1";
     db.query(q, [user.id], (err, data) => {
       if (err) return res.status(500).json(err);
-      console.log(res)
       return res.json({
         id: data.rows[0].cand_id,
         correo: data.rows[0].cand_correo,

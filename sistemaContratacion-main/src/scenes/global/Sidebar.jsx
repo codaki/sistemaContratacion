@@ -10,10 +10,13 @@ import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import RecentActorsRoundedIcon from '@mui/icons-material/RecentActorsRounded';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import user from './usuario2.png'
+import user1 from './usuario2.png'
+import { useAuth } from "../../context/AuthContext"
+
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   return (
     <MenuItem
       active={selected === title}
@@ -31,10 +34,11 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const theme = useTheme();
+  const { user } = useAuth();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-
+  const userRole = user ? user.role : "";
   const collapsedWidth = "80px";
 
   return (
@@ -95,7 +99,7 @@ height : "150vh"
                   width="100px"
                   height="100px"
                   
-                  src={user}
+                  src={user1}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -109,7 +113,7 @@ height : "150vh"
                   Usuario
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Postulante
+                {userRole === "admin" ? "Recursos Humanos" : "Postulante"}
                 </Typography>
               </Box>
             </Box>
@@ -131,20 +135,26 @@ height : "150vh"
               </Typography>
             )}
 
-            <Item
-              title="Seleccionar Postulación"
-              to="/seleccionar-postulacion"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Subir Información"
-              to="/subir-informacion"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+          {userRole === "candidato" && (
+                <>
+                  <Item
+                    title="Seleccionar Postulación"
+                    to="/seleccionar-postulacion"
+                    icon={<PeopleOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Subir Información"
+                    to="/subir-informacion"
+                    icon={<ContactsOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                </>
+              )}
+              {userRole === "admin" && (
+                <>
               <Item
               title="Tabla Candidatos"
               to="/tabla-candidatos"
@@ -222,6 +232,8 @@ height : "150vh"
               selected={selected}
               setSelected={setSelected}
             />
+            </>
+            )}
           </Box>
         </Menu>
       </ProSidebar>
