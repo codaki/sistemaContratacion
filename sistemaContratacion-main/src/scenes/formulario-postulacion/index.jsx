@@ -264,8 +264,8 @@ const FormularioPostulacion = () => {
                   variant="filled"
                   value={values.postulation}
                   onChange={(event) => {
-                    handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion1Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                    handleChange(event); 
+                    setPostulacion1Selected(true); 
                   }}
                   onBlur={handleBlur}
                   name="postulation"
@@ -312,66 +312,6 @@ const FormularioPostulacion = () => {
               </Box>
               <Box>
                 <Typography variant="h6" fontWeight="bold">
-                  Seleccionar Campo Específico:
-                </Typography>
-                <Select
-                  fullWidth
-                  variant="filled"
-                  value={values.campoEspecifico}
-                  onChange={(event) => {
-                    handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion3Selected(true); // Set the variable to true when the MenuItem 1 is selected
-                  }}
-                  onBlur={handleBlur}
-                  name="personalAcademico"
-                  error={
-                    !!touched.campoEspecifico && !!errors.campoEspecifico
-                  }
-                  disabled={!postulacion2Selected} // Disable the MenuItem until MenuItem 1 is selected
-                >
-                  {campoEspecifico.length > 0 ? (
-                    campoEspecifico.map((option) => (
-                      <MenuItem key={option.ce_id} value={option.ce_nombre}>
-                        {option.ce_nombre}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem disabled>Cargando campo estpecífico...</MenuItem>
-                  )}
-                </Select>
-              </Box>
-              <Box>
-                <Typography variant="h6" fontWeight="bold">
-                  Seleccionar Campo Amplio:
-                </Typography>
-                <Select
-                  fullWidth
-                  variant="filled"
-                  value={values.campoAmplio}
-                  onChange={(event) => {
-                    handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion4Selected(true); // Set the variable to true when the MenuItem 1 is selected
-                  }}
-                  onBlur={handleBlur}
-                  name="campoAmplio"
-                  error={
-                    !!touched.campoAmplio && !!errors.campoAmplio
-                  }
-                  disabled={!postulacion3Selected} // Disable the MenuItem until MenuItem 1 is selected
-                >
-                  {campoAmplio.length > 0 ? (
-                    campoAmplio.map((option) => (
-                      <MenuItem key={option.ca_id} value={option.ca_nombre}>
-                        {option.ca_nombre}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem disabled>Cargando postulaciones...</MenuItem>
-                  )}
-                </Select>
-              </Box>
-              <Box>
-                <Typography variant="h6" fontWeight="bold">
                   Seleccionar Sede:
                 </Typography>
                 <Select
@@ -380,14 +320,14 @@ const FormularioPostulacion = () => {
                   value={values.sede}
                   onChange={(event) => {
                     handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion5Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                    setPostulacion3Selected(true); // Set the variable to true when the MenuItem 1 is selected
                   }}
                   onBlur={handleBlur}
                   name="sede"
                   error={
                     !!touched.sede && !!errors.sede
                   }
-                  disabled={!postulacion4Selected} // Disable the MenuItem until MenuItem 1 is selected
+                  disabled={!postulacion2Selected} // Disable the MenuItem until MenuItem 1 is selected
                 >
                   {sede.length > 0 ? (
                     sede.map((option) => (
@@ -410,14 +350,14 @@ const FormularioPostulacion = () => {
                   value={values.departamento}
                   onChange={(event) => {
                     handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion6Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                    setPostulacion4Selected(true); // Set the variable to true when the MenuItem 1 is selected
                   }}
                   onBlur={handleBlur}
                   name="departamento"
                   error={
                     !!touched.departamento && !!errors.departamento
                   }
-                  disabled={!postulacion5Selected} // Disable the MenuItem until MenuItem 1 is selected
+                  disabled={!postulacion3Selected} // Disable the MenuItem until MenuItem 1 is selected
                 >
                   {departamento.length > 0 ? (
                     departamento.map((option) => (
@@ -430,6 +370,67 @@ const FormularioPostulacion = () => {
                   )}
                 </Select>
               </Box>
+              <Box>
+                <Typography variant="h6" fontWeight="bold">
+                  Seleccionar Campo Amplio:
+                </Typography>
+                <Select
+                  fullWidth
+                  variant="filled"
+                  value={values.campoAmplio}
+                  onChange={(event) => {
+                    handleChange(event); // Default handleChange function to update the selected value
+                    setPostulacion5Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                  }}
+                  onBlur={handleBlur}
+                  name="campoAmplio"
+                  error={
+                    !!touched.campoAmplio && !!errors.campoAmplio
+                  }
+                  disabled={!postulacion4Selected} // Disable the MenuItem until MenuItem 1 is selected
+                >
+                  {campoAmplio.length > 0 ? (
+                    campoAmplio.map((option) => (
+                      <MenuItem key={option.ca_id} value={option.ca_nombre}>
+                        {option.ca_nombre}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>Cargando postulaciones...</MenuItem>
+                  )}
+                </Select>
+              </Box>
+              <Box>
+                <Typography variant="h6" fontWeight="bold">
+                  Seleccionar Campo Específico:
+                </Typography>
+                <Select
+                  fullWidth
+                  variant="filled"
+                  value={values.campoEspecifico}
+                  onChange={(event) => {
+                    handleChange(event); // Default handleChange function to update the selected value
+                    setPostulacion6Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                  }}
+                  onBlur={handleBlur}
+                  name="personalAcademico"
+                  error={
+                    !!touched.campoEspecifico && !!errors.campoEspecifico
+                  }
+                  disabled={!postulacion5Selected} // Disable the MenuItem until MenuItem 1 is selected
+                >
+                  {campoEspecifico.length > 0 ? (
+                    campoEspecifico.map((option) => (
+                      <MenuItem key={option.ce_id} value={option.ce_nombre}>
+                        {option.ce_nombre}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>Cargando campo estpecífico...</MenuItem>
+                  )}
+                </Select>
+              </Box>
+              
               <Box>
                 <Typography variant="h6" fontWeight="bold">
                   Seleccionar Tipo de Personal Académico:
@@ -490,39 +491,7 @@ const FormularioPostulacion = () => {
                 </Select>
               </Box>
               <Box display="flex" justify-content="space-between" gap>
-                {/* <Card sx={{ maxWidth: 220 }}>
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        justify-content="center"
-                      >
-                        Vacantes
-                      </Typography>
-                      <TextField
-                        disabled
-                        id="outlined-disabled"
-                        defaultValue="Vacantes"
-                      />
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-                <Card sx={{ maxWidth: 220 }}>
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        Tiempo
-                      </Typography>
-                      <TextField
-                        disabled
-                        id="outlined-disabled"
-                        defaultValue="Tiempo"
-                      />
-                    </CardContent>
-                  </CardActionArea>
-                </Card> */}
+                
               </Box>
 
               <Box display="flex" justify-content="space-between" gap>

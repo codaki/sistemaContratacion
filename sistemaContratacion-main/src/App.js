@@ -52,6 +52,7 @@ function App() {
                   
                   <Route path="/autenticacion" element={<Auth />} />
                   <Route path="/" element={<Dashboard />} />
+                  <Route element={<ProtectedRoute />}> 
                   <Route
                     path="/seleccionar-postulacion"
                     element={<FormularioPostulacion />}
@@ -98,6 +99,7 @@ function App() {
                     path="/tablas-calificacion"
                     element={<Calificaciones />}
                   />
+                  </Route>
                 </Routes>
               </main>
             </div>
