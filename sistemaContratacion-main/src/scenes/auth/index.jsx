@@ -165,7 +165,6 @@ function Auth() {
   };
   const sendEmail = (email) => {
     localStorage.setItem("email", email);
-    localStorage.setItem("password", password);
   };
 
   const [formSignIn, setFormSignIn] = useState({
@@ -180,7 +179,10 @@ function Auth() {
         sendEmail(value); // Llamar a la función sendEmail() si el nombre es 'email'
         console.log(value)
     }
-
+    if (name === 'password') {
+      localStorage.setItem('password',value); // Llamar a la función sendEmail() si el nombre es 'email'
+      console.log(value)
+  }
     setFormSignIn((prevForm) => ({
         ...prevForm,
         [name]: value,
@@ -292,7 +294,7 @@ function Auth() {
                     type="date"
                     id="fechaNacimiento"
                     value={fechaNacimiento}
-                    onChange={(e) => setFechaNacimiento(e.target.value)}
+                    onChange={(e) => {setFechaNacimiento(e.target.value);localStorage.setItem('fecha_nacimiento',e.target.value)}}
                   />
                 </div>
               </div>
