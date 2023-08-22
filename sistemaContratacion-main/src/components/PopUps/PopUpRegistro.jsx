@@ -46,20 +46,13 @@ export default function ElegantPopUpRegistro() {
     setOpen(true);
   };
   const handleCloseCorreoValido = () => {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    const day = String(currentDate.getDate()).padStart(2, '0');
-
-    const fechaRegistro = `${year}-${month}-${day}`;
-
     //enviar datos delo registro
     signup({
       tipoid: 'Cédula',
       numid: localStorage.getItem('cedula'),
       sexo: localStorage.getItem('sexo'),
       titulo: localStorage.getItem('titulo'),
-      fecha: fechaRegistro,
+      fecha: localStorage.getItem('fecha_nacimiento'),
       correo: localStorage.getItem('email'),
       password: localStorage.getItem('password'),
       nombre1: localStorage.getItem('nombre'),
@@ -68,6 +61,18 @@ export default function ElegantPopUpRegistro() {
       apellido2: localStorage.getItem('apellido2'),
     });
     setOpenCorreoValido(false);
+    localStorage.removeItem('cedula');
+    localStorage.removeItem('sexo');
+    localStorage.removeItem('titulo');
+    localStorage.removeItem('email');
+    localStorage.removeItem('password');
+    localStorage.removeItem('nombre');
+    localStorage.removeItem('nombre2');
+    localStorage.removeItem('fecha_nacimiento');
+    localStorage.removeItem('apellido');
+    localStorage.removeItem('apellido2');
+
+
     window.location.reload();
   };
   const handleCloseCodigoInvalido = () => {
