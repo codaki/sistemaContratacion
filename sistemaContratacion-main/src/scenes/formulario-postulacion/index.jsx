@@ -45,16 +45,6 @@ import { pedirSede } from "../../api/sede";
 import { pedirDepartamento } from "../../api/departamento";
 import { pedirActividad } from "../../api/actividad";
 
-function cleanForm() {
-  document.getElementById("contratacion").value = "";
-  document.getElementById("personalAcademico").value = "";
-  document.getElementById("campoEspecifico").value = "";
-  document.getElementById("campoAmplio").value = "";
-  document.getElementById("departamento").value = "";
-  document.getElementById("sede").value = "";
-  document.getElementById("actividad").value = "";
-}
-
 const formSchema = yup.object().shape({
   postulation: yup.string().required("Campo requerido"),
   contratacion: yup.string().required("Campo requerido"),
@@ -311,7 +301,6 @@ const FormularioPostulacion = () => {
                   value={values.postulation}
                   onChange={(event) => {
                     handleChange(event);
-                    cleanForm()
                     setPostulacion1Selected(true);
                   }}
                   onBlur={handleBlur}
