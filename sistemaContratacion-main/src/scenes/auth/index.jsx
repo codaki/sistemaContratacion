@@ -402,7 +402,7 @@ function Auth() {
                 <div
                   style={{
                     width: "80%",
-                    margin: "0 auto",
+                    margin: "30px auto",
                     alignItems: "center",
                   }}
                 >
@@ -427,7 +427,7 @@ function Auth() {
                 <div
                   style={{
                     width: "80%",
-                    margin: "0 auto",
+                    margin: "30px auto",
                     alignItems: "center",
                   }}
                 >
