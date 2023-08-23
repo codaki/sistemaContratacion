@@ -263,7 +263,7 @@ const Formulario = () => {
                               }}
                               disabled={currentPage === 1}
                             >
-                              Previous Page
+                              Página Anterior
                             </Button>
                             <TextField
                               type="number"
@@ -290,7 +290,7 @@ const Formulario = () => {
                               }}
                               disabled={currentPage === pageCounts[openPreview]}
                             >
-                              Next Page
+                              Siguiente Página
                             </Button>
                           </Box>
                         </Dialog>
@@ -321,7 +321,7 @@ const Formulario = () => {
               </Table>
             </TableContainer>
             <Box display="flex" justifyContent="center" mt="20px">
-              <Button type="submit" color="primary" variant="contained">
+              <Button type="submit" color="success" variant="contained">
                 Confirmar postulación
               </Button>
             </Box>

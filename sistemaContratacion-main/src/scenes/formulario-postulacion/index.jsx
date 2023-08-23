@@ -150,9 +150,25 @@ const FormularioPostulacion = () => {
 
     return (
       <div>
-        <Button variant="outlined" onClick={handleClickOpen}>
-          Confirmar
-        </Button>
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={handleClickOpen}
+            style={{
+              color: "#fff",
+              borderColor: "#4CAF50",
+              backgroundColor: "#4CAF50",
+            }}
+          >
+            Confirmar
+          </Button>
+        </Box>
         <Dialog
           open={open}
           onClose={handleClose}
@@ -163,6 +179,7 @@ const FormularioPostulacion = () => {
             Verifique los datos solo puede postular una vez por concurso,
             verifique los datos antes de enviar.
           </DialogTitle>
+          {/* Comienza la tabla 
           <DialogContent>
             <DialogContentText>
               <TableContainer component={Paper}>
@@ -228,6 +245,7 @@ const FormularioPostulacion = () => {
               </TableContainer>
             </DialogContentText>
           </DialogContent>
+          */}
           <DialogActions>
             <Button onClick={() => { handleClose(); handleSolicitud()}}>Validar</Button>
           </DialogActions>
@@ -720,24 +738,34 @@ const FormularioPostulacion = () => {
               {/* Include the PopUpPostulacion component here */}
               <PopUpPostulacion />
               {actividadSelected && (
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Vacantes</TableCell>
-                        <TableCell>Identificador</TableCell>
-                        <TableCell>Horas</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>{oferta.ofe_vacantes}</TableCell>
-                        <TableCell>{oferta.ofe_id}</TableCell>
-                        <TableCell>{oferta.ofe_horas}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                <TableContainer component={Paper} sx={{ width: "70%", margin: "0 auto" }}>
+                <Table
+                  sx={{
+                    alignItems: "center",
+                  }}
+                >
+                  <TableHead sx={{ alignItems: "center", backgroundColor: "green" }}>
+                    <TableRow>
+                      <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                        Vacantes
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                        Tiempo
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                        Horas
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>{oferta.ofe_vacantes}</TableCell>
+                      <TableCell>{oferta.ofe_id}</TableCell>
+                      <TableCell>{oferta.ofe_horas}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
               )}
             </Box>
           </form>
