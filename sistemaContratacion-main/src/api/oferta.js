@@ -31,25 +31,12 @@ export const crearOferta = async (formData) => {
 
 export const editarOferta = async (oferta_id, formData) => {
   try {
-<<<<<<< HEAD
     const response = await axios.put(`${API}/oferta/${oferta_id}`, formData, {
       headers: {
         "Content-Type": "application/json",
       },
       withCredentials: true,
     });
-=======
-    const response = await axios.put(
-      `${API}/oferta/${oferta_id}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
->>>>>>> 0c4dff7ec23facfd402a9b1da8c626e762224eec
 
     if (response.status === 200) {
       console.log(`Oferta con ID ${oferta_id} actualizada con éxito`);
@@ -66,18 +53,9 @@ export const editarOferta = async (oferta_id, formData) => {
 
 export const eliminarOferta = async (oferta_id) => {
   try {
-<<<<<<< HEAD
     const response = await axios.delete(`${API}/oferta/${oferta_id}`, {
       withCredentials: true,
     });
-=======
-    const response = await axios.delete(
-      `${API}/oferta/${oferta_id}`,
-      {
-        withCredentials: true,
-      }
-    );
->>>>>>> 0c4dff7ec23facfd402a9b1da8c626e762224eec
 
     if (response.status === 200) {
       console.log(`Oferta con ID ${oferta_id} eliminada con éxito`);
