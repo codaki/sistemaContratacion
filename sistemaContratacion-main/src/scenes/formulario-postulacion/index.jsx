@@ -20,7 +20,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Draggable from "react-draggable";
-
+import { useAuth } from "../../context/AuthContext";
 import {
   Table,
   TableBody,
@@ -34,17 +34,20 @@ import {
   TableHead,
 } from "@mui/material";
 
-import { pedirPostulaciones } from "../../api/postulacion";
 import { useState } from "react";
 import { useEffect } from "react";
-import { pedirContratacion } from "../../api/contratacionTipo";
-import { pedirPersonalAcademico } from "../../api/personalAcademico";
-import { pedirCampoEspecifico } from "../../api/campoEspecifico";
-import { pedirCampoAmplio } from "../../api/campoAmplio";
-import { pedirSede } from "../../api/sede";
-import { pedirDepartamento } from "../../api/departamento";
-import { pedirActividad } from "../../api/actividad";
-
+import {
+  actividadUnica,
+  departamentoUnico,
+  obtenerOferta,
+  personalUnico,
+  postulacionUnica,
+} from "../../api/oferta";
+import { contratacionUnica } from "../../api/oferta";
+import { sedeUnica } from "../../api/oferta";
+import { campoAmplioUnico } from "../../api/oferta";
+import { campoEspecificoUnico } from "../../api/oferta";
+import { crearSolicitud } from "../../api/solicitud";
 const formSchema = yup.object().shape({
   postulation: yup.string().required("Campo requerido"),
   contratacion: yup.string().required("Campo requerido"),
@@ -68,16 +71,13 @@ const FormularioPostulacion = () => {
   const [departamento, setDepartamento] = useState([]);
   const [sede, setSede] = useState([]);
   const [actividad, setActividad] = useState([]);
+  const [oferta, setOferta] = useState([]);
+
   const handleFormSubmit = (values) => {
     console.log(values);
   };
 
-  const arregloDeDatos = [
-    { nombre: "Juan", edad: 30 },
-    { nombre: "María", edad: 25 },
-    { nombre: "Carlos", edad: 40 },
-    { nombre: "Ana", edad: 28 },
-  ];
+  const arregloDeDatos = [];
   const [seleccionados, setSeleccionados] = useState({
     postulation: "",
     contratacion: "",
@@ -88,14 +88,17 @@ const FormularioPostulacion = () => {
     sede: "",
     actividad: "",
   });
-
-  const formatDataForTable = (data) => {
-    // Aquí puedes realizar cualquier formato necesario según la estructura del arreglo
-    // Por ejemplo, si el arreglo es un arreglo de objetos con las propiedades 'nombre', 'edad' y 'correo'
-    // Puedes devolver un arreglo de arreglos con las filas de la tabla
-    return data.map((item) => [item.nombre, item.edad]);
-  };
-
+  const { user } = useAuth();
+  const handleSolicitud = ()=>{
+    const solicitud = {
+      cand_id: user.id,
+      rh_id: 1,
+      sol_aprobacion: "false",
+      nota_final: 0,
+      ofe_id: oferta.ofe_id
+    };
+    crearSolicitud(solicitud);
+  }
   // Función para manejar el clic en el botón "Enviar"
   const handleEnviarClick = (values) => {
     // Obtener los valores seleccionados del objeto 'values'
@@ -174,7 +177,7 @@ const FormularioPostulacion = () => {
                     <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
                       Postulación
                     </TableCell>
-                    <TableCell>202351</TableCell>
+                    <TableCell>{seleccionados.postulation}</TableCell>
                   </TableRow>
                   <TableRow sx={{ textAlign: "left", width: "100%" }}>
                     <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
@@ -226,38 +229,42 @@ const FormularioPostulacion = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Validar</Button>
+            <Button onClick={() => { handleClose(); handleSolicitud()}}>Validar</Button>
           </DialogActions>
         </Dialog>
       </div>
     );
   };
-
+  const [actividadSelected, setActividadSelected] = useState(false);
   useEffect(() => {
     const PedirPosutlacion = async () => {
       try {
-        const res = await pedirPostulaciones();
-        const res1 = await pedirContratacion();
-        const res2 = await pedirPersonalAcademico();
-        const res3 = await pedirCampoEspecifico();
-        const res4 = await pedirCampoAmplio();
-        const res5 = await pedirSede();
-        const res6 = await pedirDepartamento();
-        const res7 = await pedirActividad();
+        const res = await postulacionUnica();
         setPostulacion(res.data);
-        setContratacion(res1.data);
-        setPersonalAcademico(res2.data);
-        setCampoEspecifico(res3.data);
-        setCampoAmplio(res4.data);
-        setSede(res5.data);
-        setDepartamento(res6.data);
-        setActividad(res7.data);
+        const res1 = await obtenerOferta(
+          selectedPostId,
+          selectedConId,
+          selectedSedeId,
+          selectedDeptId,
+          selectedCampAId,
+          selectedCampEId,
+          selectedPerosonalAId,
+          selectedActividadId
+        );
+
+        console.log(res1.data);
+        console.log(user)
+        arregloDeDatos.push({
+          ofe_id: res1.data.ofe_id,
+          ofe_vacantes: res1.data.ofe_vacantes,
+          ofe_horas: res1.data.ofe_horas,
+        });
       } catch (error) {
         console.log(error);
       }
     };
     PedirPosutlacion();
-  }, []);
+  }, [oferta]);
 
   const [postulacion1Selected, setPostulacion1Selected] = useState(false);
   const [postulacion2Selected, setPostulacion2Selected] = useState(false);
@@ -266,6 +273,16 @@ const FormularioPostulacion = () => {
   const [postulacion5Selected, setPostulacion5Selected] = useState(false);
   const [postulacion6Selected, setPostulacion6Selected] = useState(false);
   const [postulacion7Selected, setPostulacion7Selected] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(null);
+  const [selectedConId, setSelectedConId] = useState(null);
+  const [selectedDeptId, setSelectedDeptId] = useState(null);
+  const [selectedSedeId, setSelectedSedeId] = useState(null);
+  const [selectedCampAId, setSelectedCampAId] = useState(null);
+  const [selectedCampEId, setSelectedCampEId] = useState(null);
+  const [selectedPerosonalAId, setSelectedPerosonalAId] = useState(null);
+  const [selectedActividadId, setSelectedActividadId] = useState(null);
+
+  const [selectedOferta, setSelectedOferta] = useState(null);
   return (
     <Box m="5vh" pt="0vh">
       <Header title="Formato de Documentos" subtitle="Complete el formulario" />
@@ -274,7 +291,7 @@ const FormularioPostulacion = () => {
         onSubmit={(values) => {
           // Al hacer clic en Enviar, llamamos a handleEnviarClick para guardar los valores seleccionados
           handleEnviarClick(values);
-
+          console.log(values)
           // Luego, llamamos a handleFormSubmit para procesar el formulario si es necesario
           handleFormSubmit(values);
         }}
@@ -299,9 +316,27 @@ const FormularioPostulacion = () => {
                   fullWidth
                   variant="filled"
                   value={values.postulation}
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     handleChange(event);
-                    setPostulacion1Selected(true);
+
+                    const selectedOption = postulacion.find(
+                      (option) => option.post_periodo === event.target.value
+                    );
+                    if (selectedOption) {
+                      setPostulacion1Selected(true);
+
+                      const selectedPostId1 = selectedOption.post_id;
+
+                      try {
+                        const contra = await contratacionUnica(selectedPostId1);
+                        setContratacion(contra.data);
+                        console.log(contratacion); // Esto debería imprimir los datos de "data" en la consola
+                        setSelectedPostId(selectedPostId1);
+                        console.log(selectedPostId);
+                      } catch (error) {
+                        console.error("Error fetching data:", error);
+                      }
+                    }
                   }}
                   onBlur={handleBlur}
                   name="postulation"
@@ -317,7 +352,7 @@ const FormularioPostulacion = () => {
                       </MenuItem>
                     ))
                   ) : (
-                    <MenuItem disabled>Cargando postulaciones...</MenuItem>
+                    <MenuItem disabled>Cargando opciones...</MenuItem>
                   )}
                 </Select>
               </Box>
@@ -329,9 +364,29 @@ const FormularioPostulacion = () => {
                   fullWidth
                   variant="filled"
                   value={values.contratacion}
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion2Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                    const selectedOption = contratacion.find(
+                      (option) => option.con_nombre === event.target.value
+                    );
+                    if (selectedOption) {
+                      setPostulacion2Selected(true);
+
+                      const selectedPostId1 = selectedOption.con_id;
+
+                      try {
+                        const contra = await sedeUnica(
+                          selectedPostId,
+                          selectedPostId1
+                        );
+                        setSede(contra.data);
+                        console.log(sede); // Esto debería imprimir los datos de "data" en la consola
+                        setSelectedConId(selectedPostId1);
+                        console.log(selectedPostId);
+                      } catch (error) {
+                        console.error("Error fetching data:", error);
+                      }
+                    } // Set the variable to true when the MenuItem 1 is selected
                   }}
                   onBlur={handleBlur}
                   name="contratacion"
@@ -345,7 +400,7 @@ const FormularioPostulacion = () => {
                       </MenuItem>
                     ))
                   ) : (
-                    <MenuItem disabled>Cargando postulaciones...</MenuItem>
+                    <MenuItem disabled>Cargando opciones...</MenuItem>
                   )}
                 </Select>
               </Box>
@@ -357,9 +412,30 @@ const FormularioPostulacion = () => {
                   fullWidth
                   variant="filled"
                   value={values.sede}
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion3Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                    const selectedOption = sede.find(
+                      (option) => option.sede_nombre === event.target.value
+                    );
+                    if (selectedOption) {
+                      setPostulacion3Selected(true);
+
+                      const selectedPostId1 = selectedOption.sede_id;
+                      console.log(selectedPostId1);
+                      try {
+                        const departamento1 = await departamentoUnico(
+                          selectedPostId,
+                          selectedConId,
+                          selectedPostId1
+                        );
+                        setDepartamento(departamento1.data);
+                        console.log(departamento); // Esto debería imprimir los datos de "data" en la consola
+                        setSelectedSedeId(selectedPostId1);
+                        console.log(selectedSedeId);
+                      } catch (error) {
+                        console.error("Error fetching data:", error);
+                      }
+                    } // Set the variable to true when the MenuItem 1 is selected// Set the variable to true when the MenuItem 1 is selected
                   }}
                   onBlur={handleBlur}
                   name="sede"
@@ -385,9 +461,31 @@ const FormularioPostulacion = () => {
                   fullWidth
                   variant="filled"
                   value={values.departamento}
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion4Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                    const selectedOption = departamento.find(
+                      (option) => option.dept_nombre === event.target.value
+                    );
+                    if (selectedOption) {
+                      setPostulacion4Selected(true);
+
+                      const selectedPostId1 = selectedOption.dept_id;
+
+                      try {
+                        const campoAmplio = await campoAmplioUnico(
+                          selectedPostId,
+                          selectedConId,
+                          selectedSedeId,
+                          selectedPostId1
+                        );
+                        setCampoAmplio(campoAmplio.data);
+                        console.log(departamento); // Esto debería imprimir los datos de "data" en la consola
+                        setSelectedDeptId(selectedPostId1);
+                        console.log(selectedDeptId);
+                      } catch (error) {
+                        console.error("Error fetching data:", error);
+                      }
+                    }
                   }}
                   onBlur={handleBlur}
                   name="departamento"
@@ -413,9 +511,32 @@ const FormularioPostulacion = () => {
                   fullWidth
                   variant="filled"
                   value={values.campoAmplio}
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion5Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                    const selectedOption = campoAmplio.find(
+                      (option) => option.ca_nombre === event.target.value
+                    );
+                    if (selectedOption) {
+                      setPostulacion5Selected(true);
+
+                      const selectedPostId1 = selectedOption.ca_id;
+
+                      try {
+                        const campoEspecifico = await campoEspecificoUnico(
+                          selectedPostId,
+                          selectedConId,
+                          selectedSedeId,
+                          selectedDeptId,
+                          selectedPostId1
+                        );
+                        setCampoEspecifico(campoEspecifico.data);
+                        console.log(campoEspecifico); // Esto debería imprimir los datos de "data" en la consola
+                        setSelectedCampAId(selectedPostId1);
+                        console.log(selectedDeptId);
+                      } catch (error) {
+                        console.error("Error fetching data:", error);
+                      }
+                    }
                   }}
                   onBlur={handleBlur}
                   name="campoAmplio"
@@ -441,9 +562,33 @@ const FormularioPostulacion = () => {
                   fullWidth
                   variant="filled"
                   value={values.campoEspecifico}
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     handleChange(event); // Default handleChange function to update the selected value
-                    setPostulacion6Selected(true); // Set the variable to true when the MenuItem 1 is selected
+                    const selectedOption = campoEspecifico.find(
+                      (option) => option.ce_nombre === event.target.value
+                    );
+                    if (selectedOption) {
+                      setPostulacion6Selected(true);
+
+                      const selectedPostId1 = selectedOption.ce_id;
+
+                      try {
+                        const personalAcademico1 = await personalUnico(
+                          selectedPostId,
+                          selectedConId,
+                          selectedSedeId,
+                          selectedDeptId,
+                          selectedCampAId,
+                          selectedPostId1
+                        );
+                        setPersonalAcademico(personalAcademico1.data);
+                        console.log(personalAcademico); // Esto debería imprimir los datos de "data" en la consola
+                        setSelectedCampEId(selectedPostId1);
+                        console.log(selectedDeptId);
+                      } catch (error) {
+                        console.error("Error fetching data:", error);
+                      }
+                    }
                   }}
                   onBlur={handleBlur}
                   name="personalAcademico"
@@ -470,9 +615,34 @@ const FormularioPostulacion = () => {
                   fullWidth
                   variant="filled"
                   value={values.personalAcademico}
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     handleChange(event);
-                    setPostulacion7Selected(true);
+                    const selectedOption = personalAcademico.find(
+                      (option) => option.pa_nombre === event.target.value
+                    );
+                    if (selectedOption) {
+                      setPostulacion7Selected(true);
+
+                      const selectedPostId1 = selectedOption.pa_id;
+
+                      try {
+                        const actividad1 = await actividadUnica(
+                          selectedPostId,
+                          selectedConId,
+                          selectedSedeId,
+                          selectedDeptId,
+                          selectedCampAId,
+                          selectedCampEId,
+                          selectedPostId1
+                        );
+                        setActividad(actividad1.data);
+                        console.log(personalAcademico); // Esto debería imprimir los datos de "data" en la consola
+                        setSelectedPerosonalAId(selectedPostId1);
+                        console.log(selectedDeptId);
+                      } catch (error) {
+                        console.error("Error fetching data:", error);
+                      }
+                    }
                   }}
                   onBlur={handleBlur}
                   name="personalAcademico"
@@ -500,8 +670,34 @@ const FormularioPostulacion = () => {
                   fullWidth
                   variant="filled"
                   value={values.actividad}
-                  onChange={(event) => {
+                  onChange={async (event) => {
                     handleChange(event);
+                    const selectedOption = actividad.find(
+                      (option) => option.act_nombre === event.target.value
+                    );
+                    if (selectedOption) {
+                      setActividadSelected(true);
+
+                      const selectedPostId1 = selectedOption.act_id;
+
+                      try {
+                        const actividad1 = await obtenerOferta(
+                          selectedPostId,
+                          selectedConId,
+                          selectedSedeId,
+                          selectedDeptId,
+                          selectedCampAId,
+                          selectedCampEId,
+                          selectedPerosonalAId,
+                          selectedPostId1
+                        );
+                        setOferta(actividad1.data);
+                        console.log(oferta); // Esto debería imprimir los datos de "data" en la consola
+                        setSelectedActividadId(selectedPostId1);
+                      } catch (error) {
+                        console.error("Error fetching data:", error);
+                      }
+                    }
                   }}
                   onBlur={handleBlur}
                   name="actividad"
@@ -521,60 +717,28 @@ const FormularioPostulacion = () => {
               </Box>
               <Box display="flex" justify-content="space-between" gap></Box>
 
-              <Box display="flex" justify-content="space-between" gap>
-                <Card sx={{ maxWidth: 220, backgroundColor: grey[300] }}>
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        Actividad Docencia
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-
-                <Card sx={{ maxWidth: 220, backgroundColor: grey[300] }}>
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        Actividad Investigación
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-
-                <Card sx={{ maxWidth: 220, backgroundColor: grey[300] }}>
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        Actividad Vinculación
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Box>
-
               {/* Include the PopUpPostulacion component here */}
               <PopUpPostulacion />
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Vacantes</TableCell>
-                      <TableCell>Tiempo</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {/* Utiliza el bucle map para mostrar los datos del arreglo en la tabla */}
-                    {formatDataForTable(arregloDeDatos).map((row, index) => (
-                      <TableRow key={index}>
-                        {row.map((cell, cellIndex) => (
-                          <TableCell key={cellIndex}>{cell}</TableCell>
-                        ))}
+              {actividadSelected && (
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Vacantes</TableCell>
+                        <TableCell>Identificador</TableCell>
+                        <TableCell>Horas</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>{oferta.ofe_vacantes}</TableCell>
+                        <TableCell>{oferta.ofe_id}</TableCell>
+                        <TableCell>{oferta.ofe_horas}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
             </Box>
           </form>
         )}

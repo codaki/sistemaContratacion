@@ -9,9 +9,10 @@ export const getSolicitud = (req, res) => {
 };
 
 export const createSolicitud = (req, res) => {
-  const { cand_id, sol_id, rh_id, sol_aprobacion } = req.body;
-  const q = `INSERT INTO solicitud (cand_id, sol_id, rh_id, sol_aprobacion) VALUES ($1, $2, $3, $4) RETURNING *;`;
-  const values = [cand_id, sol_id, rh_id, sol_aprobacion];
+  const { cand_id, rh_id, sol_aprobacion,ofe_id, nota_final } = req.body;
+  const q = `INSERT INTO public.solicitud (cand_id, rh_id, sol_aprobacion, ofe_id, nota_final)
+  VALUES ($1,$2,$3,$4,$5) RETURNING *;`;
+  const values = [cand_id, rh_id, sol_aprobacion,ofe_id, nota_final,];
 
   db.query(q, values, (err, data) => {
     if (err) return res.status(500).send(err);
