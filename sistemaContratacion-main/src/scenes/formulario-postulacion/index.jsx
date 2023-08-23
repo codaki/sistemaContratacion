@@ -20,7 +20,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Draggable from "react-draggable";
-
+import { useAuth } from "../../context/AuthContext";
 import {
   Table,
   TableBody,
@@ -47,7 +47,7 @@ import { contratacionUnica } from "../../api/oferta";
 import { sedeUnica } from "../../api/oferta";
 import { campoAmplioUnico } from "../../api/oferta";
 import { campoEspecificoUnico } from "../../api/oferta";
-
+import { crearSolicitud } from "../../api/solicitud";
 const formSchema = yup.object().shape({
   postulation: yup.string().required("Campo requerido"),
   contratacion: yup.string().required("Campo requerido"),
@@ -88,14 +88,17 @@ const FormularioPostulacion = () => {
     sede: "",
     actividad: "",
   });
-
-  const formatDataForTable = (data) => {
-    // Aquí puedes realizar cualquier formato necesario según la estructura del arreglo
-    // Por ejemplo, si el arreglo es un arreglo de objetos con las propiedades 'nombre', 'edad' y 'correo'
-    // Puedes devolver un arreglo de arreglos con las filas de la tabla
-    return data.map((item) => [item.nombre, item.edad]);
-  };
-
+  const { user } = useAuth();
+  const handleSolicitud = ()=>{
+    const solicitud = {
+      cand_id: user.id,
+      rh_id: 1,
+      sol_aprobacion: "false",
+      nota_final: 0,
+      ofe_id: oferta.ofe_id
+    };
+    crearSolicitud(solicitud);
+  }
   // Función para manejar el clic en el botón "Enviar"
   const handleEnviarClick = (values) => {
     // Obtener los valores seleccionados del objeto 'values'
@@ -174,7 +177,7 @@ const FormularioPostulacion = () => {
                     <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
                       Postulación
                     </TableCell>
-                    <TableCell>202351</TableCell>
+                    <TableCell>{seleccionados.postulation}</TableCell>
                   </TableRow>
                   <TableRow sx={{ textAlign: "left", width: "100%" }}>
                     <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
@@ -226,7 +229,7 @@ const FormularioPostulacion = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Validar</Button>
+            <Button onClick={() => { handleClose(); handleSolicitud()}}>Validar</Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -250,6 +253,7 @@ const FormularioPostulacion = () => {
         );
 
         console.log(res1.data);
+        console.log(user)
         arregloDeDatos.push({
           ofe_id: res1.data.ofe_id,
           ofe_vacantes: res1.data.ofe_vacantes,
@@ -287,7 +291,7 @@ const FormularioPostulacion = () => {
         onSubmit={(values) => {
           // Al hacer clic en Enviar, llamamos a handleEnviarClick para guardar los valores seleccionados
           handleEnviarClick(values);
-
+          console.log(values)
           // Luego, llamamos a handleFormSubmit para procesar el formulario si es necesario
           handleFormSubmit(values);
         }}
@@ -721,7 +725,7 @@ const FormularioPostulacion = () => {
                     <TableHead>
                       <TableRow>
                         <TableCell>Vacantes</TableCell>
-                        <TableCell>Tiempo</TableCell>
+                        <TableCell>Identificador</TableCell>
                         <TableCell>Horas</TableCell>
                       </TableRow>
                     </TableHead>
