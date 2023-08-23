@@ -11,7 +11,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { TableComponent } from "./TableComponent"
+import { TableComponent } from "./TableComponent";
 
 const dataFormacion = [
   {
@@ -118,14 +118,10 @@ const dataExperiencia = [
   {
     requisito:
       "Acreditar al menos doce (12) meses de experiencia en el ejercicio de su profesión. Esta experiencia se podrá acreditar con experiencia en instituciones de educación superior siempre que haya ejercicio real de la profesión.",
-    titulos: [
-      "Esperiencia del ejercicio de la profesión",
-    ],
-    detalleTiempo: [
-      "12 meses",
-    ],
-    minimo: [3.00],
-    maximo: [3.50],
+    titulos: ["Esperiencia del ejercicio de la profesión"],
+    detalleTiempo: ["12 meses"],
+    minimo: [3.0],
+    maximo: [3.5],
     observaciones: [
       "El puntaje adicional, se asignará proporcionalmente de acuerdo al número de meses de experiencia, hata 36 meses, si suma más se pondrá el máximo puntaje indicado",
     ],
@@ -140,7 +136,6 @@ const steps = [
   "Experiencia profesional",
 ];
 
-
 function getStepContent(step) {
   switch (step) {
     case 0:
@@ -150,7 +145,7 @@ function getStepContent(step) {
     case 2:
       return <TableComponent data={dataProd} />;
     case 3:
-      return <TableComponent data={dataExperiencia}/>;
+      return <TableComponent data={dataExperiencia} />;
     default:
       throw new Error("Unknown step");
   }
@@ -182,8 +177,7 @@ export const Calificaciones = () => {
           <Header
             title="Calificaciones"
             subtitle="Calificaciones de los postulantes"
-        
-/>
+          />
         </Toolbar>
       </AppBar>
       <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
@@ -224,7 +218,6 @@ export const Calificaciones = () => {
                   onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
-                  
                   {activeStep === steps.length - 1
                     ? "Confirmar Calificación"
                     : "Siguiente"}
