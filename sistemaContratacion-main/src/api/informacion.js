@@ -10,7 +10,7 @@ export const subirInformacion = async (formData) => {
       },
     });
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       console.log("Información subida con éxito");
       return true;
     } else {
@@ -20,5 +20,27 @@ export const subirInformacion = async (formData) => {
   } catch (error) {
     console.error("Error en la solicitud:", error);
     return false;
+  }
+};
+
+export const obtenerArchivos = async () => {
+  try {
+    const response = await axios.get(`${API}/informacion/files`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los archivos:", error);
+    return [];
+  }
+};
+
+export const obtenerArchivo = async (fileId) => {
+  try {
+    const response = await axios.get(`${API}/informacion/files/${fileId}`, {
+      responseType: "blob",
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener el archivo:", error);
+    return null;
   }
 };
