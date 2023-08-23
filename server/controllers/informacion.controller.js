@@ -37,3 +37,32 @@ export const uploadPdf = (req, res) => {
     return res.status(201).send(req.file);
   });
 };
+
+export const getPdf = (req, res) => {
+  const fileId = req.params.fileId;
+
+  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+    return res.status(400).json({ error: "Invalid ObjectId" });
+  }
+
+  gfs.files.findOne({ _id: mongoose.Types.ObjectId(fileId) }, (err, file) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (!file) {
+      return res.status(404).json({ error: "File not found" });
+    }
+
+    const readStream = gfs.createReadStream(file.filename);
+    readStream.pipe(res);
+  });
+};
+
+export const getAllFiles = (req, res) => {
+  gfs.files.find({}).toArray((err, files) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    return res.status(200).json(files);
+  });
+};
