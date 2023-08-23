@@ -15,17 +15,25 @@ Antes de comenzar, asegúrate de tener instalado Node.js en tu sistema. Además,
 3. Crea un archivo de configuración '.env' en la carpeta 'server' con las variables de entorno necesarias, como la configuración de la base de datos y cualquier otra información sensible.
 4. Ejecuta el servidor: `npm start`.
 
-El backend estará disponible en http://localhost:3000.
+El backend estará disponible en http://localhost:8800.
 
 ## Frontend (sistemaContratacion-main)
 
-### Pasos para configurar y ejecutar el frontend:
+### Pasos para configurar y ejecutar el frontend(cliente):
 
 1. Navega a la carpeta 'sistemaContratacion-main': `cd sistemaContratacion-main`.
 2. Instala las dependencias: `npm install`.
 3. Inicia la aplicación: `npm start`.
 
-El frontend estará disponible en http://localhost:8080.
+El frontend estará disponible en http://localhost:3000.
+
+### Pasos para configurar y ejecutar el frontend(administración):
+
+1. Navega a la carpeta 'sistemaContratacion-main': `cd AdminSideBar`.
+2. Instala las dependencias: `npm install`.
+3. Inicia la aplicación: `npm start`.
+
+El frontend estará disponible en http://localhost:3000.
 
 ## Base de Datos
 

@@ -6,6 +6,7 @@ const router = Router();
 router.get("/item",getItem);
 router.post("/item",createItem);
 router.put("/item/:it_id",updateItem);
-router.delete("/item/:it_id",deleteItem);
+router.delete("/item/:it_id", deleteItem);
+
 
 export default router;

@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/sistemaContratacion-main
+    networks:
+      - sistema_contratacion
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+networks:
+  sistema_contratacion:
+    external: true

@@ -33,6 +33,18 @@ export const obtenerArchivos = async () => {
   }
 };
 
+export const obtenerArchivosPorPostulacion = async (idPostulation) => {
+  try {
+    const response = await axios.get(
+      `${API}/files/postulacion/${idPostulation}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los archivos:", error);
+    return [];
+  }
+};
+
 export const obtenerArchivo = async (fileId) => {
   try {
     const response = await axios.get(`${API}/informacion/files/${fileId}`, {

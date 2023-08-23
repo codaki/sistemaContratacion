@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/server
+    networks:
+      - sistema_contratacion
+    ports:
+      - "8800:8800"
+    stdin_open: true
+    tty: true
+networks:
+  sistema_contratacion:
+    external: true

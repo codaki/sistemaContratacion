@@ -16,12 +16,13 @@ const storage = new GridFsStorage({
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       const fileInfo = {
-        filename: req.body.idDocument,
+        filename: req.body.filename, // Check if this prints the correct filename
         bucketName: "uploads",
         metadata: {
-          idPostulation: req.body.idPostulation,
+          idPostulation: req.body.idPostulation, // Check if this prints the correct idPostulation
         },
       };
+      console.log("File Info:", fileInfo); // Add this line for debugging
       resolve(fileInfo);
     });
   },
@@ -65,4 +66,25 @@ export const getAllFiles = (req, res) => {
     }
     return res.status(200).json(files);
   });
+};
+
+export const getFileByPostulationId = (req, res) => {
+  const idPostulation = req.params.idPostulation;
+
+  gfs.files.findOne(
+    { "metadata.idPostulation": idPostulation },
+    (err, file) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      if (!file) {
+        return res
+          .status(404)
+          .json({ error: "File not found for the given idPostulation" });
+      }
+
+      const readStream = gfs.createReadStream(file.filename);
+      readStream.pipe(res);
+    }
+  );
 };

@@ -38,9 +38,9 @@ export const TableComponent = ({ data }) => {
         <TableBody>
           {data.map((row, index) => (
             <TableRow key={index}>
-              <TableCell style={{minWidth:300}}>{row.requisito}</TableCell>
+              <TableCell style={{ minWidth: 300 }}>{row.requisito}</TableCell>
 
-              <TableCell style={{minWidth:300}}>
+              <TableCell style={{ minWidth: 300 }}>
                 {row.titulos.map((titulo, i) => (
                   <TableRow key={index}>
                     <TableCell>{titulo}</TableCell>
@@ -48,7 +48,7 @@ export const TableComponent = ({ data }) => {
                 ))}
               </TableCell>
 
-              <TableCell style={{minWidth:300}}>
+              <TableCell style={{ minWidth: 300 }}>
                 {row.detalleTiempo.length > 1 ? (
                   <>
                     {row.detalleTiempo.map((minimo, i) => (
@@ -90,7 +90,7 @@ export const TableComponent = ({ data }) => {
                 )}
               </TableCell>
 
-              <TableCell style={{minWidth:150}}>
+              <TableCell style={{ minWidth: 150 }}>
                 <>
                   {row.observaciones.map((titulo, i) => (
                     <TableRow key={index}>
@@ -99,8 +99,8 @@ export const TableComponent = ({ data }) => {
                   ))}
                 </>
               </TableCell>
-              
-              <TableCell style={{minWidth:250}}>
+
+              <TableCell style={{ minWidth: 250 }}>
                 <TextField
                   value={calificaciones[index]}
                   onChange={(e) =>

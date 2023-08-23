@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import {
   Box,
   Button,
@@ -11,6 +10,7 @@ import {
   TableHead,
   TableRow,
   Dialog,
+  Snackbar,
 } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -23,6 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { subirInformacion } from "../../api/informacion";
+import { useAuth } from "../../context/AuthContext";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -31,9 +32,15 @@ const Formulario = () => {
   const [pageCounts, setPageCounts] = useState({}); // Object to store page counts
   const [openPreview, setOpenPreview] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false); // Add this state variable
+  const [alertOpen, setAlertOpen] = useState(false);
+
+  const { user } = useAuth();
 
   const handleFormSubmit = async (values, { setSubmitting }) => {
     try {
+      setIsUploading(true);
       const files = [
         "resume",
         "cedula",
@@ -44,13 +51,17 @@ const Formulario = () => {
         "administrativeResponsabilities",
         "profesionalExp",
       ];
+      const idPostulation = user.id;
+
       for (const id of files) {
         const file = values[id];
         if (file) {
           const formData = new FormData();
+          formData.append("idPostulation", idPostulation);
           formData.append("file", file);
           formData.append("idDocument", id);
-          formData.append("idPostulation", "your-postulation-id"); // Replace with actual postulation ID
+          formData.append("filename", file.name);
+
           const uploadResult = await subirInformacion(formData);
           if (uploadResult) {
             console.log(`Archivo ${id} subido con éxito`);
@@ -59,10 +70,13 @@ const Formulario = () => {
           }
         }
       }
-      setSubmitting(false);
+      setTimeout(() => {
+        setIsUploading(false);
+        setAlertOpen(true); // Show the alert after the upload is complete
+      }, 3000); // Simulating a 3-second upload
     } catch (error) {
       console.log("Error uploading files:", error);
-      setSubmitting(false);
+      setIsUploading(false);
     }
   };
 
@@ -95,6 +109,10 @@ const Formulario = () => {
 
       reader.readAsArrayBuffer(file);
     }
+  };
+
+  const handleAlertClose = () => {
+    setAlertOpen(false);
   };
 
   const formSchema = yup.object({
@@ -328,6 +346,24 @@ const Formulario = () => {
           </form>
         )}
       </Formik>
+      <div>
+        {isUploading ? (
+          <Typography variant="h6" color="primary">
+            Enviando...
+          </Typography>
+        ) : null}
+      </div>
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={4000} // Adjust as needed
+        onClose={handleAlertClose}
+        message="Formulario Enviado ✔✔!"
+        action={
+          <Button color="inherit" size="small" onClick={handleAlertClose}>
+            Cerrar
+          </Button>
+        }
+      />
     </Box>
   );
 };
