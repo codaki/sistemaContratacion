@@ -3,6 +3,9 @@ import { useContext, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import LogoutIcon from "@mui/icons-material/Logout"; // You can use the appropriate logout icon
+import { useNavigate } from "react-router-dom";
+import { deleteCookie } from "./Utils";
+import { useAuth } from "../../context/AuthContext";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -13,11 +16,18 @@ const Topbar = () => {
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = () =>{
+    deleteCookie('auth')
+    logout()
+    navigate('/home')
+  }
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
+  
   return (
     <Box
       display="flex"
@@ -34,11 +44,15 @@ const Topbar = () => {
         <IconButton onClick={handleMenuOpen}>
           <PersonOutlinedIcon />
         </IconButton>
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
           {/* Add other menu items here if needed */}
           <MenuItem onClick={handleMenuClose}>
             <LogoutIcon sx={{ mr: 1 }} />
-            Cerrar Sesión
+            <p onClick={handleLogout}>Cerrar Sesión</p>
           </MenuItem>
         </Menu>
       </Box>

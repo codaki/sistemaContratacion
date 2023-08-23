@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { DialogContentText } from "@mui/material";
 
 const ElegantBootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -85,24 +86,26 @@ export default function ElegantPopUpSeguro() {
           Confirmación de Registro
         </ElegantBootstrapDialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-          Gracias por registrarte para participar en el proceso de contratación docente 2023 de la Universidad de las Fuerzas Armadas (ESPE). 
-          Queremos asegurarte que la privacidad y seguridad de tus datos personales son de suma importancia para nosotros.
-          <br/>
-          Tus datos serán tratados con el máximo cuidado y confidencialidad. 
-          Entendemos la sensibilidad de la información que nos proporcionas y queremos garantizarte que estos datos serán utilizados únicamente 
-          con el propósito específico para el cual fueron recopilados: el proceso de selección y contratación docente para el año 2023.
-          <br/>
-          En ningún caso compartiremos, venderemos ni divulgaremos tus datos personales a terceros sin tu consentimiento expreso. 
-          Cumpliremos con todas las disposiciones legales y reglamentarias relacionadas con la protección de datos personales.
-          <br/>
-          Tu participación es fundamental para el éxito de nuestro proceso de contratación docente, y tu confianza en nosotros es valiosa. 
-          Si tienes alguna pregunta o inquietud acerca del manejo de tus datos personales, no dudes en contactarnos a través de los canales 
-          de soporte proporcionados en nuestro sitio web.
-          <br/>
-          Agradecemos tu compromiso con la ESPE y tu interés en formar parte de nuestro equipo docente. 
-          Esperamos contar contigo en este importante proceso.{" "}
-          </Typography>
+          <DialogContentText>
+            <div style={{ textAlign: "justify" }}>
+              Gracias por registrarte para participar en el proceso de contratación docente 2023 de la Universidad de las Fuerzas Armadas (ESPE). 
+              Queremos asegurarte que la privacidad y seguridad de tus datos personales son de suma importancia para nosotros.
+              <br/>
+              Tus datos serán tratados con el máximo cuidado y confidencialidad. 
+              Entendemos la sensibilidad de la información que nos proporcionas y queremos garantizarte que estos datos serán utilizados únicamente 
+              con el propósito específico para el cual fueron recopilados: el proceso de selección y contratación docente para el año 2023.
+              <br/>
+              En ningún caso compartiremos, venderemos ni divulgaremos tus datos personales a terceros sin tu consentimiento expreso. 
+              Cumpliremos con todas las disposiciones legales y reglamentarias relacionadas con la protección de datos personales.
+              <br/>
+              Tu participación es fundamental para el éxito de nuestro proceso de contratación docente, y tu confianza en nosotros es valiosa. 
+              Si tienes alguna pregunta o inquietud acerca del manejo de tus datos personales, no dudes en contactarnos a través de los canales 
+              de soporte proporcionados en nuestro sitio web.
+              <br/>
+              Agradecemos tu compromiso con la ESPE y tu interés en formar parte de nuestro equipo docente. 
+              Esperamos contar contigo en este importante proceso.{" "}
+            </div>
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} startIcon={<CheckCircleIcon />}>

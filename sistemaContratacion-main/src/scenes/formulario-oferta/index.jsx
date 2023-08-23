@@ -30,6 +30,7 @@ const FormulariOferta = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const success = await crearOferta(formData);
+    console.log(formData);
   };
 
   return (

@@ -4,11 +4,23 @@ const API = "http://localhost:8800/api";
 
 export const subirInformacion = async (formData) => {
   try {
+<<<<<<< HEAD
     const response = await axios.post(`${API}/informacion/upload`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+=======
+    const response = await axios.post(
+      `${API}/informacion/upload`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+>>>>>>> 0c4dff7ec23facfd402a9b1da8c626e762224eec
 
     if (response.status === 200) {
       console.log("Información subida con éxito");

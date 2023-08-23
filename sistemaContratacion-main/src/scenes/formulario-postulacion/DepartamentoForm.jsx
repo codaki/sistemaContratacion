@@ -23,6 +23,10 @@ const FormularioDept = () => {
     event.preventDefault();
     const success = await crearDepartamento(formData);
     console.log(formData);
+    setFormData({
+      dept_nombre: "",
+      dept_descripcion: "",
+    });
   };
 
   return (
@@ -63,9 +67,17 @@ const FormularioDept = () => {
         <Button
           type="submit"
           variant="contained"
-          color="secondary"
-          sx={{ mt: 2, p: 2 }}
+          sx={{
+            mt: 2,
+            p: 2,
+            backgroundColor: "#36ae56", // Verde claro
+            color: "#FFFFFF", // Letras blancas
+            "&:hover": {
+              backgroundColor: "#388E3C", // Verde oscuro al pasar el mouse
+            },
+          }}
         >
+          {" "}
           Enviar
         </Button>
       </Box>

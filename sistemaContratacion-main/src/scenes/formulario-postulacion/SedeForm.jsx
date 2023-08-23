@@ -26,52 +26,58 @@ const FormularioSede = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const success = await crearSede(formData);
+    console.log(formData);
   };
 
   return (
     <div className="register">
-      <form onSubmit={handleSubmit}>
-        <Box
-          component="div"
-          bgcolor={"rgba(255, 255, 255, 0.7)"}
+      <Box
+        component="form"
+        bgcolor={"rgba(255, 255, 255, 0.7)"}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "800px",
+          margin: "0 auto",
+          padding: "16px",
+        }}
+        onSubmit={handleSubmit}
+      >
+        <Header title="Formulario Sede" subtitle="Complete el formulario" />
+
+        <label>Sede:</label>
+        <TextField
+          name="sede_nombre"
+          value={formData.sede_nombre}
+          onChange={handleChange}
+          margin="normal"
+          required
+        />
+        <label>Descripción:</label>
+        <TextField
+          name="sede_descripcion"
+          value={formData.sede_descripcion}
+          onChange={handleChange}
+          margin="normal"
+          required
+        />
+        <Button
+          type="submit"
+          variant="contained"
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            maxWidth: "800px",
-            margin: "0 auto",
-            padding: "16px",
+            mt: 2,
+            p: 2,
+            backgroundColor: "#36ae56", // Verde claro
+            color: "#FFFFFF", // Letras blancas
+            "&:hover": {
+              backgroundColor: "#388E3C", // Verde oscuro al pasar el mouse
+            },
           }}
         >
-          <Header title="Formulario Sede" subtitle="Complete el formulario" />
-
-          <label htmlFor="sede_nombre">Sede:</label>
-          <TextField
-            id="sede_nombre"
-            name="sede_nombre"
-            value={formData.sede_nombre}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <label htmlFor="sede_descripcion">Descripción:</label>
-          <TextField
-            id="sede_descripcion"
-            name="sede_descripcion"
-            value={formData.sede_descripcion}
-            onChange={handleChange}
-            margin="normal"
-            required
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="secondary"
-            sx={{ mt: 2, p: 2 }}
-          >
-            Enviar
-          </Button>
-        </Box>
-      </form>
+          {" "}
+          Enviar
+        </Button>
+      </Box>
     </div>
   );
 };

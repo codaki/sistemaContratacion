@@ -13,6 +13,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CloseIcon from '@mui/icons-material/Close'; // Icono de "x"
+import { useAuth } from "../../context/AuthContext";
 
 function PaperComponent(props) {
   return (
@@ -35,7 +36,8 @@ export default function ElegantPopUpRegistro() {
   const [otpInput, setOTPInput] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(false);
   const [correoEnviado, setCorreoEnviado] = React.useState(false);
-
+  
+  const { signup} = useAuth();
   const handleClose = () => {
     setOpen(false);
   };
@@ -44,7 +46,34 @@ export default function ElegantPopUpRegistro() {
     setOpen(true);
   };
   const handleCloseCorreoValido = () => {
+    //enviar datos delo registro
+    signup({
+      tipoid: 'Cédula',
+      numid: localStorage.getItem('cedula'),
+      sexo: localStorage.getItem('sexo'),
+      titulo: localStorage.getItem('titulo'),
+      fecha: localStorage.getItem('fecha_nacimiento'),
+      correo: localStorage.getItem('email'),
+      password: localStorage.getItem('password'),
+      nombre1: localStorage.getItem('nombre'),
+      nombre2: localStorage.getItem('nombre2'),
+      apellido1: localStorage.getItem('apellido'),
+      apellido2: localStorage.getItem('apellido2'),
+    });
     setOpenCorreoValido(false);
+    localStorage.removeItem('cedula');
+    localStorage.removeItem('sexo');
+    localStorage.removeItem('titulo');
+    localStorage.removeItem('email');
+    localStorage.removeItem('password');
+    localStorage.removeItem('nombre');
+    localStorage.removeItem('nombre2');
+    localStorage.removeItem('fecha_nacimiento');
+    localStorage.removeItem('apellido');
+    localStorage.removeItem('apellido2');
+
+
+    window.location.reload();
   };
   const handleCloseCodigoInvalido = () => {
     setOpenCodigoInvalido(false);

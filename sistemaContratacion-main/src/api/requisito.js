@@ -2,7 +2,11 @@ import axios from "axios";
 
 const API = "http://localhost:8800/api";
 
+<<<<<<< HEAD
 export const pedirRequisito = () =>
+=======
+export const pedirRequisitos = () =>
+>>>>>>> 0c4dff7ec23facfd402a9b1da8c626e762224eec
   axios.get(`${API}/requisito`, {
     withCredentials: true,
   });
@@ -57,9 +61,18 @@ export const editarRequisito = async (requisito_id, formData) => {
 
 export const eliminarRequisito = async (requisito_id) => {
   try {
+<<<<<<< HEAD
     const response = await axios.delete(`${API}/requisito/${requisito_id}`, {
       withCredentials: true,
     });
+=======
+    const response = await axios.delete(
+      `${API}/requisito/${requisito_id}`,
+      {
+        withCredentials: true,
+      }
+    );
+>>>>>>> 0c4dff7ec23facfd402a9b1da8c626e762224eec
 
     if (response.status === 200) {
       console.log(`Requisito con ID ${requisito_id} eliminado con éxito`);

@@ -48,7 +48,6 @@ export default function Home() {
 
   return (
     <>
-    <PopUpSeguridad open={open} onClose={handleClose} />
     <Navbar/>
       <div className="authPage">
         <Box alignContent={"center"}>

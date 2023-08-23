@@ -4,26 +4,53 @@ import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../config.js";
 
 export const register = (req, res) => {
-  const { tipoid,numid,sexo,titulo,fecha,correo,password,nombre1,nombre2,apellido1,apellido2 } = req.body;
+  const {
+    tipoid,
+    numid,
+    sexo,
+    titulo,
+    fecha,
+    correo,
+    password,
+    nombre1,
+    nombre2,
+    apellido1,
+    apellido2
+  } = req.body;
+  let genero;
+  console.log(password)
+  console.log(nombre1,nombre2)
   // verificación de usuario existente
-  const q = "SELECT * FROM candidato WHERE cand_correo = $1";
-
-  db.query(q, [correo], (err, data) => {
+  const selectQuery = "SELECT * FROM candidato WHERE cand_correo = $1";
+  db.query(selectQuery, [correo], (err, data) => {
     if (err) return res.status(500).json(err);
-    if (data.rows.length) return res.status(409).json(["Usuario ya existe!"]);
-    //Encriptado de contraseña
+    if (data.rows.length) {
+      return res.status(409).json(["Usuario ya existe!"]);
+    }
+    // Encriptado de contraseña
     const salt = bcrypt.genSaltSync(10);
+    console.log("AQUIIIIIII")
+    console.log(password)
     const hash = bcrypt.hashSync(password, salt);
-    //Insersion de datos
-    const q =
+    // Inserción de datos
+    if(sexo==='Masculino'){
+      genero='M';
+    }else{
+      genero='F';
+    }
+    const insertQuery =
       "INSERT INTO candidato(cand_tipo_identificacion,cand_num_identificacion,cand_sexo,cand_titulo,cand_fecha_nacimiento,cand_correo,cand_password,cand_nombre1,cand_nombre2,cand_apellido1,cand_apellido2) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)";
-    const values = [tipoid , numid , sexo,titulo,fecha,correo,hash,nombre1,nombre2,apellido1,apellido2];
-    db.query(q, values, (err, data) => {
+    const values = [tipoid, numid, genero, titulo, fecha, correo, hash, nombre1, nombre2, apellido1, apellido2];
+    console.log(values)
+    console.log(password)
+    db.query(insertQuery, values, (err, data) => {
       if (err) return res.status(500).json(err);
-      return res.status(200).json("Se creo el usuario");
+      return res.status(200).json("Se creó el usuario");
     });
   });
 };
+
+
 
 export const login = (req, res) => {
   const q = "SELECT * FROM candidato WHERE cand_correo = $1";
@@ -75,7 +102,6 @@ export const verifyToken = async(req,res)=>{
     const q = "SELECT * FROM candidato WHERE cand_id = $1";
     db.query(q, [user.id], (err, data) => {
       if (err) return res.status(500).json(err);
-      console.log(res)
       return res.json({
         id: data.rows[0].cand_id,
         correo: data.rows[0].cand_correo,

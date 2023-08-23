@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -8,12 +8,15 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import RecentActorsRoundedIcon from '@mui/icons-material/RecentActorsRounded';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import user from './usuario2.png'
+import RecentActorsRoundedIcon from "@mui/icons-material/RecentActorsRounded";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import user1 from "./usuario2.png";
+import { useAuth } from "../../context/AuthContext";
+
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
   return (
     <MenuItem
       active={selected === title}
@@ -31,18 +34,26 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const theme = useTheme();
+  const { user } = useAuth();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-
+  const userRole = user ? user.role : "";
   const collapsedWidth = "80px";
 
   return (
     <Box
       sx={{
+        height: "270vh",
+        "&::-webkit-scrollbar": {
+          width: "8px", // Customize scrollbar width
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "#4cceac", // Customize scrollbar thumb color
+          borderRadius: "4px",
+        },
         "& .pro-sidebar-inner": {
           background: `#006935 !important`,
-       
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -56,10 +67,12 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#78edcf !important",
         },
-height : "150vh"
+        
+  
       }}
+      
     >
-      <ProSidebar collapsed={isCollapsed}>
+      <ProSidebar collapsed={isCollapsed} style={{ zIndex: 1000 }}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
@@ -94,8 +107,7 @@ height : "150vh"
                   alt="foto-de-perfil"
                   width="100px"
                   height="100px"
-                  
-                  src={user}
+                  src={user1}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -109,7 +121,7 @@ height : "150vh"
                   Usuario
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Postulante
+                  {userRole === "admin" ? "Recursos Humanos" : "Postulante"}
                 </Typography>
               </Box>
             </Box>
@@ -126,105 +138,127 @@ height : "150vh"
 
             {/* Conditional rendering based on 'isCollapsed' */}
             {!isCollapsed && (
-              <Typography variant="h6" color={colors.grey[900]} sx={{ m: "15px 0 5px 20px" }}>
+              <Typography
+                variant="h6"
+                color={colors.grey[900]}
+                sx={{ m: "15px 0 5px 20px" }}
+              >
                 Postulación
               </Typography>
             )}
 
-            <Item
-              title="Seleccionar Postulación"
-              to="/seleccionar-postulacion"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Subir Información"
-              to="/subir-informacion"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-              <Item
-              title="Tabla Candidatos"
-              to="/tabla-candidatos"
-              icon={<RecentActorsRoundedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-                         <Item
-              title="Calificaciones"
-              to="/tablas-calificacion"
-              icon={<RecentActorsRoundedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Oferta"
-              to="/formulario-oferta"
-              icon={< AppRegistrationIcon/>}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Formulario Periodo"
-              to="/formulario-periodo"
-              icon={< AppRegistrationIcon/>}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Tipo de Contratacion"
-              to="/formulario-contratacion"
-              icon={< AppRegistrationIcon/>}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Campo especifico"
-              to="/formulario-cespecifico"
-              icon={< AppRegistrationIcon/>}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Campo Amplio"
-              to="/formulario-camplio"
-              icon={< AppRegistrationIcon/>}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Sede"
-              to="/formulario-sede"
-              icon={< AppRegistrationIcon/>}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Departamento"
-              to="/formulario-departamento"
-              icon={< AppRegistrationIcon/>}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Personal Academico"
-              to="/formulario-pacademico"
-              icon={< AppRegistrationIcon/>}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Actividad"
-              to="/formulario-actividad"
-              icon={< AppRegistrationIcon/>}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {userRole === "candidato" && (
+              <>
+                <Item
+                  title="Seleccionar Postulación"
+                  to="/seleccionar-postulacion"
+                  icon={<PeopleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Subir Información"
+                  to="/subir-informacion"
+                  icon={<ContactsOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </>
+            )}
+            {userRole === "admin" && (
+              <>
+                <Item
+                  title="Tabla Candidatos"
+                  to="/tabla-candidatos"
+                  icon={<RecentActorsRoundedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Calificaciones"
+                  to="/tablas-calificacion"
+                  icon={<RecentActorsRoundedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Oferta"
+                  to="/formulario-oferta"
+                  icon={<AppRegistrationIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                <SubMenu
+                  title="Formularios"
+                  icon={<AppRegistrationIcon />}
+                  style={{
+                    color: colors.grey[900],
+                  }}
+                >
+                  <Item
+                    title="Formulario Periodo"
+                    to="/formulario-periodo"
+                    icon={<AppRegistrationIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Tipo de Contratacion"
+                    to="/formulario-contratacion"
+                    icon={<AppRegistrationIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Campo especifico"
+                    to="/formulario-cespecifico"
+                    icon={<AppRegistrationIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Campo Amplio"
+                    to="/formulario-camplio"
+                    icon={<AppRegistrationIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Sede"
+                    to="/formulario-sede"
+                    icon={<AppRegistrationIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Departamento"
+                    to="/formulario-departamento"
+                    icon={<AppRegistrationIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Personal Academico"
+                    to="/formulario-pacademico"
+                    icon={<AppRegistrationIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Actividad"
+                    to="/formulario-actividad"
+                    icon={<AppRegistrationIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                </SubMenu>
+              </>
+            )}
           </Box>
         </Menu>
       </ProSidebar>
+      
     </Box>
   );
 };
