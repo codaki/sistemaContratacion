@@ -182,10 +182,11 @@ export const Calificaciones = () => {
           <Header
             title="Calificaciones"
             subtitle="Calificaciones de los postulantes"
-          />
+        
+/>
         </Toolbar>
       </AppBar>
-      <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
+      <Container component="main" maxWidth="lg" sx={{ mb: 4 }}>
         <Paper
           variant="outlined"
           sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}

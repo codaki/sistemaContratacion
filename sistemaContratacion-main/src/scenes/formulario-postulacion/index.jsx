@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Button,
@@ -13,15 +13,26 @@ import * as yup from "yup";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Header from "../../components/Header";
-import { grey } from '@mui/material/colors';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Draggable from 'react-draggable';
+import { grey } from "@mui/material/colors";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Draggable from "react-draggable";
 
-import { Table, TableBody, TableCell, TableContainer, TableRow, Paper, AppBar, Toolbar, Typography, TableHead } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  AppBar,
+  Toolbar,
+  Typography,
+  TableHead,
+} from "@mui/material";
 
 import { pedirPostulaciones } from "../../api/postulacion";
 import { useState } from "react";
@@ -49,23 +60,23 @@ const initialValues = {
 };
 
 const FormularioPostulacion = () => {
-  const [postulacion,setPostulacion] = useState([])
-  const [contratacion,setContratacion] = useState([])
-  const [personalAcademico,setPersonalAcademico] = useState([])
-  const [campoEspecifico,setCampoEspecifico] = useState([])
-  const [campoAmplio,setCampoAmplio] = useState([])
-  const [departamento,setDepartamento] = useState([])
-  const [sede,setSede] = useState([])
-  const [actividad,setActividad] = useState([])
+  const [postulacion, setPostulacion] = useState([]);
+  const [contratacion, setContratacion] = useState([]);
+  const [personalAcademico, setPersonalAcademico] = useState([]);
+  const [campoEspecifico, setCampoEspecifico] = useState([]);
+  const [campoAmplio, setCampoAmplio] = useState([]);
+  const [departamento, setDepartamento] = useState([]);
+  const [sede, setSede] = useState([]);
+  const [actividad, setActividad] = useState([]);
   const handleFormSubmit = (values) => {
     console.log(values);
   };
 
   const arregloDeDatos = [
-    { nombre: "Juan", edad: 30, },
-    { nombre: "María", edad: 25,},
-    { nombre: "Carlos", edad: 40,},
-    { nombre: "Ana", edad: 28, },
+    { nombre: "Juan", edad: 30 },
+    { nombre: "María", edad: 25 },
+    { nombre: "Carlos", edad: 40 },
+    { nombre: "Ana", edad: 28 },
   ];
   const [seleccionados, setSeleccionados] = useState({
     postulation: "",
@@ -84,7 +95,6 @@ const FormularioPostulacion = () => {
     // Puedes devolver un arreglo de arreglos con las filas de la tabla
     return data.map((item) => [item.nombre, item.edad]);
   };
-
 
   // Función para manejar el clic en el botón "Enviar"
   const handleEnviarClick = (values) => {
@@ -146,46 +156,71 @@ const FormularioPostulacion = () => {
           PaperComponent={PaperComponent}
           aria-labelledby="draggable-dialog-title"
         >
-          <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-            Verifique los datos solo puede postular una vez por concurso, verifique los datos antes de enviar.
+          <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+            Verifique los datos solo puede postular una vez por concurso,
+            verifique los datos antes de enviar.
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
               <TableContainer component={Paper}>
-                <Table sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Postulación</TableCell>
-                    <TableCell >202351</TableCell>
+                <Table
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
+                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
+                      Postulación
+                    </TableCell>
+                    <TableCell>202351</TableCell>
                   </TableRow>
-                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Contratación</TableCell>
-                    <TableCell >Personal académico que desarrolla actividades de tercer nivel de grado y cuarto nivel</TableCell>
+                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
+                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
+                      Tipo de Contratación
+                    </TableCell>
+                    <TableCell>
+                      Personal académico que desarrolla actividades de tercer
+                      nivel de grado y cuarto nivel
+                    </TableCell>
                   </TableRow>
-                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Campo Específico</TableCell>
-                    <TableCell >Base de Datos</TableCell>
+                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
+                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
+                      Campo Específico
+                    </TableCell>
+                    <TableCell>Base de Datos</TableCell>
                   </TableRow>
-                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Campo Amplio</TableCell>
-                    <TableCell >seleccionados.postulacion</TableCell>
+                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
+                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
+                      Campo Amplio
+                    </TableCell>
+                    <TableCell>seleccionados.postulacion</TableCell>
                   </TableRow>
-                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Sede</TableCell>
-                    <TableCell >Matriz</TableCell>
+                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
+                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
+                      Sede
+                    </TableCell>
+                    <TableCell>Matriz</TableCell>
                   </TableRow>
-                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Departamento</TableCell>
-                    <TableCell >Departamento de Ciencias Exactas</TableCell>
+                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
+                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
+                      Tipo de Departamento
+                    </TableCell>
+                    <TableCell>Departamento de Ciencias Exactas</TableCell>
                   </TableRow>
-                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Tipo de Personal Académico</TableCell>
-                    <TableCell >Auxiliar Nivel 1</TableCell>
+                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
+                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
+                      Tipo de Personal Académico
+                    </TableCell>
+                    <TableCell>Auxiliar Nivel 1</TableCell>
                   </TableRow>
-                  <TableRow sx={{ textAlign: 'left', width: '100%' }}>
-                    <TableCell sx={{ fontWeight: 'bold', textAlign: 'left' }}>Actividad</TableCell>
-                    <TableCell >Docencia</TableCell>
+                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
+                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
+                      Actividad
+                    </TableCell>
+                    <TableCell>Docencia</TableCell>
                   </TableRow>
-
                 </Table>
               </TableContainer>
             </DialogContentText>
@@ -203,7 +238,7 @@ const FormularioPostulacion = () => {
       try {
         const res = await pedirPostulaciones();
         const res1 = await pedirContratacion();
-        const res2 =await pedirPersonalAcademico();
+        const res2 = await pedirPersonalAcademico();
         const res3 = await pedirCampoEspecifico();
         const res4 = await pedirCampoAmplio();
         const res5 = await pedirSede();
@@ -224,7 +259,7 @@ const FormularioPostulacion = () => {
     PedirPosutlacion();
   }, []);
 
-  const [postulacion1Selected, setPostulacion1Selected] = useState(false); 
+  const [postulacion1Selected, setPostulacion1Selected] = useState(false);
   const [postulacion2Selected, setPostulacion2Selected] = useState(false);
   const [postulacion3Selected, setPostulacion3Selected] = useState(false);
   const [postulacion4Selected, setPostulacion4Selected] = useState(false);
@@ -236,7 +271,7 @@ const FormularioPostulacion = () => {
       <Header title="Formato de Documentos" subtitle="Complete el formulario" />
 
       <Formik
-         onSubmit={(values) => {
+        onSubmit={(values) => {
           // Al hacer clic en Enviar, llamamos a handleEnviarClick para guardar los valores seleccionados
           handleEnviarClick(values);
 
@@ -244,8 +279,9 @@ const FormularioPostulacion = () => {
           handleFormSubmit(values);
         }}
         initialValues={initialValues}
-        validationSchema={formSchema}>
-            {({
+        validationSchema={formSchema}
+      >
+        {({
           values,
           errors,
           touched,
@@ -264,8 +300,8 @@ const FormularioPostulacion = () => {
                   variant="filled"
                   value={values.postulation}
                   onChange={(event) => {
-                    handleChange(event); 
-                    setPostulacion1Selected(true); 
+                    handleChange(event);
+                    setPostulacion1Selected(true);
                   }}
                   onBlur={handleBlur}
                   name="postulation"
@@ -273,7 +309,10 @@ const FormularioPostulacion = () => {
                 >
                   {postulacion.length > 0 ? (
                     postulacion.map((option) => (
-                      <MenuItem key={option.post_id} value={option.post_periodo}>
+                      <MenuItem
+                        key={option.post_id}
+                        value={option.post_periodo}
+                      >
                         {option.post_periodo}
                       </MenuItem>
                     ))
@@ -324,9 +363,7 @@ const FormularioPostulacion = () => {
                   }}
                   onBlur={handleBlur}
                   name="sede"
-                  error={
-                    !!touched.sede && !!errors.sede
-                  }
+                  error={!!touched.sede && !!errors.sede}
                   disabled={!postulacion2Selected} // Disable the MenuItem until MenuItem 1 is selected
                 >
                   {sede.length > 0 ? (
@@ -354,15 +391,13 @@ const FormularioPostulacion = () => {
                   }}
                   onBlur={handleBlur}
                   name="departamento"
-                  error={
-                    !!touched.departamento && !!errors.departamento
-                  }
+                  error={!!touched.departamento && !!errors.departamento}
                   disabled={!postulacion3Selected} // Disable the MenuItem until MenuItem 1 is selected
                 >
                   {departamento.length > 0 ? (
                     departamento.map((option) => (
                       <MenuItem key={option.dept_id} value={option.dept_nombre}>
-                        {option.dept_nombre +" - "+ option.dept_descripcion}
+                        {option.dept_nombre + " - " + option.dept_descripcion}
                       </MenuItem>
                     ))
                   ) : (
@@ -384,9 +419,7 @@ const FormularioPostulacion = () => {
                   }}
                   onBlur={handleBlur}
                   name="campoAmplio"
-                  error={
-                    !!touched.campoAmplio && !!errors.campoAmplio
-                  }
+                  error={!!touched.campoAmplio && !!errors.campoAmplio}
                   disabled={!postulacion4Selected} // Disable the MenuItem until MenuItem 1 is selected
                 >
                   {campoAmplio.length > 0 ? (
@@ -414,9 +447,7 @@ const FormularioPostulacion = () => {
                   }}
                   onBlur={handleBlur}
                   name="personalAcademico"
-                  error={
-                    !!touched.campoEspecifico && !!errors.campoEspecifico
-                  }
+                  error={!!touched.campoEspecifico && !!errors.campoEspecifico}
                   disabled={!postulacion5Selected} // Disable the MenuItem until MenuItem 1 is selected
                 >
                   {campoEspecifico.length > 0 ? (
@@ -430,7 +461,7 @@ const FormularioPostulacion = () => {
                   )}
                 </Select>
               </Box>
-              
+
               <Box>
                 <Typography variant="h6" fontWeight="bold">
                   Seleccionar Tipo de Personal Académico:
@@ -441,14 +472,14 @@ const FormularioPostulacion = () => {
                   value={values.personalAcademico}
                   onChange={(event) => {
                     handleChange(event);
-                    setPostulacion7Selected(true); 
+                    setPostulacion7Selected(true);
                   }}
                   onBlur={handleBlur}
                   name="personalAcademico"
                   error={
                     !!touched.personalAcademico && !!errors.personalAcademico
                   }
-                  disabled={!postulacion6Selected} 
+                  disabled={!postulacion6Selected}
                 >
                   {personalAcademico.length > 0 ? (
                     personalAcademico.map((option) => (
@@ -470,13 +501,11 @@ const FormularioPostulacion = () => {
                   variant="filled"
                   value={values.actividad}
                   onChange={(event) => {
-                    handleChange(event); 
+                    handleChange(event);
                   }}
                   onBlur={handleBlur}
                   name="actividad"
-                  error={
-                    !!touched.actividad && !!errors.actividad
-                  }
+                  error={!!touched.actividad && !!errors.actividad}
                   disabled={!postulacion7Selected} // Disable the MenuItem until MenuItem 1 is selected
                 >
                   {actividad.length > 0 ? (
@@ -490,19 +519,13 @@ const FormularioPostulacion = () => {
                   )}
                 </Select>
               </Box>
-              <Box display="flex" justify-content="space-between" gap>
-                
-              </Box>
+              <Box display="flex" justify-content="space-between" gap></Box>
 
               <Box display="flex" justify-content="space-between" gap>
-                <Card sx={{ maxWidth: 220, backgroundColor: grey[300]}}>
+                <Card sx={{ maxWidth: 220, backgroundColor: grey[300] }}>
                   <CardActionArea>
                     <CardContent>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                      >
+                      <Typography gutterBottom variant="h5" component="div">
                         Actividad Docencia
                       </Typography>
                     </CardContent>
@@ -515,7 +538,6 @@ const FormularioPostulacion = () => {
                       <Typography gutterBottom variant="h5" component="div">
                         Actividad Investigación
                       </Typography>
-  
                     </CardContent>
                   </CardActionArea>
                 </Card>
@@ -523,7 +545,7 @@ const FormularioPostulacion = () => {
                 <Card sx={{ maxWidth: 220, backgroundColor: grey[300] }}>
                   <CardActionArea>
                     <CardContent>
-                      <Typography gutterBottom variant="h5" component="div" >
+                      <Typography gutterBottom variant="h5" component="div">
                         Actividad Vinculación
                       </Typography>
                     </CardContent>
@@ -553,7 +575,6 @@ const FormularioPostulacion = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
-
             </Box>
           </form>
         )}
