@@ -738,24 +738,34 @@ const FormularioPostulacion = () => {
               {/* Include the PopUpPostulacion component here */}
               <PopUpPostulacion />
               {actividadSelected && (
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Vacantes</TableCell>
-                        <TableCell>Tiempo</TableCell>
-                        <TableCell>Horas</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>{oferta.ofe_vacantes}</TableCell>
-                        <TableCell>{oferta.ofe_id}</TableCell>
-                        <TableCell>{oferta.ofe_horas}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                <TableContainer component={Paper} sx={{ width: "70%", margin: "0 auto" }}>
+                <Table
+                  sx={{
+                    alignItems: "center",
+                  }}
+                >
+                  <TableHead sx={{ alignItems: "center", backgroundColor: "green" }}>
+                    <TableRow>
+                      <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                        Vacantes
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                        Tiempo
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                        Horas
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>{oferta.ofe_vacantes}</TableCell>
+                      <TableCell>{oferta.ofe_id}</TableCell>
+                      <TableCell>{oferta.ofe_horas}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
               )}
             </Box>
           </form>
