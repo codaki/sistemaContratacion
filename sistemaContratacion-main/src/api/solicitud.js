@@ -7,6 +7,11 @@ export const pedirSolicitud = () =>
     withCredentials: true,
   });
 
+  export const infoRecursos = () =>
+  axios.get(`${API}/infoRecursos`, {
+    withCredentials: true,
+  });
+
 export const crearSolicitud = async (formData) => {
   try {
     const response = await axios.post(`${API}/solicitud`, formData, {
