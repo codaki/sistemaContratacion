@@ -91,7 +91,7 @@ const FormularioPostulacion = () => {
   const { user } = useAuth();
   const handleSolicitud = ()=>{
     const solicitud = {
-      cand_id: user.id,
+      cand_id: user.id?user.id:user.cand_id,
       rh_id: 1,
       sol_aprobacion: "false",
       nota_final: 0,
