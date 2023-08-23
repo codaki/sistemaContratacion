@@ -78,15 +78,6 @@ const Dashboard = () => {
     color: "#000",
   };
 
-  const floatAnimation = keyframes`
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-`;
-
   return (
     <Box sx={{ backgroundColor: "#fcfcfc", minHeight: "80vh" }}>
       <Container>
@@ -270,22 +261,21 @@ const Dashboard = () => {
             <br />
           </Box>
           <Box
-            bgcolor="#f1f1f1"
             m={1}
-            p="30vh"
             fontSize="30px"
             overflow="hidden"
             display="flex"
             flexDirection="column"
             gap={2}
-            sx={{
-              flex: "0.3",
-              backgroundImage: `url(https://uec-el.espe.edu.ec/wp-content/uploads/2018/11/espe-banner-estudiantes.jpg)`,
-              backgroundSize: "cover",
-              backgroundPosition: "-40vh 0",
-              backgroundRepeat: "no-repeat",
-            }}
-          ></Box>
+            justifyContent="center" // Center vertically
+            alignItems="center" // Center horizontally
+          >
+            <img
+              src={persona}
+              alt="Persona"
+              style={{ width: "100%", height: "auto", maxWidth: "400px" }} // Adjust the width and maxWidth as needed
+            />
+          </Box>
         </CustomBox>
       </Container>
     </Box>
