@@ -34,14 +34,14 @@ const Topbar = () => {
       justifyContent="right"
       p={2}
       sx={{
-        backgroundColor: "#c2c5c8", // Cambiar el color de fondo a amarillo pastel
+        backgroundColor: "#00894b", // Cambiar el color de fondo a amarillo pastel
       }}
     >
       {/* SEARCH BAR */}
 
       {/* ICONS */}
       <Box display="flex">
-        <IconButton onClick={handleMenuOpen}>
+      <IconButton onClick={handleMenuOpen} sx={{ color: '#FFFFFF' }}>
           <PersonOutlinedIcon />
         </IconButton>
         <Menu
