@@ -34,14 +34,18 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const theme = useTheme();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const userRole = user ? user.role : "";
   const collapsedWidth = "80px";
+  if (!isAuthenticated) {
+    return null; // No mostrar la barra lateral si el usuario no está autenticado
+  }
 
   return (
+    
     <Box
       sx={{
         height: "270vh",
