@@ -14,7 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Excel from "./excel.jpeg";
 import Pdf from "./pdf.png";
 import Word from "./word.png";
-import persona from "./chica.png";
+import persona from "./persona.svg";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -123,7 +123,7 @@ const Dashboard = () => {
                     },
                   }}
                 >
-                  Formatos Aqui!
+                  ¡Formatos Aquí!
                 </Button>
               </Box>
 
