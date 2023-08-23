@@ -18,6 +18,8 @@ const Candidatos = () => {
     });
   }, []);
 
+  
+
   const columns = [
     { field: "sol_id", headerName: "SolicitudID", flex: 0.5 },
     { field: "cand_id", headerName: "Candidato ID" },
@@ -87,12 +89,22 @@ const Candidatos = () => {
       flex: 1,
       renderCell: (params) => {
         const handleAccept = () => {
-          // Lógica para aceptar aquí, por ejemplo, actualizar el estado del registro
+          const updatedSolicitudes = solicitudes.map((solicitud) =>
+            solicitud.cand_id === params.row.cand_id
+              ? { ...solicitud, sol_aprobacion: true }
+              : solicitud
+          );
+          setSolicitudes(updatedSolicitudes);
           console.log("Aceptar", params.row.cand_id);
         };
-  
+    
         const handleReject = () => {
-          // Lógica para rechazar aquí, por ejemplo, actualizar el estado del registro
+          const updatedSolicitudes = solicitudes.map((solicitud) =>
+            solicitud.cand_id === params.row.cand_id
+              ? { ...solicitud, sol_aprobacion: false }
+              : solicitud
+          );
+          setSolicitudes(updatedSolicitudes);
           console.log("Rechazar", params.row.cand_id);
         };
   

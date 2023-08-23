@@ -98,6 +98,7 @@ const FormularioPostulacion = () => {
       ofe_id: oferta.ofe_id
     };
     crearSolicitud(solicitud);
+
   }
   // Función para manejar el clic en el botón "Enviar"
   const handleEnviarClick = (values) => {
