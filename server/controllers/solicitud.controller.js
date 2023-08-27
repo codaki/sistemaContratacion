@@ -49,9 +49,24 @@ export const deleteSolicitud = (req, res) => {
 export const infoRecursos = (req,res) =>{
   const q = `SELECT s.sol_id, s.cand_id, c.cand_num_identificacion, s.sol_aprobacion, s.nota_final, c.cand_nombre1, c.cand_apellido1, c.cand_correo, c.cand_sexo,c.cand_fecha_nacimiento,c.cand_titulo
   FROM public.solicitud s
-  INNER JOIN public.candidato c ON s.cand_id = c.cand_id;`
+  INNER JOIN public.candidato c ON s.cand_id = c.cand_id ORDER BY sol_id ASC;`
   db.query(q,(err,data)=>{
     if(err) return res.status(500).send(err);
     return res.status(200).json(data.rows);
   })
 }
+
+export const updateEstadoSolicitud = (req, res) => {
+  const sol_id = req.params.id;
+  const { sol_aprobacion } = req.body;
+  console.log(sol_id, sol_aprobacion)
+
+  const q = `UPDATE solicitud SET sol_aprobacion = $1 WHERE sol_id = $2 RETURNING *;`;
+  const values = [sol_aprobacion, sol_id];
+  db.query(q, values, (err, data) => {
+    if (err) return res.status(500).send(err);
+    if (data.rows.length === 0)
+      return res.status(404).send("Solicitud no encontrada");
+    return res.status(200).json(data.rows[0]);
+  });
+};
