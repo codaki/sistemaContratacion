@@ -78,3 +78,30 @@ export const eliminarSolicitud = async (solicitud_id) => {
     return false;
   }
 };
+
+export const editarEstadoSolicitud = async (solicitud_id, estado) => {
+  try {
+    console.log(solicitud_id,estado)
+    const response = await axios.put(
+      `${API}/estadoSolicitud/${solicitud_id}`,
+      {sol_aprobacion: estado},
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      console.log(`Solicitud con ID ${solicitud_id} actualizada con éxito`);
+      return true;
+    } else {
+      console.error(`Error al actualizar la solicitud con ID ${solicitud_id}`);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    return false;
+  }
+};
