@@ -9,6 +9,8 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
+
+
 export const TableComponent = ({ data }) => {
   const [calificaciones, setCalificaciones] = useState(
     new Array(data.length).fill("")

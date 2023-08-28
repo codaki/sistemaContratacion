@@ -15,6 +15,12 @@ import Excel from "./excel.jpeg";
 import Pdf from "./pdf.png";
 import Word from "./word.png";
 import persona from "./persona.svg";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import * as React from 'react';
+import { useEffect } from "react";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -78,6 +84,79 @@ const Dashboard = () => {
     color: "#000",
   };
 
+  const BotonesAprobacion = ({ isGreen }) => {
+    return (
+      <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+        <Stack direction="row" spacing={1}>
+          <Chip
+            label="Seleccionar Postulación"
+            color={isGreen ? "success" : "default"}
+          />
+          <Chip
+            label="Subir Información"
+            color={isGreen ? "success" : "default"}
+          />
+        </Stack>
+      </Box>
+    );
+  };
+
+  const Status = ({ approvalStatus }) => {
+    const [value, setValue] = useState(approvalStatus);
+  
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
+  
+    useEffect(() => {
+      setValue(approvalStatus);
+    }, [approvalStatus]);
+  
+    const getStatusColor = () => {
+      if (value === "one") {
+        return { textColor: "success.main", bgColor: "success.light" }; // Verde para aprobado
+      } else if (value === "two") {
+        return { textColor: "error.main", bgColor: "error.light" }; // Rojo para desaprobado
+      }
+      return { textColor: "text.primary", bgColor: "background.paper" }; // Colores por defecto
+    };
+  
+    const statusColor = getStatusColor();
+  
+    return (
+      <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
+        <Tabs
+          variant="fullWidth"
+          value={value}
+          onChange={handleChange}
+          textColor={statusColor.textColor}
+          indicatorColor={statusColor.textColor}
+          aria-label="secondary tabs example"
+        >
+          <Tab
+            value="one"
+            label="Aprobado"
+            sx={{
+              backgroundColor:
+                value === "one" ? statusColor.bgColor : "transparent",
+            }}
+            disabled
+          />
+          <Tab
+            value="two"
+            label="Desaprobado"
+            sx={{
+              backgroundColor:
+                value === "two" ? statusColor.bgColor : "transparent",
+            }}
+            disabled
+          />
+        </Tabs>
+      </Box>
+    );
+  };
+  
+
   return (
     <Box sx={{ backgroundColor: "#fcfcfc", minHeight: "80vh" }}>
       <Container>
@@ -95,6 +174,7 @@ const Dashboard = () => {
             >
               Bienvenidos a la plataforma ESPE DOCENTES
             </Typography>
+            <Status/>
             <Title variant="h1">
               !Revisa el formato de los documentos que tienes que entregar!
             </Title>
@@ -236,28 +316,7 @@ const Dashboard = () => {
               </Dialog>
             </Box>
             <br />
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <Button
-                variant="contained"
-                color={button1Color}
-                onClick={() => handleButtonClick(1)}
-                sx={{ flexGrow: 1, color: 'white', backgroundColor: button2Color, ':disabled': { backgroundColor: 'grey', color: 'white' } }}
-              disabled
-              >
-                Estado Postulación
-              </Button>
-
-              <Button
-                variant="contained"
-                color={button2Color}
-                onClick={() => handleButtonClick(2)}
-                sx={{ flexGrow: 1, color: 'white', backgroundColor: button2Color, ':disabled': { backgroundColor: 'grey', color: 'white' } }}
-              disabled
-              >
-                Estado Información
-              </Button>
-
-            </Box>
+            <BotonesAprobacion/>
             <br />
           </Box>
           <Box
