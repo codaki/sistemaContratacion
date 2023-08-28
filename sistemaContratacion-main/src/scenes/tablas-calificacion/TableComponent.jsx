@@ -14,7 +14,7 @@ export const TableComponent = ({ data }) => {
     new Array(data.length).fill("")
   );
 
-    const handleCalificacionChange = (index, value) => {
+  const handleCalificacionChange = (index, value) => {
     // Validar que la entrada sea un número del 1 al 20
     const parsedValue = parseInt(value);
     if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 20) {
@@ -46,22 +46,24 @@ export const TableComponent = ({ data }) => {
         <TableBody>
           {data.map((row, index) => (
             <TableRow key={index}>
-              <TableCell style={{ minWidth: 300 }}>{row.requisito}</TableCell>
+              <TableCell style={{ minWidth: 300, textAlign: "justify" }}>
+                {row.requisito}
+              </TableCell>
 
               <TableCell style={{ minWidth: 300 }}>
                 {row.titulos.map((titulo, i) => (
-                  <TableRow key={index}>
+                  <TableRow key={i}>
                     <TableCell>{titulo}</TableCell>
                   </TableRow>
                 ))}
               </TableCell>
 
-              <TableCell style={{ minWidth: 300 }}>
+              <TableCell style={{ minWidth: 300 ,textAlign: "justify"}}>
                 {row.detalleTiempo.length > 1 ? (
                   <>
                     {row.detalleTiempo.map((minimo, i) => (
-                      <TableRow key={index}>
-                        <TableCell>{minimo}</TableCell>
+                      <TableRow key={i}>
+                        <TableCell style={{ textAlign: "justify"  }}>{minimo}</TableCell>
                       </TableRow>
                     ))}
                   </>
@@ -74,8 +76,8 @@ export const TableComponent = ({ data }) => {
                 {row.minimo.length > 1 ? (
                   <>
                     {row.minimo.map((minimo, i) => (
-                      <TableRow key={index}>
-                        <TableCell>{minimo}</TableCell>
+                      <TableRow key={i}>
+                        <TableCell >{minimo}</TableCell>
                       </TableRow>
                     ))}
                   </>
@@ -88,7 +90,7 @@ export const TableComponent = ({ data }) => {
                 {row.maximo.length > 1 ? (
                   <>
                     {row.maximo.map((max, i) => (
-                      <TableRow key={index}>
+                      <TableRow key={i}>
                         <TableCell>{max}</TableCell>
                       </TableRow>
                     ))}
@@ -98,11 +100,11 @@ export const TableComponent = ({ data }) => {
                 )}
               </TableCell>
 
-              <TableCell style={{ minWidth: 150 }}>
+              <TableCell style={{ minWidth: 260 }}>
                 <>
                   {row.observaciones.map((titulo, i) => (
-                    <TableRow key={index}>
-                      <TableCell>{titulo}</TableCell>
+                    <TableRow key={i}>
+                      <TableCell style={{ textAlign: "justify"  }}>{titulo}</TableCell>
                     </TableRow>
                   ))}
                 </>
@@ -110,12 +112,12 @@ export const TableComponent = ({ data }) => {
 
               <TableCell style={{ minWidth: 250 }}>
                 <TextField
-                 id="outlined-number"
-                 label="Calificación"
-                 type="number"
-                 InputLabelProps={{
-                   shrink: true,
-                 }}
+                  id="outlined-number"
+                  label="Calificación"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   value={calificaciones[index]}
                   onChange={(e) =>
                     handleCalificacionChange(index, e.target.value)
