@@ -48,7 +48,7 @@ const Sidebar = () => {
     
     <Box
       sx={{
-        height: "250vh",
+        height: "140vh",
         "&::-webkit-scrollbar": {
           width: "8px", 
         },
