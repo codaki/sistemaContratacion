@@ -5,7 +5,7 @@ import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
-import { infoRecursos } from "../../api/solicitud";
+import { infoRecursos, editarEstadoSolicitud } from "../../api/solicitud";
 const Candidatos = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -90,21 +90,22 @@ const Candidatos = () => {
       renderCell: (params) => {
         const handleAccept = () => {
           const updatedSolicitudes = solicitudes.map((solicitud) =>
-            solicitud.cand_id === params.row.cand_id
+            solicitud.sol_id=== params.row.sol_id
               ? { ...solicitud, sol_aprobacion: true }
               : solicitud
           );
           setSolicitudes(updatedSolicitudes);
-          console.log("Aceptar", params.row.cand_id);
+          editarEstadoSolicitud(params.row.sol_id, true);
         };
     
         const handleReject = () => {
           const updatedSolicitudes = solicitudes.map((solicitud) =>
-            solicitud.cand_id === params.row.cand_id
+            solicitud.sol_id === params.row.sol_id
               ? { ...solicitud, sol_aprobacion: false }
               : solicitud
           );
           setSolicitudes(updatedSolicitudes);
+          editarEstadoSolicitud(params.row.sol_id, false);
           console.log("Rechazar", params.row.cand_id);
         };
   

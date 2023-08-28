@@ -751,7 +751,7 @@ const FormularioPostulacion = () => {
                         Vacantes
                       </TableCell>
                       <TableCell sx={{ fontWeight: "bold", color: "white" }}>
-                        Tiempo
+                        Identificador
                       </TableCell>
                       <TableCell sx={{ fontWeight: "bold", color: "white" }}>
                         Horas

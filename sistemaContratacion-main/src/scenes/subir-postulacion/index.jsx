@@ -24,6 +24,7 @@ import TextField from "@mui/material/TextField";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { subirInformacion } from "../../api/informacion";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -35,6 +36,7 @@ const Formulario = () => {
   const [submitting, setSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false); // Add this state variable
   const [alertOpen, setAlertOpen] = useState(false);
+  const navigate = useNavigate();
 
   const { user } = useAuth();
 
@@ -72,15 +74,21 @@ const Formulario = () => {
       }
       setTimeout(() => {
         setIsUploading(false);
-        setAlertOpen(true); // Show the alert after the upload is complete
-      }, 3000); // Simulating a 3-second upload
+        setAlertOpen(true);
+  
+        // Redirect the user to the desired route after 3 seconds
+        setTimeout(() => {
+          navigate("/"); // Replace "/ruta-de-destino" with the desired route
+        }, 2000);
+  
+      }, 2000); 
     } catch (error) {
       console.log("Error uploading files:", error);
       setIsUploading(false);
     }
   };
 
-  const handleFileChange = (id, setFieldValue) => (event) => {
+const handleFileChange = (id, setFieldValue) => (event) => {
     const file = event.target.files[0];
     setFieldValue(id, file);
 
@@ -110,7 +118,7 @@ const Formulario = () => {
       reader.readAsArrayBuffer(file);
     }
   };
-
+  
   const handleAlertClose = () => {
     setAlertOpen(false);
   };
