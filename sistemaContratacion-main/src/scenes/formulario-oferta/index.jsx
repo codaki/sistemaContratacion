@@ -10,8 +10,8 @@ const FormulariOferta = () => {
   const [formData, setFormData] = useState({
     post_periodo: "",
     con_nombre: "",
-    ce_nombre: "",
     ca_nombre: "",
+    ce_nombre: "",
     sede_nombre: "",
     dept_nombre: "",
     pa_nombre: "",
@@ -57,8 +57,8 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="periodo1">Periodo 1</MenuItem>
-          <MenuItem value="periodo2">Periodo 2</MenuItem>
+          <MenuItem value="periodo1">202350</MenuItem>
+          <MenuItem value="periodo2">202351</MenuItem>
           
         </Select>
         <label>Tipo de Contratación:</label>
@@ -69,20 +69,8 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="contratacion1">Contratación 1</MenuItem>
-          <MenuItem value="contratacion2">Contratación 2</MenuItem>
-          
-        </Select>
-        <label>Campo Específico:</label>
-        <Select
-          name="ce_nombre"
-          value={formData.ce_nombre}
-          onChange={handleChange}
-          margin="normal"
-          required
-        >
-          <MenuItem value="campoEspecifico1">Campo Específico 1</MenuItem>
-          <MenuItem value="campoEspecifico2">Campo Específico 2</MenuItem>
+          <MenuItem value="contratacion1">Personal académico que desarrolla actividades de tercer nivel de grado</MenuItem>
+          <MenuItem value="contratacion2">Personal académico que desarrolla actividades de cuarto nivel</MenuItem>
           
         </Select>
         <label>Campo Amplio:</label>
@@ -93,8 +81,20 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="campoAmplio1">Campo Amplio 1</MenuItem>
-          <MenuItem value="campoAmplio2">Campo Amplio 2</MenuItem>
+          <MenuItem value="campoAmplio1">Tecnología</MenuItem>
+          <MenuItem value="campoAmplio2">Ingeniería</MenuItem>
+          
+        </Select>
+        <label>Campo Específico:</label>
+        <Select
+          name="ce_nombre"
+          value={formData.ce_nombre}
+          onChange={handleChange}
+          margin="normal"
+          required
+        >
+          <MenuItem value="campoEspecifico1">Base de Datos</MenuItem>
+          <MenuItem value="campoEspecifico2">Introducción a la Ingeniería</MenuItem>
           
         </Select>
         <label>Sede:</label>
@@ -105,8 +105,9 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="sede1">Sede 1</MenuItem>
-          <MenuItem value="sede2">Sede 2</MenuItem>
+          <MenuItem value="sede1">Matriz</MenuItem>
+          <MenuItem value="sede2">Latacunga</MenuItem>
+          <MenuItem value="sede3">Santo Domingo</MenuItem>
           
         </Select>
         <label>Departamento:</label>
@@ -117,8 +118,14 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="departamento1">Departamento 1</MenuItem>
-          <MenuItem value="departamento2">Departamento 2</MenuItem>
+          <MenuItem value="departamento1">DECE - Departamento de Ciencias Exactas</MenuItem>
+          <MenuItem value="departamento2">DCCO - Departamento de la Computación</MenuItem>
+          <MenuItem value="departamento3">DECEM - Departamento de Energía y Mecánica</MenuItem>
+          <MenuItem value="departamento4">DECTC - Departamento de la Tierra y la Construcción</MenuItem>
+          <MenuItem value="departamento5">DECV - Departamento de la Vida y la Agricultura</MenuItem>
+          <MenuItem value="departamento6">DECEAC - Departamento Económicas, Administrativas y de Comercio</MenuItem>
+          <MenuItem value="departamento7">DECHS - Departamento Humanas y Sociales</MenuItem>
+          <MenuItem value="departamento8">DESD - Departamento de Seguridad y Defensa</MenuItem>
           
         </Select>
         <label>Personal Académico:</label>
@@ -129,8 +136,9 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="academico1">Académico 1</MenuItem>
-          <MenuItem value="academico2">Académico 2</MenuItem>
+          <MenuItem value="academico1">Principal Nivel 1</MenuItem>
+          <MenuItem value="academico2">Auxiliar Nivel 1</MenuItem>
+          <MenuItem value="academico2">Técnico de Investigación</MenuItem>
           
         </Select>
         <label>Actividad:</label>
@@ -141,8 +149,9 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="actividad1">Actividad 1</MenuItem>
-          <MenuItem value="actividad2">Actividad 2</MenuItem>
+          <MenuItem value="actividad1">Docencia</MenuItem>
+          <MenuItem value="actividad2">Investigación</MenuItem>
+          <MenuItem value="actividad1">Vinculación</MenuItem>
           
         </Select>
         <label>Oferta Vacantes:</label>
@@ -153,8 +162,7 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="vacantes1">Vacantes 1</MenuItem>
-          <MenuItem value="vacantes2">Vacantes 2</MenuItem>
+          <MenuItem value="vacantes2">2</MenuItem>
           
         </Select>
         <label>Oferta Horas:</label>
@@ -165,8 +173,7 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="horas1">Horas 1</MenuItem>
-          <MenuItem value="horas2">Horas 2</MenuItem>
+          <MenuItem value="horas1">En Actualización</MenuItem>
           
         </Select>
         <Button
