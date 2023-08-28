@@ -88,40 +88,33 @@ const Formulario = () => {
     }
   };
 
- const handleFileChange = (id, setFieldValue, navigate) => (event) => {
+const handleFileChange = (id, setFieldValue) => (event) => {
     const file = event.target.files[0];
     setFieldValue(id, file);
-  
+
     if (file && file.type === "application/pdf") {
       const reader = new FileReader();
-  
+
       reader.onload = async () => {
         const arrayBuffer = reader.result;
-  
+
         // Guardar el Blob en lugar del ArrayBuffer en el estado
         const blob = new Blob([new Uint8Array(arrayBuffer)]);
         setFieldValue(id + "Blob", blob);
-  
+
         try {
           const pdf = await PDFDocument.load(arrayBuffer);
           const pageCount = pdf.getPages().length;
-  
+
           setPageCounts((prevCounts) => ({
             ...prevCounts,
             [id]: pageCount, // Actualizar el conteo de páginas para este id
           }));
-  
-          setIsUploading(false);
-          setAlertOpen(true);
         } catch (error) {
-          console.log("Error al cargar archivos:", error);
-          setIsUploading(false);
+          console.log("Error reading the PDF file:", error);
         }
-  
-        // Redirigir al usuario a la página deseada después de procesar el archivo
-        navigate("/"); // Reemplaza "/" con la ruta deseada
       };
-  
+
       reader.readAsArrayBuffer(file);
     }
   };
@@ -229,7 +222,7 @@ const Formulario = () => {
                         <input
                           type="file"
                           accept=".pdf"
-                          onChange={handleFileChange(id, setFieldValue, navigate)}
+                          onChange={handleFileChange(id, setFieldValue)}
                         />
                         {errors[id] && touched[id] && <div>{errors[id]}</div>}
                       </TableCell>

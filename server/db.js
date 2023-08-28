@@ -9,7 +9,7 @@ export const db = new Pool({
   host: "localhost",
   database: "SistemaPostulacion",
   //database: 'usuariologin',
-  password: "root",
+  password: "password",
   port: 5432,
 });
 
