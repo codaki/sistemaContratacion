@@ -15,10 +15,19 @@ export const TableComponent = ({ data }) => {
     new Array(data.length).fill("")
   );
 
-  const handleCalificacionChange = (index, value) => {
-    const newCalificaciones = [...calificaciones];
-    newCalificaciones[index] = value;
-    setCalificaciones(newCalificaciones);
+    const handleCalificacionChange = (index, value) => {
+    // Validar que la entrada sea un número del 1 al 20
+    const parsedValue = parseInt(value);
+    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 20) {
+      const newCalificaciones = [...calificaciones];
+      newCalificaciones[index] = parsedValue.toString(); // Convertir de nuevo a cadena
+      setCalificaciones(newCalificaciones);
+    } else if (value === "") {
+      // Si el valor es una cadena vacía, borrar la calificación
+      const newCalificaciones = [...calificaciones];
+      newCalificaciones[index] = "";
+      setCalificaciones(newCalificaciones);
+    }
   };
 
   return (
