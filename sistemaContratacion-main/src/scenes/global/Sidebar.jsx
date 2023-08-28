@@ -41,19 +41,19 @@ const Sidebar = () => {
   const userRole = user ? user.role : "";
   const collapsedWidth = "80px";
   if (!isAuthenticated) {
-    return null; // No mostrar la barra lateral si el usuario no está autenticado
+    return null; 
   }
 
   return (
     
     <Box
       sx={{
-        height: "270vh",
+        height: "250vh",
         "&::-webkit-scrollbar": {
-          width: "8px", // Customize scrollbar width
+          width: "8px", 
         },
         "&::-webkit-scrollbar-thumb": {
-          background: "#4cceac", // Customize scrollbar thumb color
+          background: "#4cceac", 
           borderRadius: "4px",
         },
         "& .pro-sidebar-inner": {
@@ -71,8 +71,6 @@ const Sidebar = () => {
         "& .pro-menu-item.active": {
           color: "#78edcf !important",
         },
-        
-  
       }}
       
     >
@@ -84,7 +82,7 @@ const Sidebar = () => {
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
-              color: colors.grey[100],
+              color: colors.grey[900],
             }}
           >
             {!isCollapsed && (
@@ -95,7 +93,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[900]}>
-                  Contratacion
+                  Contratación
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon style={{ color: "white" }} />

@@ -179,7 +179,7 @@ const FormulariOferta = () => {
         <Button
           type="submit"
           variant="contained"
-          color="secondary"
+          color="success"
           sx={{ mt: 2, p: 2 }}
         >
           Enviar

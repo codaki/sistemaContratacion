@@ -9,7 +9,6 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
-
 export const TableComponent = ({ data }) => {
   const [calificaciones, setCalificaciones] = useState(
     new Array(data.length).fill("")
@@ -111,6 +110,12 @@ export const TableComponent = ({ data }) => {
 
               <TableCell style={{ minWidth: 250 }}>
                 <TextField
+                 id="outlined-number"
+                 label="Calificación"
+                 type="number"
+                 InputLabelProps={{
+                   shrink: true,
+                 }}
                   value={calificaciones[index]}
                   onChange={(e) =>
                     handleCalificacionChange(index, e.target.value)

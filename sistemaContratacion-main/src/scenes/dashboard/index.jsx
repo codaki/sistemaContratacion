@@ -241,7 +241,8 @@ const Dashboard = () => {
                 variant="contained"
                 color={button1Color}
                 onClick={() => handleButtonClick(1)}
-                sx={{ flexGrow: 1 }}
+                sx={{ flexGrow: 1, color: 'white', backgroundColor: button2Color, ':disabled': { backgroundColor: 'grey', color: 'white' } }}
+              disabled
               >
                 Estado Postulación
               </Button>
@@ -250,13 +251,12 @@ const Dashboard = () => {
                 variant="contained"
                 color={button2Color}
                 onClick={() => handleButtonClick(2)}
-                sx={{ flexGrow: 1 }}
+                sx={{ flexGrow: 1, color: 'white', backgroundColor: button2Color, ':disabled': { backgroundColor: 'grey', color: 'white' } }}
+              disabled
               >
                 Estado Información
               </Button>
 
-              <br />
-              <br />
             </Box>
             <br />
           </Box>
