@@ -88,7 +88,9 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
   };
-
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+  };
   
 
  
@@ -97,6 +99,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         signup,
         user,
+        updateUser,
         isAuthenticated,
         errors,
         signin,

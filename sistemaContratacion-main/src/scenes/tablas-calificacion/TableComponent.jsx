@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -9,27 +9,59 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
-
+import { useAuth } from "../../context/AuthContext";
+import { updateNotaSolicitud } from "../../api/solicitud";
+ 
 
 export const TableComponent = ({ data }) => {
-  const [calificaciones, setCalificaciones] = useState(
-    new Array(data.length).fill("")
-  );
+  const { user } = useAuth();
+  const [calificaciones, setCalificaciones] = useState(new Array(data.length).fill(""));
+  const [sumaCalificaciones, setSumaCalificaciones] = useState(0); // Estado para la suma acumulada
 
   const handleCalificacionChange = (index, value) => {
-    // Validar que la entrada sea un número del 1 al 20
     const parsedValue = parseInt(value);
     if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 20) {
       const newCalificaciones = [...calificaciones];
-      newCalificaciones[index] = parsedValue.toString(); // Convertir de nuevo a cadena
+      newCalificaciones[index] = parsedValue.toString();
       setCalificaciones(newCalificaciones);
+
+      // Calcular la nueva suma acumulada
+      const newSumaCalificaciones = sumaCalificaciones + parsedValue;
+      setSumaCalificaciones(newSumaCalificaciones);
+      console.log(newCalificaciones)
+      console.log(sumaCalificaciones);
+      console.log(user.calificado)
     } else if (value === "") {
-      // Si el valor es una cadena vacía, borrar la calificación
       const newCalificaciones = [...calificaciones];
       newCalificaciones[index] = "";
       setCalificaciones(newCalificaciones);
+
+      // Calcular la nueva suma acumulada
+      const newSumaCalificaciones = sumaCalificaciones - parseInt(calificaciones[index] || 0);
+      setSumaCalificaciones(newSumaCalificaciones);
+      console.log(newCalificaciones)
+      console.log(sumaCalificaciones); 
+    
     }
   };
+  useEffect(() => {
+    // This effect will run whenever `sumaCalificaciones` changes.
+    // Here, you can call the `updateNotaSolicitud` function.
+      const updateNota = async () => {
+    try {
+      const success = await updateNotaSolicitud(user.calificado, sumaCalificaciones);
+      if (success) {
+        console.log("Nota de solicitud actualizada con éxito");
+      } else {
+        console.error("Error al actualizar la nota de solicitud");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  };
+
+  updateNota();
+  }, [sumaCalificaciones, user.calificado]);
 
   return (
     <TableContainer component={Paper}>

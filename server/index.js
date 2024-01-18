@@ -1,7 +1,7 @@
-import app from "./app.js";
-import { db, connectDB } from "./db.js";
-import cors from "cors";
 import bodyParser from "body-parser";
+import cors from "cors";
+import app from "./app.js";
+import { connectDB, db } from "./db.js";
 import transporter from "./transporter.js";
 //const app = express()
 //Comprobación de conexión de la base de datos
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.post("/send-email", async (req, res) => {
-  const { email, otp,nombre,apellido,titulo,cedula } = req.body;
+  const { email, otp, nombre, apellido, titulo, cedula } = req.body;
   // Verificar si el correo es válido
   if (!isValidEmail(email)) {
     return res.status(400).json({ message: "Correo inválido" });
@@ -32,7 +32,7 @@ app.post("/send-email", async (req, res) => {
 
   // Configurar el correo electrónico a enviar
   const mailOptions = {
-    from: 'Recursos humanos <gicalapaqui@espe.edu.ec>',
+    from: "Recursos humanos <gicalapaqui@espe.edu.ec>",
     to: email,
     subject: "Sistema de postulación Universidad de las Fuerzas Armadas ESPE",
     html: `<head>

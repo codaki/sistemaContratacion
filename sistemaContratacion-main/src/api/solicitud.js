@@ -105,3 +105,51 @@ export const editarEstadoSolicitud = async (solicitud_id, estado) => {
     return false;
   }
 };
+export const updateNotaSolicitud = async (id, nota)=> {
+  try {
+    const response = await axios.put(
+      `${API}/updateNotaSolicitud/${id}/${nota}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      console.log(`Solicitud con ID ${id} actualizada con éxito`);
+      return true;
+    } else {
+      console.error(`Error al actualizar la solicitud con ID ${id}`);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    return false;
+  }
+}
+export const aprobacionSolicitud = async(id) =>{
+  try {
+    const response = await axios.get(
+      `${API}/aprobacion/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      console.log(`Solicitud con ID ${id} actualizada con éxito`);
+      return true;
+    } else {
+      console.error(`Error al actualizar la solicitud con ID ${id}`);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    return false;
+  }
+}

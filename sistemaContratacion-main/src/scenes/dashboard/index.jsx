@@ -21,10 +21,14 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import * as React from 'react';
 import { useEffect } from "react";
+import { aprobacionSolicitud } from "../../api/solicitud";
+import { useAuth } from "../../context/AuthContext";
 const Dashboard = () => {
+
+  const { user, updateUser } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  let result = null; 
   const CustomBox = styled(Box)(({ theme }) => ({
     display: "flex",
     justifyContent: "center",
@@ -109,8 +113,12 @@ const Dashboard = () => {
     };
   
     useEffect(() => {
-      setValue(approvalStatus);
-    }, [approvalStatus]);
+      // Fetch and update the approval status when the component mounts
+      const fetchApprovalStatus = async () => {
+        result = await aprobacionSolicitud(user?user.id:user.cand_id);
+        console.log(result);
+       }; fetchApprovalStatus();
+    }, []);
   
     const getStatusColor = () => {
       if (value === "one") {
@@ -140,7 +148,7 @@ const Dashboard = () => {
               backgroundColor:
                 value === "one" ? statusColor.bgColor : "transparent",
             }}
-            disabled
+            enabled={result === "true"} 
           />
           <Tab
             value="two"
@@ -149,7 +157,7 @@ const Dashboard = () => {
               backgroundColor:
                 value === "two" ? statusColor.bgColor : "transparent",
             }}
-            disabled
+            enabled={result === "false"}
           />
         </Tabs>
       </Box>
@@ -174,7 +182,7 @@ const Dashboard = () => {
             >
               Bienvenidos a la plataforma ESPE DOCENTES
             </Typography>
-            <Status/>
+            {/* <Status/> */}
             <Title variant="h1">
               !Revisa el formato de los documentos que tienes que entregar!
             </Title>

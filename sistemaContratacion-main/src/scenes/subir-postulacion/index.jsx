@@ -347,7 +347,7 @@ const handleFileChange = (id, setFieldValue) => (event) => {
               </Table>
             </TableContainer>
             <Box display="flex" justifyContent="center" mt="20px">
-              <Button type="submit" color="success" variant="contained">
+              <Button type="submit" color="success" variant="contained" onClick={localStorage.setItem("estado1",true)}>
                 Confirmar postulación
               </Button>
             </Box>

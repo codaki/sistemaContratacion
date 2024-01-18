@@ -6,10 +6,13 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { infoRecursos, editarEstadoSolicitud } from "../../api/solicitud";
+import { useAuth } from "../../context/AuthContext";
+import { Link ,useNavigate} from "react-router-dom";
+import axios from "axios";
 const Candidatos = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+  const navigate = useNavigate();
   const [solicitudes, setSolicitudes] = useState([])
   useEffect(() => {
     infoRecursos().then((res) => {
@@ -18,7 +21,7 @@ const Candidatos = () => {
     });
   }, []);
 
-  
+  const { user, updateUser } = useAuth(); 
 
   const columns = [
     { field: "sol_id", headerName: "SolicitudID", flex: 0.5 },
@@ -70,9 +73,6 @@ const Candidatos = () => {
       field: "nota_final",
       headerName: "Nota",
       flex: 1,
-      renderCell: (params) => (
-        <span>{params.value ? "Aprobado" : "Reprobado"}</span>
-      ),
     },
     {
       field: "sol_aprobacion",
@@ -96,6 +96,15 @@ const Candidatos = () => {
           );
           setSolicitudes(updatedSolicitudes);
           editarEstadoSolicitud(params.row.sol_id, true);
+          axios
+          .post("http://localhost:8800/send-email-estado", {
+            email: params.row.cand_correo,
+            
+            nombre:params.row.cand_nombre,
+            estado:"APROBADA"
+            
+          })
+
         };
     
         const handleReject = () => {
@@ -106,11 +115,35 @@ const Candidatos = () => {
           );
           setSolicitudes(updatedSolicitudes);
           editarEstadoSolicitud(params.row.sol_id, false);
+          axios
+          .post("http://localhost:8800/send-email-estado", {
+            email: params.row.cand_correo,
+            
+            nombre:params.row.cand_nombre,
+            estado:"RECHAZADA"
+            
+          })
           console.log("Rechazar", params.row.cand_id);
+        };
+        const handleCalificar = () => {
+          console.log("Calificar", params.row.cand_id);
+          const updatedUser = { ...user, calificado: params.row.cand_id }; // Agregar el atributo "calificado"
+    updateUser(updatedUser); // Actualizar el objeto user con el nuevo atributo
+    console.log("Calificar", params.row.cand_id);
+    console.log(user)
+    navigate("/tablas-calificacion");
         };
   
         return (
           <Box display="flex" justifyContent="center">
+            <Button
+              onClick={handleCalificar}
+              variant="contained"
+              color="grey"
+              size="small"
+            >
+              Calificar
+            </Button>
             <Button
               onClick={handleAccept}
               variant="contained"

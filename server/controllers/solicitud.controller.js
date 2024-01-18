@@ -70,3 +70,31 @@ export const updateEstadoSolicitud = (req, res) => {
     return res.status(200).json(data.rows[0]);
   });
 };
+
+export const updateNotaSolicitud = (req, res) => {
+  const cand_id = req.params.id;
+  const nota = req.params.nota;
+  const q = `UPDATE public.solicitud
+SET nota_final = $1
+WHERE cand_id = $2;
+`;
+console.log('entra');
+  const values = [nota, cand_id,];
+  console.log(values)
+  db.query(q, values, (err, data) => {
+    if (err) return res.status(500).send(err);
+    if (data.rows.length === 0)
+      return res.status(404).send("Solicitud no encontrada");
+    return res.status(200).json(data.rows[0]);
+  });
+};
+export const aprobacion = (req,res) => {
+  const cand_id = req.params.id;
+  const q = 'SELECT sol_aprobacion FROM public.solicitud WHERE cand_id = $1;'
+  db.query(q, cand_id, (err, data) => {
+    if (err) return res.status(500).send(err);
+    if (data.rows.length === 0)
+      return res.status(404).send("Solicitud no encontrada");
+    return res.status(200).json(data.rows[0]);
+  });
+};

@@ -125,3 +125,18 @@ export const profile = (req, res) => {
     });
   });
 };
+
+export const obtenerUsuario = (req,res) => {
+  const id = req.params.id;
+  const q = "SELECT cand_nombre1, cand_apellido1, cand_titulo FROM public.candidato WHERE cand_id = ?;";
+  //Llamado a la base de datos
+  db.query(q, id, (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.json({
+      //información que se recopila
+      nombre: data.rows[0].cand_nombre1,
+      apellido: data.rows[0].cand_apellido1,
+      titulo: data.rows[0].cand_titulo,
+    });
+  });
+}
