@@ -1,30 +1,30 @@
-import React, { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Box,
   Button,
-  Typography,
+  Dialog,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Dialog,
-  Snackbar,
+  Typography,
 } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Header from "../../components/Header";
-import { PDFDocument } from "pdf-lib";
-import { Document, Page, pdfjs } from "react-pdf";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { subirInformacion } from "../../api/informacion";
-import { useAuth } from "../../context/AuthContext";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Formik } from "formik";
+import { PDFDocument } from "pdf-lib";
+import React, { useState } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
 import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { subirInformacion } from "../../api/informacion";
+import Header from "../../components/Header";
+import { useAuth } from "../../context/AuthContext";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -53,6 +53,8 @@ const Formulario = () => {
         "administrativeResponsabilities",
         "profesionalExp",
       ];
+      console.log("docs");
+      console.log("files" + user.name1);
       const idPostulation = user.id;
 
       for (const id of files) {
@@ -72,23 +74,33 @@ const Formulario = () => {
           }
         }
       }
+
+      const allFilesUploaded = files.every(
+        ({ id }) => values[id] instanceof File
+      );
+
+      if (!allFilesUploaded) {
+        console.error("Please upload all required documents.");
+        setIsUploading(false);
+        return;
+      }
+
       setTimeout(() => {
         setIsUploading(false);
         setAlertOpen(true);
-  
+
         // Redirect the user to the desired route after 3 seconds
         setTimeout(() => {
           navigate("/"); // Replace "/ruta-de-destino" with the desired route
         }, 2000);
-  
-      }, 2000); 
+      }, 2000);
     } catch (error) {
       console.log("Error uploading files:", error);
       setIsUploading(false);
     }
   };
 
-const handleFileChange = (id, setFieldValue) => (event) => {
+  const handleFileChange = (id, setFieldValue) => (event) => {
     const file = event.target.files[0];
     setFieldValue(id, file);
 
@@ -118,7 +130,7 @@ const handleFileChange = (id, setFieldValue) => (event) => {
       reader.readAsArrayBuffer(file);
     }
   };
-  
+
   const handleAlertClose = () => {
     setAlertOpen(false);
   };
@@ -184,7 +196,26 @@ const handleFileChange = (id, setFieldValue) => (event) => {
       <Header title="Subir Información" subtitle="Complete el formulario" />
       <Formik
         onSubmit={handleFormSubmit}
-        initialValues={{}}
+        initialValues={{
+          resume: undefined,
+          cedula: undefined,
+          votingCert: undefined,
+          titleCert: undefined,
+          teacherExp: undefined,
+          teacherPublicImpediment: undefined,
+          administrativeResponsabilities: undefined,
+          profesionalExp: undefined,
+        }}
+        validationSchema={yup.object().shape({
+          resume: yup.mixed().required("Requerido"),
+          cedula: yup.mixed().required("Requerido"),
+          votingCert: yup.mixed().required("Requerido"),
+          titleCert: yup.mixed().required("Requerido"),
+          teacherExp: yup.mixed().required("Requerido"),
+          teacherPublicImpediment: yup.mixed().required("Requerido"),
+          administrativeResponsabilities: yup.mixed().required("Requerido"),
+          profesionalExp: yup.mixed().required("Requerido"),
+        })}
         // validationSchema={formSchema}
       >
         {({
@@ -347,7 +378,12 @@ const handleFileChange = (id, setFieldValue) => (event) => {
               </Table>
             </TableContainer>
             <Box display="flex" justifyContent="center" mt="20px">
-              <Button type="submit" color="success" variant="contained" onClick={localStorage.setItem("estado1",true)}>
+              <Button
+                type="submit"
+                color="success"
+                variant="contained"
+                onClick={localStorage.setItem("estado1", true)}
+              >
                 Confirmar postulación
               </Button>
             </Box>

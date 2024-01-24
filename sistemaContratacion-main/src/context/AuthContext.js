@@ -68,12 +68,12 @@ export const AuthProvider = ({ children }) => {
       try {
         const res = await verifyTokenRequest(cookies.token);
         if (!res.data) return setIsAuthenticated(false);
-        const isAdmin = res.data.correo.endsWith("espe.edu.ec");
-        const newUser = {
-          ...res.data,
-          role: isAdmin ? "admin" : "candidato",
-        };
-        setUser(newUser);
+        // const isAdmin = res.data.correo.endsWith("espe.edu.ec");
+        // const newUser = {
+        //   ...res.data,
+        //   role: isAdmin ? "admin" : "candidato",
+        // };
+        setUser(res.data);
         console.log(user);
         setIsAuthenticated(true);
         setLoading(false);

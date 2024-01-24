@@ -118,8 +118,7 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {user?.cand_nombre1 || "Nombre"}{" "}
-                  {user?.cand_apellido1 || "Apellido"}
+                  {user?.name1 || "Nombre"} {user?.lastname1 || "Apellido"}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   {userRole === "admin" ? "Recursos Humanos" : "Postulante"}

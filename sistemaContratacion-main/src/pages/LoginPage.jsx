@@ -60,7 +60,7 @@ function Login() {
         <div className="register-container">
           <h3>¿No posees una cuenta?</h3>
           <p>
-            <Link to="/registro">Registrarse</Link>
+            <Link to="/register">Registrarse</Link>
           </p>
         </div>
         {showPopup && (

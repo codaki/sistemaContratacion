@@ -82,7 +82,10 @@ export const login = (req, res) => {
     if (!isPasswordCorrect)
       return res.status(400).json(["Usuario o Contraseña incorrecta!"]);
     //Generación de Token
-    const token = jwt.sign({ id: data.rows[0].cand_id }, TOKEN_SECRET);
+    const token = jwt.sign(
+      { id: data.rows[0].cand_id, tipo: "candidato" },
+      TOKEN_SECRET
+    );
     //Copia toda la información menos el primer atributo establecido
     const { cand_password, ...other } = data.rows[0];
     //Token guardado en una cookie
@@ -112,7 +115,10 @@ export const verifyToken = async (req, res) => {
       if (err) return res.status(500).json(err);
       return res.json({
         id: data.rows[0].cand_id,
-        correo: data.rows[0].cand_correo,
+        email: data.rows[0].cand_correo,
+        name1: data.rows[0].cand_nombre1,
+        lastname1: data.rows[0].cand_apellido1,
+        role: "candidato",
       });
     });
   });
