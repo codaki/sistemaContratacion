@@ -1,52 +1,49 @@
-import React from "react";
 import {
+  AppBar,
   Box,
   Button,
-  TextField,
-  Select,
-  MenuItem,
   CardActionArea,
   CardActions,
+  MenuItem,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Toolbar,
+  Typography,
 } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Header from "../../components/Header";
-import { grey } from "@mui/material/colors";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { grey } from "@mui/material/colors";
+import { Formik } from "formik";
+import React from "react";
 import Draggable from "react-draggable";
+import * as yup from "yup";
+import Header from "../../components/Header";
 import { useAuth } from "../../context/AuthContext";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Paper,
-  AppBar,
-  Toolbar,
-  Typography,
-  TableHead,
-} from "@mui/material";
 
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   actividadUnica,
+  campoAmplioUnico,
+  campoEspecificoUnico,
+  contratacionUnica,
   departamentoUnico,
   obtenerOferta,
   personalUnico,
   postulacionUnica,
+  sedeUnica,
 } from "../../api/oferta";
-import { contratacionUnica } from "../../api/oferta";
-import { sedeUnica } from "../../api/oferta";
-import { campoAmplioUnico } from "../../api/oferta";
-import { campoEspecificoUnico } from "../../api/oferta";
 import { crearSolicitud } from "../../api/solicitud";
 const formSchema = yup.object().shape({
   postulation: yup.string().required("Campo requerido"),
@@ -89,17 +86,16 @@ const FormularioPostulacion = () => {
     actividad: "",
   });
   const { user } = useAuth();
-  const handleSolicitud = ()=>{
+  const handleSolicitud = () => {
     const solicitud = {
-      cand_id: user.id?user.id:user.cand_id,
+      cand_id: user.id ? user.id : user.cand_id,
       rh_id: 1,
       sol_aprobacion: "false",
       nota_final: 0,
-      ofe_id: oferta.ofe_id
+      ofe_id: oferta.ofe_id,
     };
     crearSolicitud(solicitud);
-
-  }
+  };
   // Función para manejar el clic en el botón "Enviar"
   const handleEnviarClick = (values) => {
     // Obtener los valores seleccionados del objeto 'values'
@@ -248,7 +244,14 @@ const FormularioPostulacion = () => {
           </DialogContent>
           */}
           <DialogActions>
-            <Button onClick={() => { handleClose(); handleSolicitud()}}>Validar</Button>
+            <Button
+              onClick={() => {
+                handleClose();
+                handleSolicitud();
+              }}
+            >
+              Validar
+            </Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -272,7 +275,7 @@ const FormularioPostulacion = () => {
         );
 
         console.log(res1.data);
-        console.log(user)
+        console.log(user);
         arregloDeDatos.push({
           ofe_id: res1.data.ofe_id,
           ofe_vacantes: res1.data.ofe_vacantes,
@@ -310,7 +313,7 @@ const FormularioPostulacion = () => {
         onSubmit={(values) => {
           // Al hacer clic en Enviar, llamamos a handleEnviarClick para guardar los valores seleccionados
           handleEnviarClick(values);
-          console.log(values)
+          console.log(values);
           // Luego, llamamos a handleFormSubmit para procesar el formulario si es necesario
           handleFormSubmit(values);
         }}
@@ -329,7 +332,7 @@ const FormularioPostulacion = () => {
             <Box display="flex" flexDirection="column" gap="20px">
               <Box>
                 <Typography variant="h6" fontWeight="bold">
-                  Seleccionar Postulación:
+                  Seleccionar Período:
                 </Typography>
                 <Select
                   fullWidth
@@ -739,34 +742,39 @@ const FormularioPostulacion = () => {
               {/* Include the PopUpPostulacion component here */}
               <PopUpPostulacion />
               {actividadSelected && (
-                <TableContainer component={Paper} sx={{ width: "70%", margin: "0 auto" }}>
-                <Table
-                  sx={{
-                    alignItems: "center",
-                  }}
+                <TableContainer
+                  component={Paper}
+                  sx={{ width: "70%", margin: "0 auto" }}
                 >
-                  <TableHead sx={{ alignItems: "center", backgroundColor: "green" }}>
-                    <TableRow>
-                      <TableCell sx={{ fontWeight: "bold", color: "white" }}>
-                        Vacantes
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: "bold", color: "white" }}>
-                        Identificador
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: "bold", color: "white" }}>
-                        Horas
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>{oferta.ofe_vacantes}</TableCell>
-                      <TableCell>{oferta.ofe_id}</TableCell>
-                      <TableCell>{oferta.ofe_horas}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                  <Table
+                    sx={{
+                      alignItems: "center",
+                    }}
+                  >
+                    <TableHead
+                      sx={{ alignItems: "center", backgroundColor: "green" }}
+                    >
+                      <TableRow>
+                        <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                          Vacantes
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                          Identificador
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                          Horas
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>{oferta.ofe_vacantes}</TableCell>
+                        <TableCell>{oferta.ofe_id}</TableCell>
+                        <TableCell>{oferta.ofe_horas}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               )}
             </Box>
           </form>

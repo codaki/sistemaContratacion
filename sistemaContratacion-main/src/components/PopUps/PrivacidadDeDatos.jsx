@@ -1,10 +1,10 @@
-import React from "react";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
+import React from "react";
 
 function PrivacidadDeDatos({ open, handleClose, handleAccept }) {
   return (
@@ -21,23 +21,25 @@ function PrivacidadDeDatos({ open, handleClose, handleAccept }) {
         },
       }}
     >
-      <DialogTitle style={{ color: "#292727", textAlign: "center" }}>Ley y Privacidad de Datos</DialogTitle>
+      <DialogTitle style={{ color: "#292727", textAlign: "center" }}>
+        Ley y Privacidad de Datos
+      </DialogTitle>
       <DialogContent dividers>
         <DialogContentText style={{ color: "#5C5C5C" }}>
           <div style={{ textAlign: "justify" }}>
-            En cumplimiento con la Ley Orgánica
-            de Privacidad de Datos, queremos informarte que los datos personales
-            proporcionados en el proceso de postulación para la contratación de
-            docentes serán tratados con la máxima confidencialidad y con el único
-            propósito de evaluar tu idoneidad para el puesto solicitado. Estos
-            datos serán utilizados exclusivamente por el comité de selección y
-            administración pertinentes.
+            En cumplimiento con la Ley Orgánica de Privacidad de Datos, queremos
+            informarte que los datos personales proporcionados en el proceso de
+            postulación para la contratación de docentes serán tratados con la
+            máxima confidencialidad y con el único propósito de evaluar tu
+            idoneidad para el puesto solicitado. Estos datos serán utilizados
+            exclusivamente por el comité de selección y administración
+            pertinentes.
             <br />
             <br />
             Tu privacidad es de suma importancia para nosotros, y nos
             comprometemos a adoptar todas las medidas necesarias para garantizar
-            la seguridad y protección de tus datos personales. Tus datos no serán
-            compartidos con terceros sin tu consentimiento expreso.
+            la seguridad y protección de tus datos personales. Tus datos no
+            serán compartidos con terceros sin tu consentimiento expreso.
             <br />
             <br />
             Al participar en este proceso de postulación, aceptas que tus datos
@@ -49,8 +51,8 @@ function PrivacidadDeDatos({ open, handleClose, handleAccept }) {
             <br />
             <br />
             Agradecemos tu interés en unirte a nuestra comunidad académica y
-            confiamos en que este proceso se llevará a cabo de manera transparente
-            y conforme a las leyes de privacidad de datos vigentes.
+            confiamos en que este proceso se llevará a cabo de manera
+            transparente y conforme a las leyes de privacidad de datos vigentes.
           </div>
         </DialogContentText>
       </DialogContent>

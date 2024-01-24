@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
-import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../reducers/auth.slice";
-import * as Components from "../../components/Components";
-import EmailIcon from "@mui/icons-material/Email";
-import isValidCI from "./validateCI";
-import { useAuth } from "../../context/AuthContext";
-import KeyIcon from "@mui/icons-material/Key";
-import TextField from "@mui/material/TextField";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import BadgeIcon from "@mui/icons-material/Badge";
+import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import EmailIcon from "@mui/icons-material/Email";
+import KeyIcon from "@mui/icons-material/Key";
+import { Box, Button } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import InputAdornment from "@mui/material/InputAdornment";
-import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
+import TextField from "@mui/material/TextField";
+import React, { useEffect, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import * as Components from "../../components/Components";
 import PopUpRegistro from "../../components/PopUps/PopUpRegistro";
-import "./Auth.css";
 import PopUpSeguro from "../../components/PopUps/PopUpSeguro";
 import PrivacidadDeDatos from "../../components/PopUps/PrivacidadDeDatos";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { login } from "../../reducers/auth.slice";
+import "./Auth.css";
 import { setCookie } from "./Utils";
-import { Box } from "@mui/material";
-import { Button } from "@mui/material";
-import BadgeIcon from "@mui/icons-material/Badge";
+import isValidCI from "./validateCI";
 
 function Auth() {
   const [signIn, setSignIn] = React.useState(true);
@@ -125,6 +124,15 @@ function Auth() {
     setCurrentPage("signup");
     setSignIn(true);
   };
+  const getMinDate = () => {
+    const currentDate = new Date();
+    const minDate = new Date(
+      currentDate.getFullYear() - 18,
+      currentDate.getMonth(),
+      currentDate.getDate()
+    );
+    return minDate.toISOString().split("T")[0];
+  };
 
   const registerNextClick = () => {
     if (identificationNumber.trim().length === 0) {
@@ -132,9 +140,9 @@ function Auth() {
     }
 
     const isValidCedula = isValidCI(identificationNumber);
-     if (!isValidCedula) {
-       return setFormErrors(["Identificación inválida"]);
-     }
+    if (!isValidCedula) {
+      return setFormErrors(["Identificación inválida"]);
+    }
 
     if (!recaptchaVerified) {
       return setFormErrors(["Por favor, verifique el Recaptcha"]);
@@ -175,20 +183,19 @@ function Auth() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === 'email') {
-        sendEmail(value); // Llamar a la función sendEmail() si el nombre es 'email'
-        console.log(value)
+    if (name === "email") {
+      sendEmail(value); // Llamar a la función sendEmail() si el nombre es 'email'
+      console.log(value);
     }
-    if (name === 'password') {
-      localStorage.setItem('password',value); // Llamar a la función sendEmail() si el nombre es 'email'
-      console.log(value)
-  }
+    if (name === "password") {
+      localStorage.setItem("password", value); // Llamar a la función sendEmail() si el nombre es 'email'
+      console.log(value);
+    }
     setFormSignIn((prevForm) => ({
-        ...prevForm,
-        [name]: value,
+      ...prevForm,
+      [name]: value,
     }));
-};
-
+  };
 
   const [tipoIdentificacion, setTipoIdentificacion] = useState("");
 
@@ -232,7 +239,10 @@ function Auth() {
                       id="segundoNombre"
                       placeholder="Ingresa tu segundo nombre"
                       value={segundoNombre}
-                      onChange={(e) => {setSegundoNombre(e.target.value);localStorage.setItem("nombre2", e.target.value);}}
+                      onChange={(e) => {
+                        setSegundoNombre(e.target.value);
+                        localStorage.setItem("nombre2", e.target.value);
+                      }}
                     />
                   </div>
                 </div>
@@ -257,7 +267,10 @@ function Auth() {
                       id="segundoApellido"
                       placeholder="Ingresa tu segundo apellido"
                       value={segundoApellido}
-                      onChange={(e) => {setSegundoApellido(e.target.value);localStorage.setItem("apellido2", e.target.value);}}
+                      onChange={(e) => {
+                        setSegundoApellido(e.target.value);
+                        localStorage.setItem("apellido2", e.target.value);
+                      }}
                     />
                   </div>
                 </div>
@@ -277,7 +290,10 @@ function Auth() {
                     <select
                       id="sexo"
                       value={sexo}
-                      onChange={(e) => {setSexo(e.target.value);localStorage.setItem("sexo", e.target.value);}}
+                      onChange={(e) => {
+                        setSexo(e.target.value);
+                        localStorage.setItem("sexo", e.target.value);
+                      }}
                       className="inputField"
                     >
                       <option value="">Selecciona una opción</option>
@@ -294,9 +310,14 @@ function Auth() {
                     type="date"
                     id="fechaNacimiento"
                     value={fechaNacimiento}
-                    onChange={(e) => {setFechaNacimiento(e.target.value);localStorage.setItem('fecha_nacimiento',e.target.value)}}
+                    min={{ getMinDate }}
+                    onChange={(e) => {
+                      setFechaNacimiento(e.target.value);
+                      localStorage.setItem("fecha_nacimiento", e.target.value);
+                    }}
                   />
-                </div>
+                    
+                </div>
               </div>
 
               {/* Título Senescyt */}
@@ -376,6 +397,7 @@ function Auth() {
                 >
                   Volver
                 </Button>
+
                 <PopUpRegistro
                   onClick={submitRegister}
                   type="button"

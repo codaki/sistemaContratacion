@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth";
 import Cookies from "js-cookie";
+import { createContext, useContext, useEffect, useState } from "react";
+import { loginRequest, registerRequest, verifyTokenRequest } from "../api/auth";
 export const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (errors.length > 0) {
@@ -30,26 +30,29 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user);
       //etUser(res.data);
-      
+
       const isAdmin = res.data.cand_correo.endsWith("espe.edu.ec");
       const newUser = {
         ...res.data,
-        role: isAdmin ? "admin" : "candidato",};
-        console.log(newUser);
-        setUser(newUser);
-        setIsAuthenticated(true);
-        console.log(user)
+        role: isAdmin ? "admin" : "candidato",
+      };
+      console.log(newUser);
+      setUser(newUser);
+      setIsAuthenticated(true);
+      console.log(user);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setErrors(error.response.data);
     }
   };
 
   const signup = async (user) => {
     try {
-      console.log(user)
+      console.log("Dentro del AUTHCONTEXT");
+      console.log(user);
       const res = await registerRequest(user);
       setUser(res.data);
+      return res;
     } catch (error) {
       setErrors(error.response.data);
     }
@@ -63,19 +66,19 @@ export const AuthProvider = ({ children }) => {
         return;
       }
       try {
-        const res = await  verifyTokenRequest(cookies.token);
+        const res = await verifyTokenRequest(cookies.token);
         if (!res.data) return setIsAuthenticated(false);
         const isAdmin = res.data.correo.endsWith("espe.edu.ec");
         const newUser = {
           ...res.data,
-          role: isAdmin ? "admin" : "candidato",};
-          setUser(newUser);
-          console.log(user)
+          role: isAdmin ? "admin" : "candidato",
+        };
+        setUser(newUser);
+        console.log(user);
         setIsAuthenticated(true);
         setLoading(false);
-        
       } catch (error) {
-        console.log(error)
+        console.log(error);
         setIsAuthenticated(false);
         setLoading(false);
       }
@@ -91,9 +94,7 @@ export const AuthProvider = ({ children }) => {
   const updateUser = (updatedUser) => {
     setUser(updatedUser);
   };
-  
 
- 
   return (
     <AuthContext.Provider
       value={{
@@ -111,4 +112,4 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-export default AuthContext
+export default AuthContext;

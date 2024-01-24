@@ -1,34 +1,36 @@
-import { Box, Typography, useTheme, Button, Container } from "@mui/material";
-import { tokens } from "../../theme";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import {
+  Box,
+  Button,
+  Container,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions,
+  DialogTitle,
   Link,
+  Typography,
+  useTheme,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import Excel from "./excel.jpeg";
-import Pdf from "./pdf.png";
-import Word from "./word.png";
-import persona from "./persona.svg";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import * as React from 'react';
-import { useEffect } from "react";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import * as React from "react";
+import { useEffect, useState } from "react";
 import { aprobacionSolicitud } from "../../api/solicitud";
 import { useAuth } from "../../context/AuthContext";
+import { tokens } from "../../theme";
+import Excel from "./excel.jpeg";
+import Pdf from "./pdf.png";
+import persona from "./persona.svg";
+import Word from "./word.png";
 const Dashboard = () => {
-
   const { user, updateUser } = useAuth();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  let result = null; 
+  let result = null;
   const CustomBox = styled(Box)(({ theme }) => ({
     display: "flex",
     justifyContent: "center",
@@ -107,19 +109,20 @@ const Dashboard = () => {
 
   const Status = ({ approvalStatus }) => {
     const [value, setValue] = useState(approvalStatus);
-  
+
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
-  
+
     useEffect(() => {
       // Fetch and update the approval status when the component mounts
       const fetchApprovalStatus = async () => {
-        result = await aprobacionSolicitud(user?user.id:user.cand_id);
+        result = await aprobacionSolicitud(user ? user.id : user.cand_id);
         console.log(result);
-       }; fetchApprovalStatus();
+      };
+      fetchApprovalStatus();
     }, []);
-  
+
     const getStatusColor = () => {
       if (value === "one") {
         return { textColor: "success.main", bgColor: "success.light" }; // Verde para aprobado
@@ -128,9 +131,9 @@ const Dashboard = () => {
       }
       return { textColor: "text.primary", bgColor: "background.paper" }; // Colores por defecto
     };
-  
+
     const statusColor = getStatusColor();
-  
+
     return (
       <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
         <Tabs
@@ -148,7 +151,7 @@ const Dashboard = () => {
               backgroundColor:
                 value === "one" ? statusColor.bgColor : "transparent",
             }}
-            enabled={result === "true"} 
+            enabled={result === "true"}
           />
           <Tab
             value="two"
@@ -163,7 +166,6 @@ const Dashboard = () => {
       </Box>
     );
   };
-  
 
   return (
     <Box sx={{ backgroundColor: "#fcfcfc", minHeight: "80vh" }}>
@@ -199,132 +201,89 @@ const Dashboard = () => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
+              ></Box>
+
+              <Box
+                padding={4}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleOpen}
-                  sx={{
-                    backgroundColor: "#FF5722", // Naranja brillante
-                    "&:hover": {
-                      backgroundColor: "#E64A19", // Naranja oscuro al pasar el mouse
-                    },
-                  }}
-                >
-                  ¡Formatos Aquí!
-                </Button>
+                <Box style={boxStyle}>
+                  <Link
+                    href="https://docs.google.com/spreadsheets/d/1BI8Nsc6NLHcvn3YTrSsiDUijB6tlqvAZ/edit?usp=sharing&ouid=110804931965251293168&rtpof=true&sd=true"
+                    target="_blank"
+                    rel="noopener"
+                    style={linkStyle}
+                  >
+                    <img
+                      src={Excel}
+                      alt="formato excel hoja de vida"
+                      width={60}
+                    />
+                    <span>HOJA DE VIDA FORMATO ESPE</span>
+                  </Link>
+                </Box>
               </Box>
-
-              <Dialog open={open} onClose={handleClose}>
-                <DialogTitle align="center">
-                  <span>FORMATOS VALIDOS</span>
-                </DialogTitle>
-                <DialogContent color="black">
-                  <DialogContentText>
-                    Aquí encontrarás los formatos de archivo disponibles que
-                    puedes usar para subir tu información:
-                  </DialogContentText>
-
-                  <Box
-                    padding={4}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
+              <Box
+                padding={4}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box style={boxStyle}>
+                  <Link
+                    href="https://drive.google.com/drive/folders/1SVSiyfRVn_bSfRZN4n5-nl5QAhoLa0ea?usp=sharing"
+                    target="_blank"
+                    rel="noopener"
+                    style={linkStyle}
                   >
-                    <Box style={boxStyle}>
-                      <Link
-                        href="https://docs.google.com/spreadsheets/d/1BI8Nsc6NLHcvn3YTrSsiDUijB6tlqvAZ/edit?usp=sharing&ouid=110804931965251293168&rtpof=true&sd=true"
-                        target="_blank"
-                        rel="noopener"
-                        style={linkStyle}
-                      >
-                        <img
-                          src={Excel}
-                          alt="formato excel hoja de vida"
-                          width={60}
-                        />
-                        <span>HOJA DE VIDA FORMATO ESPE</span>
-                      </Link>
-                    </Box>
-                  </Box>
-                  <Box
-                    padding={4}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <img src={Pdf} alt="formato certificado pdf" width={60} />
+                      <img
+                        src={Word}
+                        alt="formato certificado word"
+                        width={60}
+                      />
+                    </div>
+                    <span>CERTIFICADOS EXPERIENCIA PROFESIONAL DOCENTE</span>
+                  </Link>
+                </Box>
+              </Box>
+              <Box
+                pt={4}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box style={boxStyle}>
+                  <Link
+                    href="https://drive.google.com/drive/folders/1VPXTLAUtw2EmKRxKYUT-tPz2RxdD69Np?usp=drive_link"
+                    target="_blank"
+                    rel="noopener"
+                    style={linkStyle}
                   >
-                    <Box style={boxStyle}>
-                      <Link
-                        href="https://drive.google.com/drive/folders/1SVSiyfRVn_bSfRZN4n5-nl5QAhoLa0ea?usp=sharing"
-                        target="_blank"
-                        rel="noopener"
-                        style={linkStyle}
-                      >
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <img
-                            src={Pdf}
-                            alt="formato certificado pdf"
-                            width={60}
-                          />
-                          <img
-                            src={Word}
-                            alt="formato certificado word"
-                            width={60}
-                          />
-                        </div>
-                        <span>
-                          CERTIFICADOS EXPERIENCIA PROFESIONAL DOCENTE
-                        </span>
-                      </Link>
-                    </Box>
-                  </Box>
-                  <Box
-                    pt={4}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box style={boxStyle}>
-                      <Link
-                        href="https://drive.google.com/drive/folders/1VPXTLAUtw2EmKRxKYUT-tPz2RxdD69Np?usp=drive_link"
-                        target="_blank"
-                        rel="noopener"
-                        style={linkStyle}
-                      >
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <img
-                            src={Pdf}
-                            alt="formato certificado pdf"
-                            width={60}
-                          />
-                          <img
-                            src={Word}
-                            alt="formato certificado word"
-                            width={60}
-                          />
-                        </div>
-                        <span>CERTIFICADOS EXPERIENCIA PROFESIONAL</span>
-                      </Link>
-                    </Box>
-                  </Box>
-                </DialogContent>
-
-                <DialogActions>
-                  <Button onClick={handleClose} color="secondary">
-                    <CloseIcon />
-                    Cerrar
-                  </Button>
-                </DialogActions>
-              </Dialog>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <img src={Pdf} alt="formato certificado pdf" width={60} />
+                      <img
+                        src={Word}
+                        alt="formato certificado word"
+                        width={60}
+                      />
+                    </div>
+                    <span>CERTIFICADOS EXPERIENCIA PROFESIONAL</span>
+                  </Link>
+                </Box>
+              </Box>
             </Box>
             <br />
-            <BotonesAprobacion/>
+
             <br />
           </Box>
           <Box

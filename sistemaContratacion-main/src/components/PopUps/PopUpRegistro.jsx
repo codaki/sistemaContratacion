@@ -1,4 +1,8 @@
-import * as React from "react";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import CloseIcon from "@mui/icons-material/Close"; // Icono de "x"
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,13 +10,10 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Paper from "@mui/material/Paper";
-import Draggable from "react-draggable";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
-import CloseIcon from '@mui/icons-material/Close'; // Icono de "x"
+import * as React from "react";
+import Draggable from "react-draggable";
 import { useAuth } from "../../context/AuthContext";
 
 function PaperComponent(props) {
@@ -36,8 +37,8 @@ export default function ElegantPopUpRegistro() {
   const [otpInput, setOTPInput] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(false);
   const [correoEnviado, setCorreoEnviado] = React.useState(false);
-  
-  const { signup} = useAuth();
+
+  const { signup } = useAuth();
   const handleClose = () => {
     setOpen(false);
   };
@@ -48,30 +49,29 @@ export default function ElegantPopUpRegistro() {
   const handleCloseCorreoValido = () => {
     //enviar datos delo registro
     signup({
-      tipoid: 'Cédula',
-      numid: localStorage.getItem('cedula'),
-      sexo: localStorage.getItem('sexo'),
-      titulo: localStorage.getItem('titulo'),
-      fecha: localStorage.getItem('fecha_nacimiento'),
-      correo: localStorage.getItem('email'),
-      password: localStorage.getItem('password'),
-      nombre1: localStorage.getItem('nombre'),
-      nombre2: localStorage.getItem('nombre2'),
-      apellido1: localStorage.getItem('apellido'),
-      apellido2: localStorage.getItem('apellido2'),
+      tipoid: "Cédula",
+      numid: localStorage.getItem("cedula"),
+      sexo: localStorage.getItem("sexo"),
+      titulo: localStorage.getItem("titulo"),
+      fecha: localStorage.getItem("fecha_nacimiento"),
+      correo: localStorage.getItem("email"),
+      password: localStorage.getItem("password"),
+      nombre1: localStorage.getItem("nombre"),
+      nombre2: localStorage.getItem("nombre2"),
+      apellido1: localStorage.getItem("apellido"),
+      apellido2: localStorage.getItem("apellido2"),
     });
     setOpenCorreoValido(false);
-    localStorage.removeItem('cedula');
-    localStorage.removeItem('sexo');
-    localStorage.removeItem('titulo');
-    localStorage.removeItem('email');
-    localStorage.removeItem('password');
-    localStorage.removeItem('nombre');
-    localStorage.removeItem('nombre2');
-    localStorage.removeItem('fecha_nacimiento');
-    localStorage.removeItem('apellido');
-    localStorage.removeItem('apellido2');
-
+    localStorage.removeItem("cedula");
+    localStorage.removeItem("sexo");
+    localStorage.removeItem("titulo");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
+    localStorage.removeItem("nombre");
+    localStorage.removeItem("nombre2");
+    localStorage.removeItem("fecha_nacimiento");
+    localStorage.removeItem("apellido");
+    localStorage.removeItem("apellido2");
 
     window.location.reload();
   };
@@ -89,10 +89,10 @@ export default function ElegantPopUpRegistro() {
       .post("http://localhost:8800/send-email", {
         email: localStorage.getItem("email"),
         otp: otp_val,
-        nombre:localStorage.getItem('nombre'),
-        apellido: localStorage.getItem('apellido'),
-        titulo:localStorage.getItem('titulo'),
-        cedula:localStorage.getItem('cedula')
+        nombre: localStorage.getItem("nombre"),
+        apellido: localStorage.getItem("apellido"),
+        titulo: localStorage.getItem("titulo"),
+        cedula: localStorage.getItem("cedula"),
       })
       .then((response) => {
         setOpenCorreo(true);
@@ -128,17 +128,35 @@ export default function ElegantPopUpRegistro() {
       >
         Aceptar
       </Button>
+
       <Dialog
         open={openCorreo}
         onClose={handleCloseCorreo}
         PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
       >
-        <DialogTitle style={{ cursor: "move", display: 'flex', flexDirection: 'column', alignItems: 'center' }} id="draggable-dialog-title">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+        <DialogTitle
+          style={{
+            cursor: "move",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          id="draggable-dialog-title"
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: "8px",
+            }}
+          >
             <MailOutlineIcon fontSize="large" />
           </div>
-          <div style={{ textAlign: 'center' }}>Se ha enviado un código de verificación a su correo electrónico.</div>
+          <div style={{ textAlign: "center" }}>
+            Se ha enviado un código de verificación a su correo electrónico.
+          </div>
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleCloseCorreo}>
@@ -152,11 +170,29 @@ export default function ElegantPopUpRegistro() {
         PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
       >
-        <DialogTitle style={{ cursor: "move", display: 'flex', flexDirection: 'column', alignItems: 'center' }} id="draggable-dialog-title">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+        <DialogTitle
+          style={{
+            cursor: "move",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          id="draggable-dialog-title"
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: "8px",
+            }}
+          >
             <ErrorOutlineIcon fontSize="large" />
           </div>
-          <div style={{ textAlign: 'center' }}>Error al enviar código de verificación, por favor compruebe que su correo esté correcto.</div>
+          <div style={{ textAlign: "center" }}>
+            Error al enviar código de verificación, por favor compruebe que su
+            correo esté correcto.
+          </div>
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleCloseCorreoInvalido}>
@@ -170,13 +206,17 @@ export default function ElegantPopUpRegistro() {
         onClose={handleClose}
         PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
+        disableBackdropClick
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
           Datos enviados correctamente
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Ingrese el codigo enviado a su correo
+          <DialogContentText style={{ textAlign: "center" }}>
+            Ingrese el código enviado a su correo
+          </DialogContentText>
+          <DialogContentText style={{ color: "red" }}>
+            En caso de cerrarse esta ventana, dar click a Aceptar nuevamente.
           </DialogContentText>
           <TextField
             id="filled-basic"
@@ -189,20 +229,35 @@ export default function ElegantPopUpRegistro() {
         <DialogActions>
           <Button onClick={handleCloseAndVerifyOTP}>Validar</Button>
         </DialogActions>
-  </Dialog>
-  <Dialog
+      </Dialog>
+      <Dialog
         open={openCorreoValido}
         onClose={handleCloseCorreoValido}
         PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
       >
-        <DialogTitle style={{ cursor: "move", display: 'flex', flexDirection: 'column', alignItems: 'center' }} id="draggable-dialog-title">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+        <DialogTitle
+          style={{
+            cursor: "move",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          id="draggable-dialog-title"
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: "8px",
+            }}
+          >
             <CheckCircleOutlineOutlinedIcon fontSize="large" />
           </div>
-          <div style={{ textAlign: 'center' }}>Correo verificado.</div>
+          <div style={{ textAlign: "center" }}>Correo verificado.</div>
         </DialogTitle>
-          
+
         <DialogActions>
           <Button onClick={handleCloseCorreoValido}>Cerrar</Button>
         </DialogActions>
@@ -213,13 +268,28 @@ export default function ElegantPopUpRegistro() {
         PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
       >
-        <DialogTitle style={{ cursor: "move", display: 'flex', flexDirection: 'column', alignItems: 'center' }} id="draggable-dialog-title">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+        <DialogTitle
+          style={{
+            cursor: "move",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          id="draggable-dialog-title"
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: "8px",
+            }}
+          >
             <ErrorOutlineIcon fontSize="large" />
           </div>
-          <div style={{ textAlign: 'center' }}>Código incorrecto.</div>
+          <div style={{ textAlign: "center" }}>Código incorrecto.</div>
         </DialogTitle>
-          
+
         <DialogActions>
           <Button onClick={handleCloseCodigoInvalido}>Cerrar</Button>
         </DialogActions>

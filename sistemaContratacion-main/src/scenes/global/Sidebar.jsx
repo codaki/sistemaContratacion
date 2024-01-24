@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
-import "react-pro-sidebar/dist/css/styles.css";
-import { tokens } from "../../theme";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import RecentActorsRoundedIcon from "@mui/icons-material/RecentActorsRounded";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import user1 from "./usuario2.png";
+import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import RecentActorsRoundedIcon from "@mui/icons-material/RecentActorsRounded";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { useState } from "react";
+import { Menu, MenuItem, ProSidebar, SubMenu } from "react-pro-sidebar";
+import "react-pro-sidebar/dist/css/styles.css";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { tokens } from "../../theme";
+import user1 from "./usuario2.png";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -41,19 +41,18 @@ const Sidebar = () => {
   const userRole = user ? user.role : "";
   const collapsedWidth = "80px";
   if (!isAuthenticated) {
-    return null; 
+    return null;
   }
 
   return (
-    
     <Box
       sx={{
         height: "140vh",
         "&::-webkit-scrollbar": {
-          width: "8px", 
+          width: "8px",
         },
         "&::-webkit-scrollbar-thumb": {
-          background: "#4cceac", 
+          background: "#4cceac",
           borderRadius: "4px",
         },
         "& .pro-sidebar-inner": {
@@ -72,7 +71,6 @@ const Sidebar = () => {
           color: "#78edcf !important",
         },
       }}
-      
     >
       <ProSidebar collapsed={isCollapsed} style={{ zIndex: 1000 }}>
         <Menu iconShape="square">
@@ -120,7 +118,8 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Usuario
+                  {user?.cand_nombre1 || "Nombre"}{" "}
+                  {user?.cand_apellido1 || "Apellido"}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   {userRole === "admin" ? "Recursos Humanos" : "Postulante"}
@@ -260,7 +259,6 @@ const Sidebar = () => {
           </Box>
         </Menu>
       </ProSidebar>
-      
     </Box>
   );
 };
