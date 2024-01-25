@@ -74,6 +74,7 @@ export const AuthProvider = ({ children }) => {
         //   role: isAdmin ? "admin" : "candidato",
         // };
         setUser(res.data);
+        console.log(res.data);
         console.log(user);
         setIsAuthenticated(true);
         setLoading(false);

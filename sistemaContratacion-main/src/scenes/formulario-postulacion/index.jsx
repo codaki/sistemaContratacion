@@ -26,13 +26,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { grey } from "@mui/material/colors";
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
+import { Navigate } from "react-router-dom";
 import * as yup from "yup";
-import Header from "../../components/Header";
-import { useAuth } from "../../context/AuthContext";
-
-import { useEffect, useState } from "react";
 import {
   actividadUnica,
   campoAmplioUnico,
@@ -45,6 +42,8 @@ import {
   sedeUnica,
 } from "../../api/oferta";
 import { crearSolicitud } from "../../api/solicitud";
+import Header from "../../components/Header";
+import { useAuth } from "../../context/AuthContext";
 const formSchema = yup.object().shape({
   postulation: yup.string().required("Campo requerido"),
   contratacion: yup.string().required("Campo requerido"),
@@ -85,7 +84,7 @@ const FormularioPostulacion = () => {
     sede: "",
     actividad: "",
   });
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const handleSolicitud = () => {
     const solicitud = {
       cand_id: user.id ? user.id : user.cand_id,
@@ -162,6 +161,15 @@ const FormularioPostulacion = () => {
               borderColor: "#4CAF50",
               backgroundColor: "#4CAF50",
             }}
+            disabled={
+              !postulacion1Selected ||
+              !postulacion2Selected ||
+              !postulacion3Selected ||
+              !postulacion4Selected ||
+              !postulacion5Selected ||
+              !postulacion6Selected ||
+              !postulacion7Selected
+            }
           >
             Confirmar
           </Button>
@@ -176,78 +184,12 @@ const FormularioPostulacion = () => {
             Verifique los datos solo puede postular una vez por concurso,
             verifique los datos antes de enviar.
           </DialogTitle>
-          {/* Comienza la tabla 
-          <DialogContent>
-            <DialogContentText>
-              <TableContainer component={Paper}>
-                <Table
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
-                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
-                      Postulación
-                    </TableCell>
-                    <TableCell>{seleccionados.postulation}</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
-                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
-                      Tipo de Contratación
-                    </TableCell>
-                    <TableCell>
-                      Personal académico que desarrolla actividades de tercer
-                      nivel de grado y cuarto nivel
-                    </TableCell>
-                  </TableRow>
-                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
-                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
-                      Campo Específico
-                    </TableCell>
-                    <TableCell>Base de Datos</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
-                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
-                      Campo Amplio
-                    </TableCell>
-                    <TableCell>seleccionados.postulacion</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
-                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
-                      Sede
-                    </TableCell>
-                    <TableCell>Matriz</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
-                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
-                      Tipo de Departamento
-                    </TableCell>
-                    <TableCell>Departamento de Ciencias Exactas</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
-                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
-                      Tipo de Personal Académico
-                    </TableCell>
-                    <TableCell>Auxiliar Nivel 1</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ textAlign: "left", width: "100%" }}>
-                    <TableCell sx={{ fontWeight: "bold", textAlign: "left" }}>
-                      Actividad
-                    </TableCell>
-                    <TableCell>Docencia</TableCell>
-                  </TableRow>
-                </Table>
-              </TableContainer>
-            </DialogContentText>
-          </DialogContent>
-          */}
           <DialogActions>
             <Button
               onClick={() => {
                 handleClose();
                 handleSolicitud();
+                window.location.href = "/";
               }}
             >
               Validar

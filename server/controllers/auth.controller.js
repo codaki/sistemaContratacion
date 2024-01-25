@@ -1,8 +1,17 @@
 import bcrypt from "bcryptjs";
+import Grid from "gridfs-stream";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 import { TOKEN_SECRET } from "../config.js";
 import { db } from "../db.js";
 
+let gfs;
+
+const conn = mongoose.connection;
+conn.once("open", () => {
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection("uploads");
+});
 export const register = (req, res) => {
   const {
     tipoIden,
@@ -108,20 +117,57 @@ export const logout = (req, res) => {
 export const verifyToken = async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.send(false);
-  jwt.verify(token, TOKEN_SECRET, (err, user) => {
+
+  jwt.verify(token, TOKEN_SECRET, async (err, user) => {
     if (err) return res.status(401).json("Acceso denegado");
-    const q = "SELECT * FROM candidato WHERE cand_id = $1";
-    db.query(q, [user.id], (err, data) => {
-      if (err) return res.status(500).json(err);
-      return res.json({
-        id: data.rows[0].cand_id,
-        email: data.rows[0].cand_correo,
-        name1: data.rows[0].cand_nombre1,
-        lastname1: data.rows[0].cand_apellido1,
-        role: "candidato",
+
+    try {
+      const documentos = await documentosVerify(user);
+
+      let postulacionActiva = false;
+      const q = "SELECT * FROM candidato WHERE cand_id = $1";
+      const qdoc = "SELECT * FROM solicitud WHERE cand_id =$1";
+
+      db.query(qdoc, [user.id], (e, d) => {
+        if (e) return res.status(500).json(e);
+        if (d.rows.length) {
+          postulacionActiva = true;
+        }
       });
-    });
+
+      db.query(q, [user.id], (err, data) => {
+        if (err) return res.status(500).json(err);
+
+        return res.json({
+          id: data.rows[0].cand_id,
+          email: data.rows[0].cand_correo,
+          name1: data.rows[0].cand_nombre1,
+          lastname1: data.rows[0].cand_apellido1,
+          role: "candidato",
+          documentos: documentos, // Use the obtained value
+          postulacion: postulacionActiva,
+        });
+      });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
   });
+};
+
+// ...
+
+export const documentosVerify = async (user) => {
+  try {
+    const files = await gfs.files
+      .find({
+        "metadata.idPostulation": user.id.toString(),
+      })
+      .toArray();
+
+    return files.length > 0;
+  } catch (mongoErr) {
+    throw new Error(mongoErr.message);
+  }
 };
 
 export const profile = (req, res) => {
