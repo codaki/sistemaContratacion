@@ -1,11 +1,11 @@
+import LogoutIcon from "@mui/icons-material/Logout"; // You can use the appropriate logout icon
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import { Box, IconButton, Menu, MenuItem, useTheme } from "@mui/material";
 import { useContext, useState } from "react";
-import { ColorModeContext, tokens } from "../../theme";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import LogoutIcon from "@mui/icons-material/Logout"; // You can use the appropriate logout icon
 import { useNavigate } from "react-router-dom";
-import { deleteCookie } from "./Utils";
 import { useAuth } from "../../context/AuthContext";
+import { ColorModeContext, tokens } from "../../theme";
+import { deleteCookie } from "./Utils";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -16,19 +16,19 @@ const Topbar = () => {
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const handleLogout = () =>{
-    deleteCookie('auth')
-    logout()
-    navigate('/home')
-  }
+  const handleLogout = () => {
+    deleteCookie("auth");
+    logout();
+    navigate("/home");
+  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  
-  return (
+
+  return user ? (
     <Box
       display="flex"
       justifyContent="right"
@@ -41,7 +41,7 @@ const Topbar = () => {
 
       {/* ICONS */}
       <Box display="flex">
-      <IconButton onClick={handleMenuOpen} sx={{ color: '#FFFFFF' }}>
+        <IconButton onClick={handleMenuOpen} sx={{ color: "#FFFFFF" }}>
           <PersonOutlinedIcon />
         </IconButton>
         <Menu
@@ -57,6 +57,8 @@ const Topbar = () => {
         </Menu>
       </Box>
     </Box>
+  ) : (
+    <></>
   );
 };
 
