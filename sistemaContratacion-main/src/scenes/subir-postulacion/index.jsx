@@ -38,7 +38,7 @@ const Formulario = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const handleFormSubmit = async (values, { setSubmitting }) => {
     try {
@@ -74,16 +74,7 @@ const Formulario = () => {
           }
         }
       }
-
-      const allFilesUploaded = files.every(
-        ({ id }) => values[id] instanceof File
-      );
-
-      if (!allFilesUploaded) {
-        console.error("Please upload all required documents.");
-        setIsUploading(false);
-        return;
-      }
+      window.location.href = "/";
 
       setTimeout(() => {
         setIsUploading(false);
@@ -134,7 +125,15 @@ const Formulario = () => {
   const handleAlertClose = () => {
     setAlertOpen(false);
   };
-
+  const actualizarDoc = () => {
+    const newUser = {
+      ...user.data,
+      documentos: true,
+      documentos1: true,
+    };
+    updateUser(newUser);
+    console.log(user);
+  };
   const formSchema = yup.object({
     resume: yup.mixed().required("Requerido"),
     cedula: yup.mixed().required("Requerido"),
@@ -394,6 +393,7 @@ const Formulario = () => {
         {isUploading ? (
           <Typography variant="h6" color="primary">
             Enviando...
+            {actualizarDoc}
           </Typography>
         ) : null}
       </div>

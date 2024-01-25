@@ -119,6 +119,7 @@ const Sidebar = () => {
                   sx={{ m: "10px 0 0 0" }}
                 >
                   {user?.name1 || "Nombre"} {user?.lastname1 || "Apellido"}
+                  {console.log(user)}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   {userRole === "admin" ? "Recursos Humanos" : "Postulante"}
@@ -150,16 +151,17 @@ const Sidebar = () => {
             {userRole === "candidato" && (
               <>
                 <Item
-                  title="Seleccionar Postulación"
-                  to="/seleccionar-postulacion"
-                  icon={<PeopleOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-                <Item
                   title="Subir Información"
                   to="/subir-informacion"
                   icon={<ContactsOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                <Item
+                  title="Seleccionar Postulación"
+                  to="/seleccionar-postulacion"
+                  icon={<PeopleOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
