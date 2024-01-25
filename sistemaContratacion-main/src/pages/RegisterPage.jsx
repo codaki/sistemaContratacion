@@ -270,7 +270,7 @@ const Registro = () => {
                   onClose={() => setAlertMessage("")}
                 />
               )}
-              <p className="label_propio">Ingrese su cédula o pasaporte</p>
+              <p className="label_propio">Seleccione el tipo de identificación</p>
 
               <select
                 {...register("tipoIden", { required: true })}
@@ -288,14 +288,14 @@ const Registro = () => {
                 </h4>
               )}
 
-              <TextField
+              {/* <TextField
                 label={`Número de ${tipoIden || "identificación"}`}
                 fullWidth
                 margin="normal"
                 variant="standard"
                 type="number"
                 {...register("identificacion", { required: true })}
-                name="password"
+                name="identificacion"
                 onChange={handleChange3}
                 InputProps={{
                   startAdornment: (
@@ -304,20 +304,21 @@ const Registro = () => {
                     </InputAdornment>
                   ),
                 }}
-              />
-
-              {/* <input
+              /> */}
+              <p className="label_propio">Ingrese el número de {tipoIden === "cédula" ? "Cédula" : "Pasaporte"}</p>
+              <input
                 type="number"
+                className="styled-input"
                 {...register("identificacion", { required: true })}
-                className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md border m-3"
-                placeholder={tipoIden === "cédula" ? "Cédula" : "Pasaporte"}
+                onChange={handleChange3}
+                name="identificacion"
+                // placeholder={tipoIden === "cédula" ? "Cédula" : "Pasaporte"}
                 inputMode="numeric"
                 maxLength="10"
-                onChange={handleChange3}
               />
               {errors.identificacion && (
                 <h4 className="text-red-500">La Identificación es requerida</h4>
-              )} */}
+              )}
 
 
               <div className="captcha-container">
