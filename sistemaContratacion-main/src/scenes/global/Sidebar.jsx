@@ -152,7 +152,7 @@ const Sidebar = () => {
               <>
                 <Item
                   title="Subir Información"
-                  to="/subir-informacion"
+                  to={!user.documentos ? "/subir-informacion" : ""}
                   icon={<ContactsOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -160,7 +160,11 @@ const Sidebar = () => {
 
                 <Item
                   title="Seleccionar Postulación"
-                  to="/seleccionar-postulacion"
+                  to={
+                    !user.postulacion && user.documentos
+                      ? "/seleccionar-postulacion"
+                      : ""
+                  }
                   icon={<PeopleOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
