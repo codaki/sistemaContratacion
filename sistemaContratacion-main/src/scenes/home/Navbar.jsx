@@ -16,7 +16,7 @@ import NavListDrawer from "./NavListDrawer";
 const navLinks = [
   {
     title: "Iniciar Sesion",
-    path: "/autenticacion",
+    path: "/login",
     icon: <LoginIcon />,
   },
 ];
