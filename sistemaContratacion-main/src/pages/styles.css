@@ -138,32 +138,27 @@ html, body {
   display: block; /* Evita espacios innecesarios alrededor de la imagen */
 }
 
-/* Estilo para el efecto de hover del botón */
-.login-form button:hover {
-  transition: 99ms;
-  background-color: #28a745; /* Color verde más oscuro en hover */
+/* Estilo general para el select */
+.select_propio {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #000;
+  font-size: 16px;
 }
 
-.login-form p {
-  color: #000000;
-  font-size: 15px;
-  font-family: 'Poppins', serif;
-  text-align: center;
-  text-decoration: underline;
+/* Estilo para las opciones del select */
+.select_propio option {
+  color: #000;
 }
 
-.login-form h3 {
-  color: #000000;
-  font-size: 15px;
-  font-family: 'Poppins', serif;
-  text-align: center;
-}
-
-.login-form h4 {
-  color: #ff0000;
-  font-size: 15px;
-  font-family: 'Poppins', serif;
-  text-align: center;
+/* Estilo para el borde y el fondo del select al recibir el foco */
+.select_propio:focus {
+  outline: none;
+  border-color: #40a9ff; /* Cambia el color del borde al recibir el foco */
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2); /* Efecto de sombra al recibir el foco */
 }
 
 .register-container {
@@ -181,9 +176,25 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 3vh;
+  margin-bottom: 5vh;
 }
 
+.styled-date-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.styled-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 16px;
+}
 /*PÁGINA FORMULARIO*/
 .form-container {
   flex: 1;

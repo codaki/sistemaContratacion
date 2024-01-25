@@ -5,12 +5,18 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import PopupCedula from "../components/PopUpCedula";
 import Popup from "../components/Popup";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import { Box, Button } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import emailjs from "./emailjsInit";
+import InputAdornment from "@mui/material/InputAdornment";
+import Autocomplete from "@mui/material/Autocomplete";
+import BadgeIcon from "@mui/icons-material/Badge";
+import TextField from "@mui/material/TextField";
 import "./styles.css";
 
 const Registro = () => {
-  const [tipoIden, setTipoIden] = useState("cédula");
+  const [tipoIden, setTipoIden] = useState("Cédula");
   const [identificacion, setIdentificacion] = useState("");
   const [sexo, setSexo] = useState("M");
   const [titulo, setTitulo] = useState("");
@@ -123,8 +129,7 @@ const Registro = () => {
             `Estimado(a) ${values.nombre1} ${values.apellido1},\n\n` +
             `Le extendemos nuestro cordial saludo y le confirmamos su postulación al proceso de selección.` +
             `\n\nA continuación, le proporcionamos los detalles de su postulación:\n\n` +
-            `Nombre completo: ${values.nombre1} ${
-              values.nombre2 ? values.nombre2 : ""
+            `Nombre completo: ${values.nombre1} ${values.nombre2 ? values.nombre2 : ""
             } ${values.apellido1} ${values.apellido2}\n` +
             `Correo electrónico: ${values.email}\n` +
             `Contraseña temporal: ${password}\n\n` +
@@ -248,166 +253,329 @@ const Registro = () => {
   }
 
   return (
-    <div className="login-container">
-      <div className="login-image"></div>
-      {!showFormulario2 && (
-        <div className="login-form" id="login1">
-          <h1>Registro</h1>
-          {registerErrors.map((error, i) => (
-            <div key={i} className="bg-red-500 p-2 text-white">
-              {error}
-            </div>
-          ))}
-          {alertMessage && (
-            <PopupCedula
-              titulo="Error"
-              mensaje={alertMessage}
-              onClose={() => setAlertMessage("")}
-            />
-          )}
-          <h2>Tipo de Identificación</h2>
-          <select
-            {...register("tipoIden", { required: true })}
-            onChange={handleChange}
-            value={tipoIden}
-            placeholder="Tipo de Identificación"
-          >
-            <option value="cédula">Cédula</option>
-            <option value="pasaporte">Pasaporte</option>
-          </select>
-          {errors.tipoIden && (
-            <h4 className="text-red-500">
-              El tipo de identificación es requerido
-            </h4>
-          )}
-          <input
-            type="number"
-            {...register("identificacion", { required: true })}
-            className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md border m-3"
-            placeholder={tipoIden === "cédula" ? "Cédula" : "Pasaporte"}
-            inputMode="numeric"
-            maxLength="10"
-            onChange={handleChange3}
-          />
-          {errors.identificacion && (
-            <h4 className="text-red-500">La Identificación es requerida</h4>
-          )}
-          <div className="captcha-container">
-            <ReCAPTCHA
-              sitekey="6LdDDVonAAAAAJAr8uMJO4EhneySO80IqjF3Vt6x"
-              onChange={onCaptchaVerify}
-            />
-          </div>
-          <button type="submit" onClick={handleClick}>
-            Registrarse
-          </button>
-          <div className="register-container">
-            <h3>¿Ya te has registrado?</h3>
-            <p onClick={() => (window.location.href = "/login")}>Ir a Login</p>
-          </div>
-        </div>
-      )}
-      {showFormulario2 && (
-        <div className="form-container" id="login2">
-          <div className="form-box">
-            <h1>Información</h1>
-            {registerErrors.map((error, i) => (
-              <div key={i} className="bg-red-500 p-2 text-white">
-                {error}
+    <div className="authPage">
+      <div className="grande">
+        <div className="login1">
+          {!showFormulario2 && (
+            <div className="login-form" >
+              <h3>Registro</h3>
+              {registerErrors.map((error, i) => (
+                <div key={i} className="bg-red-500 p-2 text-white">
+                  {error}
+                </div>
+              ))}
+              {alertMessage && (
+                <PopupCedula
+                  titulo="Error"
+                  mensaje={alertMessage}
+                  onClose={() => setAlertMessage("")}
+                />
+              )}
+              <p>Ingrese su cédula o pasaporte</p>
+
+              <select
+                {...register("tipoIden", { required: true })}
+                onChange={handleChange}
+                value={tipoIden}
+                placeholder="Tipo de Identificación"
+                className="select_propio"
+              >
+                <option value="cédula">Cédula</option>
+                <option value="pasaporte">Pasaporte</option>
+              </select>
+              {errors.tipoIden && (
+                <h4 className="text-red-500">
+                  El tipo de identificación es requerido
+                </h4>
+              )}
+
+              <TextField
+                label={`Número de ${tipoIden || "identificación"}`}
+                fullWidth
+                margin="normal"
+                variant="standard"
+                type="number"
+                {...register("identificacion", { required: true })}
+                name="password"
+                onChange={handleChange3}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <BadgeIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              {/* <input
+                type="number"
+                {...register("identificacion", { required: true })}
+                className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md border m-3"
+                placeholder={tipoIden === "cédula" ? "Cédula" : "Pasaporte"}
+                inputMode="numeric"
+                maxLength="10"
+                onChange={handleChange3}
+              />
+              {errors.identificacion && (
+                <h4 className="text-red-500">La Identificación es requerida</h4>
+              )} */}
+
+
+              <div className="captcha-container">
+                <ReCAPTCHA
+                  sitekey="6LdDDVonAAAAAJAr8uMJO4EhneySO80IqjF3Vt6x"
+                  onChange={onCaptchaVerify}
+                />
               </div>
-            ))}
-            <h2>Nombre Completo</h2>
-            <input
-              type="text"
-              {...register("nombreCompleto", { required: true })}
-            />
-            {errors.nombreCompleto && (
-              <h4 className="text-red-500">El Nombre Completo es requerido</h4>
-            )}
-            <h2>Género</h2>
-            <select
-              {...register("sexo", { required: true })}
-              onChange={handleChange1}
-              value={sexo}
-            >
-              <option value="M">Masculino</option>
-              <option value="F">Femenino</option>
-              <option value="O">Otro</option>
-            </select>
-            {errors.sexo && (
-              <h4 className="text-red-500">El sexo es requerido</h4>
-            )}
-            <h2>Profesión/Título</h2>
-            <select
-              {...register("titulo", { required: true })}
-              onChange={handleChange2}
-            >
-              {" "}
-              {sexo === "M"
-                ? titulosM.map((titulo, i) => (
+              <Button
+                onClick={() => navigate("/login")}
+                type="button"
+                variant="contained"
+                style={{
+                  backgroundColor: "#007B49",
+                  color: "white",
+                  width: "40%",
+                  marginLeft: "1.5vw"
+                }}
+              >
+                Volver
+              </Button>
+
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={handleClick}
+                style={{
+                  backgroundColor: "#007B49",
+                  color: "white",
+                  width: "40%",
+                  marginLeft: "1vw"
+                }}
+              >
+                Registrarse
+              </Button>
+
+
+
+              {/* <button type="submit" onClick={handleClick}>
+                Registrarse
+              </button>
+              <div className="register-container">
+                <h3>¿Ya te has registrado?</h3>
+                <p onClick={() => (window.location.href = "/login")}>Ir a Login</p>
+              </div> */}
+
+            </div>
+
+
+          )}
+          
+
+        </div>
+        
+        {showFormulario2 && (
+          
+          <div className="">
+            
+        <div className="container-logo">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_ESPE.png"
+            alt="ESPE"
+            className="logo"
+          />
+        </div>
+            <div className=""></div>
+            <div className="login1">
+              
+              <h3>Información</h3>
+              {registerErrors.map((error, i) => (
+                <div key={i} className="bg-red-500 p-2 text-white">
+                  {error}
+                </div>
+              ))}
+              
+              {/* <TextField
+                label="Nombre Completo"
+                fullWidth
+                margin="normal"
+                variant="standard"
+                type="text"
+                {...register("nombreCompleto", { required: true })}
+                name="nombreCompleto"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle />
+                    </InputAdornment>
+                  ),
+                }}
+              /> */}
+              <input
+                type="text"
+                {...register("nombreCompleto", { required: true })}
+                name="nombreCompleto"
+                className="styled-input"
+              />
+              {errors.nombreCompleto && (
+                <h4 className="text-red-500">El Nombre Completo es requerido</h4>
+              )}
+              {/* <h2>Nombre Completo</h2>
+              <input
+                type="text"
+                {...register("nombreCompleto", { required: true })}
+              />
+              {errors.nombreCompleto && (
+                <h4 className="text-red-500">El Nombre Completo es requerido</h4>
+              )} */}
+              <p>Género</p>
+              <select
+                {...register("sexo", { required: true })}
+                onChange={handleChange}
+                value={sexo}
+                className="select_propio"
+              >
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+                <option value="O">Otro</option>
+              </select>
+              {errors.sexo && (
+                <h4 className="text-red-500">El sexo es requerido</h4>
+              )}
+
+              {/* <h2>Género</h2>
+              <select
+                {...register("sexo", { required: true })}
+                onChange={handleChange1}
+                value={sexo}
+              >
+                <option value="M">Masculino</option>
+                <option value="F">Femenino</option>
+                <option value="O">Otro</option>
+              </select>
+              {errors.sexo && (
+                <h4 className="text-red-500">El sexo es requerido</h4>
+              )} */}
+              <p>Profesión</p>
+              <select
+                {...register("titulo", { required: true })}
+                onChange={handleChange}
+                value={sexo}
+                className="select_propio"
+              >
+                {" "}
+                {sexo === "M"
+                  ? titulosM.map((titulo, i) => (
                     <option key={i} value={titulo}>
                       {titulo}
                     </option>
                   ))
-                : titulosF.map((titulo, i) => (
+                  : titulosF.map((titulo, i) => (
                     <option key={i} value={titulo}>
                       {titulo}
                     </option>
                   ))}
-            </select>
-            {errors.titulo && (
-              <h4 className="text-red-500">El título es requerido</h4>
-            )}
-            <h2>Fecha de Nacimiento</h2>
-            <input
-              type="date"
-              {...register("fecha_nacimiento", { required: true })}
-              max={`${
-                new Date(new Date().getFullYear() - 18, 11, 31)
+              </select>
+              {errors.titulo && (
+                <h4 className="text-red-500">El título es requerido</h4>
+              )}
+              {/* <h2>Profesión/Título</h2>
+              <select
+                {...register("titulo", { required: true })}
+                onChange={handleChange2}
+              >
+                {" "}
+                {sexo === "M"
+                  ? titulosM.map((titulo, i) => (
+                    <option key={i} value={titulo}>
+                      {titulo}
+                    </option>
+                  ))
+                  : titulosF.map((titulo, i) => (
+                    <option key={i} value={titulo}>
+                      {titulo}
+                    </option>
+                  ))}
+              </select>
+              {errors.titulo && (
+                <h4 className="text-red-500">El título es requerido</h4>
+              )} */}
+              <p>Fecha de Nacimiento</p>
+              <input
+                type="date"
+                {...register("fecha_nacimiento", { required: "Fecha de Nacimiento es requerida" })}
+                max={`${new Date(new Date().getFullYear() - 18, 11, 31)
                   .toISOString()
-                  .split("T")[0]
-              }`}
-            />
-            {errors.fecha_nacimiento && (
-              <h4 className="text-red-500">
-                La fecha de nacimiento es requerido
-              </h4>
-            )}
-            <h2>E-mail</h2>
-            <input
-              type="email"
-              {...register("email", { required: true })}
-              onChange={handleChangeEmail}
-            />
+                  .split("T")[0]}`}
+                className="styled-date-input"
+              />
+              {errors.fecha_nacimiento && (
+                <h4 className="text-red-500">
+                  La fecha de nacimiento es requerido
+                </h4>
+              )}
+              <p>E-mail</p>
+              <input
+                type="email"
+                {...register("email", { required: true })}
+                onChange={handleChangeEmail}
+                className="styled-input"
+              />
+              {errors.email && (
+                <h4 className="text-red-500">El correo es requerido</h4>
+              )}
+              <Button
+              onClick={() => {onSubmit();}}
+                type="submit"
+                variant="contained"
+                style={{
+                  backgroundColor: "#007B49",
+                  color: "white",
+                  width: "40%",
+                  marginLeft: "1vw"
+                }}
+              >
+                Enviar
+              </Button>
 
-            {errors.email && (
-              <h4 className="text-red-500">El correo es requerido</h4>
-            )}
-            <button
-              type="submit"
-              onClick={() => {
-                onSubmit();
-              }}
-            >
-              Enviar
-            </button>
-            {showEmailValidationPopup && (
-              <EmailValidationPopup
-                onClose={() => setShowEmailValidationPopup(false)}
-              />
-            )}
-            {showPopup && (
-              <Popup
-                titulo="¡Su cuenta ha sido creada exitosamente!"
-                mensaje="Accede a tu correo para recuperar tu clave y poder iniciar sesión. Recuerda cambiar tu contraseña para mentener tu cuenta segura."
-                ruta="/login" // Ajusta la ruta de redirección que deseas
-                onClose={() => setShowPopup(false)} // Función para cerrar el Popup
-              />
-            )}
+              {/* <button
+                type="submit"
+                onClick={() => {
+                  onSubmit();
+                }}
+              >
+                Enviar
+              </button> */}
+              {showEmailValidationPopup && (
+                <EmailValidationPopup
+                  onClose={() => setShowEmailValidationPopup(false)}
+                />
+              )}
+
+              {showPopup && (
+                <Popup
+                  titulo="¡Su cuenta ha sido creada exitosamente!"
+                  mensaje="Accede a tu correo para recuperar tu clave y poder iniciar sesión. Recuerda cambiar tu contraseña para mentener tu cuenta segura."
+                  ruta="/login" // Ajusta la ruta de redirección que deseas
+                  onClose={() => setShowPopup(false)} // Función para cerrar el Popup
+                />
+              )}
+            </div>
           </div>
+          
+          
+        )}
+        <div className="franja_roja"></div>
+        <div className="container-logo">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_ESPE.png"
+            alt="ESPE"
+            className="logo"
+          />
         </div>
-      )}
+      </div>
+      
     </div>
+    
   );
 };
 
