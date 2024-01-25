@@ -255,9 +255,8 @@ const Registro = () => {
   return (
     <div className="authPage">
       <div className="grande">
-        <div className="login1">
           {!showFormulario2 && (
-            <div className="login-form" >
+            <div className="login1" >
               <h3>Registro</h3>
               {registerErrors.map((error, i) => (
                 <div key={i} className="bg-red-500 p-2 text-white">
@@ -371,20 +370,11 @@ const Registro = () => {
           )}
           
 
-        </div>
         
         {showFormulario2 && (
           
           <div className="">
-            
-        <div className="container-logo">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_ESPE.png"
-            alt="ESPE"
-            className="logo"
-          />
-        </div>
-            <div className=""></div>
+
             <div className="login1">
               
               <h3>Información</h3>
@@ -410,11 +400,13 @@ const Registro = () => {
                   ),
                 }}
               /> */}
+              <p>Nombre completo</p>
               <input
                 type="text"
                 {...register("nombreCompleto", { required: true })}
                 name="nombreCompleto"
                 className="styled-input"
+                placeholder="Nombres Apellidos"
               />
               {errors.nombreCompleto && (
                 <h4 className="text-red-500">El Nombre Completo es requerido</h4>
@@ -430,7 +422,7 @@ const Registro = () => {
               <p>Género</p>
               <select
                 {...register("sexo", { required: true })}
-                onChange={handleChange}
+                onChange={handleChange1}
                 value={sexo}
                 className="select_propio"
               >
@@ -456,9 +448,9 @@ const Registro = () => {
                 <h4 className="text-red-500">El sexo es requerido</h4>
               )} */}
               <p>Profesión</p>
-              <select
+              {/* <select
                 {...register("titulo", { required: true })}
-                onChange={handleChange}
+                onChange={handleChange2}
                 value={sexo}
                 className="select_propio"
               >
@@ -477,11 +469,12 @@ const Registro = () => {
               </select>
               {errors.titulo && (
                 <h4 className="text-red-500">El título es requerido</h4>
-              )}
-              {/* <h2>Profesión/Título</h2>
+              )} */}
+              {/* <h2>Profesión/Título</h2> */}
               <select
                 {...register("titulo", { required: true })}
                 onChange={handleChange2}
+                className="select_propio"
               >
                 {" "}
                 {sexo === "M"
@@ -498,7 +491,7 @@ const Registro = () => {
               </select>
               {errors.titulo && (
                 <h4 className="text-red-500">El título es requerido</h4>
-              )} */}
+              )}
               <p>Fecha de Nacimiento</p>
               <input
                 type="date"
