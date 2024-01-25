@@ -270,7 +270,7 @@ const Registro = () => {
                   onClose={() => setAlertMessage("")}
                 />
               )}
-              <p>Ingrese su cédula o pasaporte</p>
+              <p className="label_propio">Ingrese su cédula o pasaporte</p>
 
               <select
                 {...register("tipoIden", { required: true })}
@@ -326,6 +326,7 @@ const Registro = () => {
                   onChange={onCaptchaVerify}
                 />
               </div>
+              <div> 
               <Button
                 onClick={() => navigate("/login")}
                 type="button"
@@ -334,7 +335,7 @@ const Registro = () => {
                   backgroundColor: "#007B49",
                   color: "white",
                   width: "40%",
-                  marginLeft: "1.5vw"
+                  marginLeft: "1vw"
                 }}
               >
                 Volver
@@ -353,6 +354,8 @@ const Registro = () => {
               >
                 Registrarse
               </Button>
+              </div>
+              
 
 
 
@@ -400,7 +403,7 @@ const Registro = () => {
                   ),
                 }}
               /> */}
-              <p>Nombre completo</p>
+              <p className="label_propio">Nombre completo</p>
               <input
                 type="text"
                 {...register("nombreCompleto", { required: true })}
@@ -419,7 +422,7 @@ const Registro = () => {
               {errors.nombreCompleto && (
                 <h4 className="text-red-500">El Nombre Completo es requerido</h4>
               )} */}
-              <p>Género</p>
+              <p className="label_propio">Género</p>
               <select
                 {...register("sexo", { required: true })}
                 onChange={handleChange1}
@@ -447,7 +450,7 @@ const Registro = () => {
               {errors.sexo && (
                 <h4 className="text-red-500">El sexo es requerido</h4>
               )} */}
-              <p>Profesión</p>
+              <p className="label_propio">Profesión</p>
               {/* <select
                 {...register("titulo", { required: true })}
                 onChange={handleChange2}
@@ -492,7 +495,7 @@ const Registro = () => {
               {errors.titulo && (
                 <h4 className="text-red-500">El título es requerido</h4>
               )}
-              <p>Fecha de Nacimiento</p>
+              <p className="label_propio">Fecha de Nacimiento</p>
               <input
                 type="date"
                 {...register("fecha_nacimiento", { required: "Fecha de Nacimiento es requerida" })}
@@ -506,7 +509,7 @@ const Registro = () => {
                   La fecha de nacimiento es requerido
                 </h4>
               )}
-              <p>E-mail</p>
+              <p className="label_propio">E-mail</p>
               <input
                 type="email"
                 {...register("email", { required: true })}

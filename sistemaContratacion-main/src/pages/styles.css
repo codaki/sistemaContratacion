@@ -116,11 +116,11 @@ body {
   flex-direction: column;
   padding: 2vw;
 }
-.login1 p {
+.label_propio {
   font-size: 0.9vw;
   font-family: "Quicksand", serif;
   color: #000000;
-  text-align: right;
+  text-align: left;
 }
 .grande {
   display: flex;
@@ -140,21 +140,21 @@ body {
   padding-top: 10%;
 }
 .logo {
-  max-width: 30vw; /* Ajusta según tus necesidades */
+  max-width: 30vw; 
   filter: drop-shadow(
     2vw 1vw 1vw rgba(0, 0, 0, 0.6)
-  ); /* Ajusta según tus necesidades */
-  margin: auto; /* Centra la imagen horizontalmente */
-  display: block; /* Evita espacios innecesarios alrededor de la imagen */
+  ); 
+  margin: auto; 
+  display: block; 
 }
 .popup-container {
-  z-index: 2; /* Ajusta según tus necesidades, debe ser mayor que el de los otros elementos */
+  z-index: 2; 
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro para el popup */
+  background: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -267,30 +267,6 @@ body {
 .form-box button:hover {
   transition: 99ms;
   background-color: #28a745; /* Color verde más oscuro en hover */
-}
-
-/* Estilos para los elementos del formulario */
-.form-box h1 {
-  margin-bottom: 40px;
-  color: #000000;
-  font-size: 50px;
-  font-family: "Quicksand", serif;
-  font-weight: bold;
-  text-align: center;
-}
-
-.form-box h2 {
-  color: #000000;
-  font-size: 15px;
-  font-family: "Poppins", serif;
-  text-align: center;
-}
-
-.form-box h4 {
-  color: #ff0000;
-  font-size: 15px;
-  font-family: "Poppins", serif;
-  text-align: center;
 }
 
 /*PÁGINA PLATAFORMA*/
