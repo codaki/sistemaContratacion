@@ -102,70 +102,40 @@ html, body {
   height: 100vh;
 }
 
-.login-form {
-  flex: 1; /* Esto hará que el formulario ocupe el 50% del ancho del contenedor */
+.login1 {
+  width: 30vw; 
+  height: 85vh;
+  box-sizing: border-box;  
+  background-color: #ffffff;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background-color: #ffffff; /* Puedes ajustar el color de fondo según tus preferencias */
+  justify-content: center;
+  flex-direction: column;
+  padding: 2vw;
 }
 
-.login-image {
-  flex: 1; /* Esto hará que la imagen ocupe el 50% restante del ancho del contenedor */
-  background-image: url("../assets/espe-login1.png"); /* Reemplaza 'ruta_de_la_imagen.jpg' con la ruta de tu imagen */
-  background-size: cover;
-  background-position: center;
+.grande {
+  display: flex;
+  border-radius: 8rem;
 }
-
-/* Estilos para los elementos del formulario */
-.login-form h1 {
-  margin-bottom: 40px;
-  color: #000000;
-  font-size: 50px;
-  font-family: 'Quicksand', serif;
-  font-weight: bold;
+.franja_roja {
+  width: 4vw; 
+  height: 85vh;
+  background-color: #aa1919;
 }
-
-.login-form h2 {
-  margin-bottom: 10px;
-  color: #000000;
-  font-size: 15px;
-  font-family: 'Poppins', serif;
+.container-logo {
+  width: 30vw; 
+  height: 85vh;
+  background: linear-gradient(180deg, #007B49 0%, #00A650 100%);
+  color: white;
   text-align: center;
+  padding-top: 10%;
 }
-
-.login-form label {
-  display: block;
-  text-align: left;
-}
-
-.login-form input, .login-form select {
-  display: block;
-  width: 50vh;
-  margin: 10px 0;
-  padding: 8px 12px;
-  border: 3px solid #000000;
-  border-radius: 25px;
-  color: #020202;
-  font-size: 18px;
-  background-color: transparent;
-  padding: 10px 16px;
-  font-family: 'Quicksand', serif;
-}
-
-.login-form button {
-  display: block;
-  cursor: pointer;
-  font-size: 18px;
-  background-color: transparent;
-  padding: 10px 16px;
-  width: 35%;
-  margin: 40px auto; /* Centra horizontalmente con 'auto' en los márgenes izquierdo y derecho */
-  font-family: 'Quicksand', serif;
-  color: #000000;
-  transition: background-color 0.2s ease-in-out;
-  border: 2px solid #000000;
+.logo {
+  max-width: 30vw; /* Ajusta según tus necesidades */
+  filter: drop-shadow(2vw 1vw 1vw rgba(0, 0, 0, 0.6)); /* Ajusta según tus necesidades */
+  margin: auto; /* Centra la imagen horizontalmente */
+  display: block; /* Evita espacios innecesarios alrededor de la imagen */
 }
 
 /* Estilo para el efecto de hover del botón */

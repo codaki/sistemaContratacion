@@ -2,6 +2,7 @@
 @media (max-width: 768px) {
     .authForm {
       max-width: 100%;
+      margin-top: 5wh;
     }
   
     .row {
