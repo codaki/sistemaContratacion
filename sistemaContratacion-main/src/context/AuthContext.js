@@ -1,6 +1,12 @@
 import Cookies from "js-cookie";
 import { createContext, useContext, useEffect, useState } from "react";
-import { loginRequest, registerRequest, verifyTokenRequest } from "../api/auth";
+import {
+  getUsuarioApi,
+  getUsuariosRequest,
+  loginRequest,
+  registerRequest,
+  verifyTokenRequest,
+} from "../api/auth";
 export const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -57,6 +63,15 @@ export const AuthProvider = ({ children }) => {
       setErrors(error.response.data);
     }
   };
+  const getUsuario = async (id) => {
+    try {
+      const res = await getUsuarioApi(id);
+      return res;
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data);
+    }
+  };
   useEffect(() => {
     const checkLogin = async () => {
       const cookies = Cookies.get();
@@ -101,6 +116,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         signup,
         user,
+        getUsuario,
         updateUser,
         isAuthenticated,
         errors,

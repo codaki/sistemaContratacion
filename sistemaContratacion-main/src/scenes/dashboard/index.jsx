@@ -178,8 +178,6 @@ const Dashboard = () => {
                 fontSize: "18px",
                 color: "#687690",
                 fontWeight: "500",
-                mt: 10,
-                mb: 4,
               }}
             >
               Bienvenidos a la plataforma ESPE DOCENTES
@@ -194,6 +192,33 @@ const Dashboard = () => {
             >
               Para mayor información sobre los documentos dale click al botón
             </Typography>
+            <Box
+              sx={{
+                justifyContent: "space-between",
+              }}
+            >
+              {/* Active Button */}
+              Estado de los procesos:
+              <Button
+                style={{ marginLeft: "20px" }}
+                variant="contained"
+                color={user && !user.documentos ? "error" : "success"}
+                disabled={false}
+                onClick={() => handleButtonClick(1)}
+              >
+                Documentos
+              </Button>
+              {/* Inactive Button */}
+              <Button
+                style={{ marginLeft: "20px" }}
+                variant="contained"
+                color={user && !user.postulacion ? "error" : "success"}
+                disabled={false}
+                onClick={() => handleButtonClick(2)}
+              >
+                Postulación
+              </Button>
+            </Box>
             <Box alignContent={"center"}>
               <Box
                 sx={{

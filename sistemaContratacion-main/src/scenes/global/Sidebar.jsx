@@ -119,7 +119,6 @@ const Sidebar = () => {
                   sx={{ m: "10px 0 0 0" }}
                 >
                   {user?.name1 || "Nombre"} {user?.lastname1 || "Apellido"}
-                  {console.log(user)}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   {userRole === "admin" ? "Recursos Humanos" : "Postulante"}
@@ -133,6 +132,13 @@ const Sidebar = () => {
               title="Inicio"
               to="/"
               icon={<HomeOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Perfil"
+              to="/perfil"
+              icon={<HomeOutlinedIcon />} // AQUÍ UN NUEVO ICONO
               selected={selected}
               setSelected={setSelected}
             />

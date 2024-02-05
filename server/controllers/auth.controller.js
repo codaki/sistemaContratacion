@@ -143,7 +143,13 @@ export const verifyToken = async (req, res) => {
           email: data.rows[0].cand_correo,
           name1: data.rows[0].cand_nombre1,
           lastname1: data.rows[0].cand_apellido1,
-          role: "candidato",
+          tipoI: data.rows[0].cand_tipo_identificacion,
+          identificacion: data.rows[0].cand_num_identificacion,
+          titulo: data.rows[0].cand_titulo,
+          fecha: data.rows[0].cand_fecha_nacimiento,
+          role: data.rows[0].cand_correo.endsWith("espe.edu.ec")
+            ? "admin"
+            : "candidato",
           documentos: documentos, // Use the obtained value
           postulacion: postulacionActiva,
         });
@@ -198,6 +204,58 @@ export const obtenerUsuario = (req, res) => {
       nombre: data.rows[0].cand_nombre1,
       apellido: data.rows[0].cand_apellido1,
       titulo: data.rows[0].cand_titulo,
+    });
+  });
+};
+export const editarCandidato = async (req, res) => {
+  try {
+    console.log(req.body);
+
+    const { password } = req.body;
+    const id = req.params.id;
+    console.log(id);
+    console.log(password);
+    // Verifica si se proporcionó una nueva contraseña
+    if (!password) {
+      return res
+        .status(400)
+        .json({ message: "Se requiere una nueva contraseña" });
+    }
+
+    // Construye la consulta SQL para actualizar la contraseña del candidato
+    const q = `
+      UPDATE candidato
+      SET cand_password = $1
+      WHERE cand_id = $2
+      RETURNING *;
+    `;
+
+    // Ejecuta la consulta SQL
+    const { rows } = await db.query(q, [password, id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Candidato no encontrado" });
+    }
+
+    const candidato = rows[0];
+    return res.json({ candidato });
+  } catch (error) {
+    console.error("Error al editar candidato:", error);
+    return res.status(500).json({ message: "Error al editar candidato" });
+  }
+};
+export const getUsuario = (req, res) => {
+  const id = req.params.id;
+  const q = "SELECT * FROM candidato WHERE cand_id = $1;";
+  //Llamado a la base de datos
+  db.query(q, [id], (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
+    return res.json({
+      //información que se recopila
+      password: data.rows[0].cand_password,
     });
   });
 };

@@ -1,19 +1,21 @@
 import { Router } from "express";
 import {
+  editarCandidato,
+  getUsuario,
   login,
-  register,
   logout,
-  profile,
-  verifyToken,
   obtenerUsuario,
+  profile,
+  register,
+  verifyToken,
 } from "../controllers/auth.controller.js";
 //Uso de la fución que valida el acceso a ciertas páginas
-import { authRequired } from "../middlewares/validateToken.js";
-import { validateSchema} from "../middlewares/validator.middleware.js"
-import { registerSchema,loginSchema } from "../schemas/auth.schema.js";
 import { db } from "../db.js";
+import { authRequired } from "../middlewares/validateToken.js";
+import { validateSchema } from "../middlewares/validator.middleware.js";
+import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
 const router = Router();
-//End point de autoización 
+//End point de autoización
 router.post("/register", (req, res, next) => {
   validateSchema(registerSchema);
   register(req, res);
@@ -25,11 +27,13 @@ router.post("/register", (req, res, next) => {
 //     return res.json(data.rows[0].usu_codigo);
 //   })
 // })
-router.post("/login",validateSchema(loginSchema), login);
+router.post("/login", validateSchema(loginSchema), login);
 router.post("/logout", logout);
-router.post("/obtenerUsuario/:id",obtenerUsuario)
+router.post("/obtenerUsuario/:id", obtenerUsuario);
 //Ruta protegida con el authRequired
 router.get("/profile", authRequired, profile);
 //Verificacion de token
-router.get("/verify",verifyToken)
+router.put("/usuarios/:id", editarCandidato);
+router.get("/verify", verifyToken);
+router.get("/getUsuario/:id", getUsuario);
 export default router;

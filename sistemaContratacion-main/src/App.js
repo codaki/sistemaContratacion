@@ -6,6 +6,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import { getCookie } from "./Utils";
 import { AuthProvider } from "./context/AuthContext";
 import { default as Login1, default as login } from "./pages/LoginPage";
+import Perfil from "./pages/Perfil";
 import RegisterPage from "./pages/RegisterPage";
 import { logout } from "./reducers/auth.slice";
 import Auth from "./scenes/auth";
@@ -59,6 +60,7 @@ function App() {
                     path="/seleccionar-postulacion"
                     element={<FormularioPostulacion />}
                   />
+                  <Route path="/perfil" element={<Perfil />} />
                   <Route
                     path="/formulario-oferta"
                     element={<FormulariOferta />}

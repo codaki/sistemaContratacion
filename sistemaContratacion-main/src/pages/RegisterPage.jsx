@@ -1,3 +1,9 @@
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import BadgeIcon from "@mui/icons-material/Badge";
+import { Box, Button } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -5,14 +11,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import PopupCedula from "../components/PopUpCedula";
 import Popup from "../components/Popup";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import { Box, Button } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import emailjs from "./emailjsInit";
-import InputAdornment from "@mui/material/InputAdornment";
-import Autocomplete from "@mui/material/Autocomplete";
-import BadgeIcon from "@mui/icons-material/Badge";
-import TextField from "@mui/material/TextField";
 import "./styles.css";
 
 const Registro = () => {
@@ -129,7 +129,8 @@ const Registro = () => {
             `Estimado(a) ${values.nombre1} ${values.apellido1},\n\n` +
             `Le extendemos nuestro cordial saludo y le confirmamos su postulación al proceso de selección.` +
             `\n\nA continuación, le proporcionamos los detalles de su postulación:\n\n` +
-            `Nombre completo: ${values.nombre1} ${values.nombre2 ? values.nombre2 : ""
+            `Nombre completo: ${values.nombre1} ${
+              values.nombre2 ? values.nombre2 : ""
             } ${values.apellido1} ${values.apellido2}\n` +
             `Correo electrónico: ${values.email}\n` +
             `Contraseña temporal: ${password}\n\n` +
@@ -255,40 +256,41 @@ const Registro = () => {
   return (
     <div className="authPage">
       <div className="grande">
-          {!showFormulario2 && (
-            <div className="login1" >
-              <h3>Registro</h3>
-              {registerErrors.map((error, i) => (
-                <div key={i} className="bg-red-500 p-2 text-white">
-                  {error}
-                </div>
-              ))}
-              {alertMessage && (
-                <PopupCedula
-                  titulo="Error"
-                  mensaje={alertMessage}
-                  onClose={() => setAlertMessage("")}
-                />
-              )}
-              <p className="label_propio">Seleccione el tipo de identificación</p>
+        {!showFormulario2 && (
+          <div className="login1">
+            <h3>Registro</h3>
+            {registerErrors.map((error, i) => (
+              <div key={i} className="bg-red-500 p-2 text-white">
+                {error}
+              </div>
+            ))}
+            {alertMessage && (
+              <PopupCedula
+                titulo="Error"
+                mensaje={alertMessage}
+                onClose={() => setAlertMessage("")}
+              />
+            )}
+            <p className="label_propio">Seleccione el tipo de identificación</p>
 
-              <select
-                {...register("tipoIden", { required: true })}
-                onChange={handleChange}
-                value={tipoIden}
-                placeholder="Tipo de Identificación"
-                className="select_propio"
-              >
-                <option value="cédula">Cédula</option>
-                <option value="pasaporte">Pasaporte</option>
-              </select>
-              {errors.tipoIden && (
-                <h4 className="text-red-500">
-                  El tipo de identificación es requerido
-                </h4>
-              )}
+            <select
+              {...register("tipoIden", { required: true })}
+              onChange={handleChange}
+              value={tipoIden}
+              placeholder="Tipo de Identificación"
+              className="select_propio"
+            >
+              <option value="vacio"></option>
+              <option value="cédula">Cédula</option>
+              <option value="pasaporte">Pasaporte</option>
+            </select>
+            {errors.tipoIden && (
+              <h4 className="text-red-500">
+                El tipo de identificación es requerido
+              </h4>
+            )}
 
-              {/* <TextField
+            {/* <TextField
                 label={`Número de ${tipoIden || "identificación"}`}
                 fullWidth
                 margin="normal"
@@ -305,29 +307,31 @@ const Registro = () => {
                   ),
                 }}
               /> */}
-              <p className="label_propio">Ingrese el número de {tipoIden === "cédula" ? "Cédula" : "Pasaporte"}</p>
-              <input
-                type="number"
-                className="styled-input"
-                {...register("identificacion", { required: true })}
-                onChange={handleChange3}
-                name="identificacion"
-                // placeholder={tipoIden === "cédula" ? "Cédula" : "Pasaporte"}
-                inputMode="numeric"
-                maxLength="10"
+            <p className="label_propio">
+              Ingrese el número de{" "}
+              {tipoIden === "cédula" ? "Cédula" : "Pasaporte"}
+            </p>
+            <input
+              type="number"
+              className="styled-input"
+              {...register("identificacion", { required: true })}
+              onChange={handleChange3}
+              name="identificacion"
+              // placeholder={tipoIden === "cédula" ? "Cédula" : "Pasaporte"}
+              inputMode="numeric"
+              maxLength="10"
+            />
+            {errors.identificacion && (
+              <h4 className="text-red-500">La Identificación es requerida</h4>
+            )}
+
+            <div className="captcha-container">
+              <ReCAPTCHA
+                sitekey="6LdDDVonAAAAAJAr8uMJO4EhneySO80IqjF3Vt6x"
+                onChange={onCaptchaVerify}
               />
-              {errors.identificacion && (
-                <h4 className="text-red-500">La Identificación es requerida</h4>
-              )}
-
-
-              <div className="captcha-container">
-                <ReCAPTCHA
-                  sitekey="6LdDDVonAAAAAJAr8uMJO4EhneySO80IqjF3Vt6x"
-                  onChange={onCaptchaVerify}
-                />
-              </div>
-              <div> 
+            </div>
+            <div>
               <Button
                 onClick={() => navigate("/login")}
                 type="button"
@@ -336,7 +340,7 @@ const Registro = () => {
                   backgroundColor: "#007B49",
                   color: "white",
                   width: "40%",
-                  marginLeft: "1vw"
+                  marginLeft: "1vw",
                 }}
               >
                 Volver
@@ -350,44 +354,33 @@ const Registro = () => {
                   backgroundColor: "#007B49",
                   color: "white",
                   width: "40%",
-                  marginLeft: "1vw"
+                  marginLeft: "1vw",
                 }}
               >
                 Registrarse
               </Button>
-              </div>
-              
+            </div>
 
-
-
-              {/* <button type="submit" onClick={handleClick}>
+            {/* <button type="submit" onClick={handleClick}>
                 Registrarse
               </button>
               <div className="register-container">
                 <h3>¿Ya te has registrado?</h3>
                 <p onClick={() => (window.location.href = "/login")}>Ir a Login</p>
               </div> */}
+          </div>
+        )}
 
-            </div>
-
-
-          )}
-          
-
-        
         {showFormulario2 && (
-          
           <div className="">
-
             <div className="login1">
-              
               <h3>Información</h3>
               {registerErrors.map((error, i) => (
                 <div key={i} className="bg-red-500 p-2 text-white">
                   {error}
                 </div>
               ))}
-              
+
               {/* <TextField
                 label="Nombre Completo"
                 fullWidth
@@ -413,7 +406,9 @@ const Registro = () => {
                 placeholder="Nombres Apellidos"
               />
               {errors.nombreCompleto && (
-                <h4 className="text-red-500">El Nombre Completo es requerido</h4>
+                <h4 className="text-red-500">
+                  El Nombre Completo es requerido
+                </h4>
               )}
               {/* <h2>Nombre Completo</h2>
               <input
@@ -483,15 +478,15 @@ const Registro = () => {
                 {" "}
                 {sexo === "M"
                   ? titulosM.map((titulo, i) => (
-                    <option key={i} value={titulo}>
-                      {titulo}
-                    </option>
-                  ))
+                      <option key={i} value={titulo}>
+                        {titulo}
+                      </option>
+                    ))
                   : titulosF.map((titulo, i) => (
-                    <option key={i} value={titulo}>
-                      {titulo}
-                    </option>
-                  ))}
+                      <option key={i} value={titulo}>
+                        {titulo}
+                      </option>
+                    ))}
               </select>
               {errors.titulo && (
                 <h4 className="text-red-500">El título es requerido</h4>
@@ -499,10 +494,14 @@ const Registro = () => {
               <p className="label_propio">Fecha de Nacimiento</p>
               <input
                 type="date"
-                {...register("fecha_nacimiento", { required: "Fecha de Nacimiento es requerida" })}
-                max={`${new Date(new Date().getFullYear() - 18, 11, 31)
-                  .toISOString()
-                  .split("T")[0]}`}
+                {...register("fecha_nacimiento", {
+                  required: "Fecha de Nacimiento es requerida",
+                })}
+                max={`${
+                  new Date(new Date().getFullYear() - 18, 11, 31)
+                    .toISOString()
+                    .split("T")[0]
+                }`}
                 className="styled-date-input"
               />
               {errors.fecha_nacimiento && (
@@ -521,14 +520,16 @@ const Registro = () => {
                 <h4 className="text-red-500">El correo es requerido</h4>
               )}
               <Button
-              onClick={() => {onSubmit();}}
+                onClick={() => {
+                  onSubmit();
+                }}
                 type="submit"
                 variant="contained"
                 style={{
                   backgroundColor: "#007B49",
                   color: "white",
                   width: "40%",
-                  marginLeft: "1vw"
+                  marginLeft: "1vw",
                 }}
               >
                 Enviar
@@ -558,8 +559,6 @@ const Registro = () => {
               )}
             </div>
           </div>
-          
-          
         )}
         <div className="franja_roja"></div>
         <div className="container-logo">
@@ -570,9 +569,7 @@ const Registro = () => {
           />
         </div>
       </div>
-      
     </div>
-    
   );
 };
 
