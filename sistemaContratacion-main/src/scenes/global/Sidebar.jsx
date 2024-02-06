@@ -1,6 +1,7 @@
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import PersonIcon from '@mui/icons-material/Person';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import RecentActorsRoundedIcon from "@mui/icons-material/RecentActorsRounded";
@@ -138,7 +139,7 @@ const Sidebar = () => {
             <Item
               title="Perfil"
               to="/perfil"
-              icon={<HomeOutlinedIcon />} // AQUÍ UN NUEVO ICONO
+              icon={<PersonIcon />} // AQUÍ UN NUEVO ICONO
               selected={selected}
               setSelected={setSelected}
             />

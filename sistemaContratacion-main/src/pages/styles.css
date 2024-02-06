@@ -270,6 +270,22 @@ body {
 }
 
 /*PÁGINA PLATAFORMA*/
+/*PÁGINA DE PERFIL*/
+.perfil_foto{
+  margin-left: 5vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: antiquewhite;
+  padding: 2vw;
+}
+.perfil_datos{
+  margin-left: 2vw;
+  display: flex;
+  flex-direction: column;
+  background-color: antiquewhite;
+  padding: 2vw;
+}
 /*PÁGINA INICIO POSTULANTE */
 
 .parent-container {
