@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import Header from "../../components/Header";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import React, { useState } from "react";
 import { crearOferta } from "../../api/oferta";
-
+import Header from "../../components/Header";
+import Popup from "./Popup.jsx";
 const FormulariOferta = () => {
   const [formData, setFormData] = useState({
     post_periodo: "",
@@ -20,6 +20,12 @@ const FormulariOferta = () => {
     ofe_horas: "",
   });
 
+  const [mostrarCambioContraseña, setMostrarCambioContraseña] = useState(false);
+  const [mostrarPopup, setMostrarPopup] = useState(false);
+  const handlePopupToggle = () => {
+    setMostrarCambioContraseña(!mostrarCambioContraseña);
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -30,6 +36,10 @@ const FormulariOferta = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const isAnyFieldEmpty = Object.values(formData).some(
+      (value) => value === ""
+    );
+    setMostrarPopup(isAnyFieldEmpty ? false : true);
     const success = await crearOferta(formData);
     console.log(formData);
   };
@@ -59,7 +69,6 @@ const FormulariOferta = () => {
         >
           <MenuItem value="periodo1">202350</MenuItem>
           <MenuItem value="periodo2">202351</MenuItem>
-          
         </Select>
         <label>Tipo de Contratación:</label>
         <Select
@@ -69,9 +78,13 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="contratacion1">Personal académico que desarrolla actividades de tercer nivel de grado</MenuItem>
-          <MenuItem value="contratacion2">Personal académico que desarrolla actividades de cuarto nivel</MenuItem>
-          
+          <MenuItem value="contratacion1">
+            Personal académico que desarrolla actividades de tercer nivel de
+            grado
+          </MenuItem>
+          <MenuItem value="contratacion2">
+            Personal académico que desarrolla actividades de cuarto nivel
+          </MenuItem>
         </Select>
         <label>Campo Amplio:</label>
         <Select
@@ -83,7 +96,6 @@ const FormulariOferta = () => {
         >
           <MenuItem value="campoAmplio1">Tecnología</MenuItem>
           <MenuItem value="campoAmplio2">Ingeniería</MenuItem>
-          
         </Select>
         <label>Campo Específico:</label>
         <Select
@@ -94,8 +106,9 @@ const FormulariOferta = () => {
           required
         >
           <MenuItem value="campoEspecifico1">Base de Datos</MenuItem>
-          <MenuItem value="campoEspecifico2">Introducción a la Ingeniería</MenuItem>
-          
+          <MenuItem value="campoEspecifico2">
+            Introducción a la Ingeniería
+          </MenuItem>
         </Select>
         <label>Sede:</label>
         <Select
@@ -108,7 +121,6 @@ const FormulariOferta = () => {
           <MenuItem value="sede1">Matriz</MenuItem>
           <MenuItem value="sede2">Latacunga</MenuItem>
           <MenuItem value="sede3">Santo Domingo</MenuItem>
-          
         </Select>
         <label>Departamento:</label>
         <Select
@@ -118,15 +130,30 @@ const FormulariOferta = () => {
           margin="normal"
           required
         >
-          <MenuItem value="departamento1">DECE - Departamento de Ciencias Exactas</MenuItem>
-          <MenuItem value="departamento2">DCCO - Departamento de la Computación</MenuItem>
-          <MenuItem value="departamento3">DECEM - Departamento de Energía y Mecánica</MenuItem>
-          <MenuItem value="departamento4">DECTC - Departamento de la Tierra y la Construcción</MenuItem>
-          <MenuItem value="departamento5">DECV - Departamento de la Vida y la Agricultura</MenuItem>
-          <MenuItem value="departamento6">DECEAC - Departamento Económicas, Administrativas y de Comercio</MenuItem>
-          <MenuItem value="departamento7">DECHS - Departamento Humanas y Sociales</MenuItem>
-          <MenuItem value="departamento8">DESD - Departamento de Seguridad y Defensa</MenuItem>
-          
+          <MenuItem value="departamento1">
+            DECE - Departamento de Ciencias Exactas
+          </MenuItem>
+          <MenuItem value="departamento2">
+            DCCO - Departamento de la Computación
+          </MenuItem>
+          <MenuItem value="departamento3">
+            DECEM - Departamento de Energía y Mecánica
+          </MenuItem>
+          <MenuItem value="departamento4">
+            DECTC - Departamento de la Tierra y la Construcción
+          </MenuItem>
+          <MenuItem value="departamento5">
+            DECV - Departamento de la Vida y la Agricultura
+          </MenuItem>
+          <MenuItem value="departamento6">
+            DECEAC - Departamento Económicas, Administrativas y de Comercio
+          </MenuItem>
+          <MenuItem value="departamento7">
+            DECHS - Departamento Humanas y Sociales
+          </MenuItem>
+          <MenuItem value="departamento8">
+            DESD - Departamento de Seguridad y Defensa
+          </MenuItem>
         </Select>
         <label>Personal Académico:</label>
         <Select
@@ -139,7 +166,6 @@ const FormulariOferta = () => {
           <MenuItem value="academico1">Principal Nivel 1</MenuItem>
           <MenuItem value="academico2">Auxiliar Nivel 1</MenuItem>
           <MenuItem value="academico2">Técnico de Investigación</MenuItem>
-          
         </Select>
         <label>Actividad:</label>
         <Select
@@ -152,7 +178,6 @@ const FormulariOferta = () => {
           <MenuItem value="actividad1">Docencia</MenuItem>
           <MenuItem value="actividad2">Investigación</MenuItem>
           <MenuItem value="actividad1">Vinculación</MenuItem>
-          
         </Select>
         <label>Oferta Vacantes:</label>
         <Select
@@ -163,7 +188,6 @@ const FormulariOferta = () => {
           required
         >
           <MenuItem value="vacantes2">2</MenuItem>
-          
         </Select>
         <label>Oferta Horas:</label>
         <Select
@@ -174,17 +198,19 @@ const FormulariOferta = () => {
           required
         >
           <MenuItem value="horas1">En Actualización</MenuItem>
-          
         </Select>
         <Button
           type="submit"
           variant="contained"
           color="success"
+          on
+          onClick={handlePopupToggle}
           sx={{ mt: 2, p: 2 }}
         >
           Enviar
         </Button>
       </Box>
+      {mostrarPopup && <Popup onClose={handlePopupToggle} />}
     </div>
   );
 };
