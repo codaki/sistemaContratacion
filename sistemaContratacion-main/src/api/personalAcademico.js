@@ -7,6 +7,31 @@ export const pedirPersonalAcademico = () =>
     withCredentials: true,
   });
 
+export const cambiarEstadoPersonalAcademico = async (personalAcademico_id, estado) => {
+  try {
+    const response = await axios.put(
+      `${API}/personalAcademico1/${personalAcademico_id}`,
+      { pa_estado: estado },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      console.log(
+        `Estado del Personal Académico con ID ${personalAcademico_id} actualizado con éxito`
+      );
+      return true;
+    }
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    return false;
+  }
+}
+
 export const crearPersonalAcademico = async (formData) => {
   try {
     const response = await axios.post(`${API}/personalAcademico`, formData, {

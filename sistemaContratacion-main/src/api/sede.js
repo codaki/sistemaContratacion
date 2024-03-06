@@ -7,6 +7,31 @@ export const pedirSede = () =>
     withCredentials: true,
   });
 
+export const cambiarEstadoSede = async (sede_id, estado) => {
+  try {
+    const response = await axios.put(
+      `${API}/sede1/${sede_id}`,
+      { sede_estado: estado },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+
+    if (response.status === 200) {
+      console.log(
+        `Estado de la sede con ID ${sede_id} actualizado con éxito`
+      );
+      return true;
+    }
+  } catch (error) {
+    console.error("Error en la solicitud:", error);
+    return false;
+  }
+}
+
 export const crearSede = async (formData) => {
   try {
     const response = await axios.post(`${API}/sede`, formData, {

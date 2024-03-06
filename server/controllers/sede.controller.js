@@ -40,6 +40,23 @@ export const updateSede = (req, res) => {
   });
 };
 
+export const cambiarEstadoSede = (req, res) => {
+  const { sede_id } = req.params;
+  const { sede_estado } = req.body;
+  const q = "UPDATE sede SET sede_estado = $1 WHERE sede_id = $2;";
+  const values = [sede_estado, sede_id];
+
+  db.query(q, values, (err, result) => {
+    if (err) {
+      console.error("Error al cambiar el estado de la sede:", err);
+      return res.status(500).json({ message: "Error al cambiar el estado de la sede." });
+    }
+    return res.status(200).json({
+      message: `Estado de la sede con ID ${sede_id} actualizado exitosamente.`,
+    });
+  });
+}
+
 export const deleteSede = (req, res) => {
   const { sede_id } = req.params;
   const q = "DELETE FROM sede WHERE sede_id = $1;";

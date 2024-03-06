@@ -52,10 +52,10 @@ function App() {
                 <Route path="/home" element={<Home />} />
 
                 <Route path="/autenticacion" element={<Auth />} />
-                <Route path="/" element={<Dashboard />} />
                 <Route path="/login" element={<Login1 />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route element={<ProtectedRoute />}>
+                  <Route path="/" element={<Dashboard />} />
                   <Route
                     path="/seleccionar-postulacion"
                     element={<FormularioPostulacion />}

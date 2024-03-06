@@ -27,6 +27,18 @@ export const updateCampoEspecifico = (req,res) => {
         return res.status(200).json("Campo específico actualizado");
     });
 }
+
+export const cambiarEstadoCampoEspecifico = (req,res) => {
+    const ce_id = req.params.ce_id;
+    const {ce_estado} = req.body;
+    const q = "UPDATE campo_especifico SET ce_estado=$1 WHERE ce_id=$2";
+    const values = [ce_estado,ce_id];
+    db.query(q, values, (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.status(200).json("Estado del campo específico actualizado");
+    });
+}
+
 export const deleteCampoEspecífico = (req,res) => {
     const ce_id = req.params.ce_id;
     const q = "DELETE FROM campo_especifico WHERE ce_id=$1";

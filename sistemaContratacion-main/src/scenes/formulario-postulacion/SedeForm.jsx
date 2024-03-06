@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Header from "../../components/Header";
-import { crearSede } from "../../api/sede"; // Asegúrate de ajustar la ruta correcta
+import { crearSede, pedirSede, cambiarEstadoSede } from "../../api/sede";
 
 const FormularioSede = () => {
   const [formData, setFormData] = useState({
@@ -11,22 +11,53 @@ const FormularioSede = () => {
     sede_descripcion: "",
   });
 
-  const handleChange = (event) => {
-    try {
-      const { name, value } = event.target;
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    } catch (error) {
-      console.error("Error en handleChange:", error);
+  const [sedes, setSedes] = useState([]);
+  const [shouldUpdate, setShouldUpdate] = useState(true);
+
+  useEffect(() => {
+    const obtenerSedes = async () => {
+      try {
+        const res = await pedirSede();
+        console.log("Sedes:", res.data);
+        setSedes(res.data);
+      } catch (error) {
+        console.error("Error al cargar las sedes:", error);
+      }
+    };
+
+    if (shouldUpdate) {
+      obtenerSedes();
+      setShouldUpdate(false);
     }
+  }, [shouldUpdate]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const success = await crearSede(formData);
-    console.log(formData);
+    console.log("Nueva sede creada:", formData);
+    setShouldUpdate(true);
+    setFormData({
+      sede_nombre: "",
+      sede_descripcion: "",
+    });
+  };
+
+  const handleEstadoSede = async (sedeId, nuevoEstado) => {
+    try {
+      const success = await cambiarEstadoSede(sedeId, nuevoEstado);
+      console.log(`Sede ${nuevoEstado ? 'habilitada' : 'deshabilitada'}:`, sedeId);
+      setShouldUpdate(true);
+    } catch (error) {
+      console.error(`Error al ${nuevoEstado ? 'habilitar' : 'deshabilitar'} la sede:`, error);
+    }
   };
 
   return (
@@ -77,6 +108,52 @@ const FormularioSede = () => {
           {" "}
           Enviar
         </Button>
+      </Box>
+
+      <Box
+        mt={4}
+        maxHeight="60vh"
+        overflow="auto"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "800px",
+          margin: "0 auto",
+          padding: "16px",
+        }}
+      >
+        <Header title="Sedes Registradas" />
+        {sedes.map((sede) => (
+          <Box
+            key={sede.sede_id}
+            mt={2}
+            sx={{
+              backgroundColor: "#dad7cd",
+              mt: 2,
+              p: 2,
+              borderRadius: "2vh",
+              "&:hover": {
+                backgroundColor: "#98c1d9",
+              },
+            }}
+          >
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <span style={{ fontWeight: "bold" }}>Sede: {sede.sede_nombre}</span>
+              <Box>
+                <Button
+                  variant="outlined"
+                  onClick={() => handleEstadoSede(sede.sede_id, !sede.sede_estado)}
+                  style={{
+                    color: sede.sede_estado ? "red" : "green",
+                    borderColor: sede.sede_estado ? "red" : "green",
+                  }}
+                >
+                  {sede.sede_estado ? "Deshabilitar" : "Habilitar"}
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        ))}
       </Box>
     </div>
   );

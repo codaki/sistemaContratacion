@@ -28,6 +28,18 @@ export const updateActividad = (req,res) => {
         return res.status(200).json("Actividad actualizada");
     });
 }
+
+export const cambiarEstadoActividad = (req,res) => {
+    const act_id = req.params.act_id;
+    const {act_estado} = req.body;
+    const q = "UPDATE actividad SET act_estado=$1 WHERE act_id=$2";
+    const values = [act_estado,act_id];
+    db.query(q, values, (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.status(200).json("Estado de la actividad actualizado");
+    });
+}
+
 export const deleteActividad = (req,res) => {
     const act_id = req.params.act_id;
     const q = "DELETE FROM actividad WHERE act_id=$1";

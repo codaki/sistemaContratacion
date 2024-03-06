@@ -1,22 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Header from "../../components/Header";
-import Autocomplete from "@mui/material/Autocomplete";
-import axios from "axios";
-
-import { MenuItem, Select } from "@mui/material";
-
+import { crearCampoEspecifico, pedirCampoEspecifico, cambiarEstadoCampoEspecifico } from "../../api/campoEspecifico";
 import { pedirCampoAmplio } from "../../api/campoAmplio";
 
 const FormularioCaEspecifico = () => {
-  const [campoAmplioList, setCampoAmplioList] = useState([]);
   const [formData, setFormData] = useState({
     ce_nombre: "",
     ca_id: "",
     ce_descripcion: "",
   });
+
+  const [camposEspecificos, setCamposEspecificos] = useState([]);
+  const [campoAmplioList, setCampoAmplioList] = useState([]);
+  const [shouldUpdate, setShouldUpdate] = useState(true);
+
+  useEffect(() => {
+    const obtenerCamposEspecificos = async () => {
+      try {
+        const res = await pedirCampoEspecifico();
+        setCamposEspecificos(res.data);
+      } catch (error) {
+        console.error("Error al cargar los campos específicos:", error);
+      }
+    };
+
+    const obtenerCamposAmplios = async () => {
+      try {
+        const res = await pedirCampoAmplio();
+        setCampoAmplioList(res.data);
+      } catch (error) {
+        console.error("Error al cargar los campos amplios:", error);
+      }
+    };
+
+    if (shouldUpdate) {
+      obtenerCamposEspecificos();
+      obtenerCamposAmplios();
+      setShouldUpdate(false);
+    }
+  }, [shouldUpdate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -26,28 +51,32 @@ const FormularioCaEspecifico = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    axios.post("http://localhost:8800/api/campoEspecifico", formData);
-    console.log(formData);
-    // Limpiar el valor del TextField
+    const success = await crearCampoEspecifico(formData);
+    console.log("Nuevo campo específico creado:", formData);
+    setShouldUpdate(true);
     setFormData({
       ce_nombre: "",
       ce_descripcion: "",
       ca_id: "",
     });
   };
-  useEffect(() => {
-    const PedirPosutlacion = async () => {
-      try {
-        const res = await pedirCampoAmplio();
-        setCampoAmplioList(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    PedirPosutlacion();
-  }, []);
+
+  const handleDeshabilitar = async (campoEspecifico) => {
+    try {
+      const success = await cambiarEstadoCampoEspecifico(campoEspecifico.ce_id, !campoEspecifico.ce_estado);
+      console.log("Campo específico actualizado:", campoEspecifico);
+      setShouldUpdate(true);
+      setCamposEspecificos((prevCamposEspecificos) =>
+        prevCamposEspecificos.map((campo) =>
+          campo.ce_id === campoEspecifico.ce_id ? { ...campo, ce_estado: !campo.ce_estado } : campo
+        )
+      );
+    } catch (error) {
+      console.error("Error al habilitar/deshabilitar el campo específico:", error);
+    }
+  };
 
   return (
     <div className="register">
@@ -63,10 +92,7 @@ const FormularioCaEspecifico = () => {
         }}
         onSubmit={handleSubmit}
       >
-        <Header
-          title="Formulario Campo Especifico"
-          subtitle="Complete el formulario"
-        />
+        <Header title="Formulario Campo Específico" subtitle="Complete el formulario" />
 
         <label>Campo Específico:</label>
         <TextField
@@ -77,23 +103,25 @@ const FormularioCaEspecifico = () => {
           required
         />
         <label>Campo Amplio:</label>
-        <Select
+        <TextField
+          select
           fullWidth
-          onChange={(event) => {
-            handleChange(event); // Default handleChange function to update the selected value
-          }}
+          value={formData.ca_id}
+          onChange={handleChange}
           name="ca_id"
+          SelectProps={{
+            native: true,
+          }}
+          margin="normal"
+          required
         >
-          {campoAmplioList.length > 0 ? (
-            campoAmplioList.map((option) => (
-              <MenuItem key={option.ca_id} value={option.ca_id}>
-                {option.ca_nombre}
-              </MenuItem>
-            ))
-          ) : (
-            <MenuItem disabled>Cargando campos...</MenuItem>
-          )}
-        </Select>
+          <option value=""></option>
+          {campoAmplioList.map((campoAmplio) => (
+            <option key={campoAmplio.ca_id} value={campoAmplio.ca_id}>
+              {campoAmplio.ca_nombre}
+            </option>
+          ))}
+        </TextField>
 
         <label>Descripción:</label>
         <TextField
@@ -109,16 +137,61 @@ const FormularioCaEspecifico = () => {
           sx={{
             mt: 2,
             p: 2,
-            backgroundColor: "#36ae56", // Verde claro
-            color: "#FFFFFF", // Letras blancas
+            backgroundColor: "#36ae56",
+            color: "#FFFFFF",
             "&:hover": {
-              backgroundColor: "#388E3C", // Verde oscuro al pasar el mouse
+              backgroundColor: "#388E3C",
             },
           }}
         >
-          {" "}
           Enviar
         </Button>
+      </Box>
+
+      <Box
+        mt={4}
+        maxHeight="60vh"
+        overflow="auto"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "800px",
+          margin: "0 auto",
+          padding: "16px",
+        }}
+      >
+        <Header title="Campos Específicos Registrados" />
+        {camposEspecificos.map((campoEspecifico) => (
+          <Box
+            key={campoEspecifico.ce_id}
+            mt={2}
+            sx={{
+              backgroundColor: "#dad7cd",
+              mt: 2,
+              p: 2,
+              borderRadius: "2vh",
+              "&:hover": {
+                backgroundColor: "#98c1d9",
+              },
+            }}
+          >
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <span style={{ fontWeight: "bold" }}>Campo Específico: {campoEspecifico.ce_nombre}</span>
+              <Box>
+                <Button
+                  variant="outlined"
+                  onClick={() => handleDeshabilitar(campoEspecifico)}
+                  style={{
+                    color: campoEspecifico.ce_estado ? "red" : "green",
+                    borderColor: campoEspecifico.ce_estado ? "red" : "green",
+                  }}
+                >
+                  {campoEspecifico.ce_estado ? "Deshabilitar" : "Habilitar"}
+                </Button>
+              </Box>
+            </Box>
+          </Box>
+        ))}
       </Box>
     </div>
   );

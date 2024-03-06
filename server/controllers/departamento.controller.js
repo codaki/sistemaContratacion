@@ -27,6 +27,18 @@ export const updateDepartamento = (req,res) => {
         return res.status(200).json("Departamento actualizado");
     });
 }
+
+export const cambiarEstadoDepartamento = (req,res) => {
+    const dept_id = req.params.dept_id;
+    const {dept_estado} = req.body;
+    const q = "UPDATE departamento SET dept_estado=$1 WHERE dept_id=$2";
+    const values = [dept_estado,dept_id];
+    db.query(q, values, (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.status(200).json("Estado del departamento actualizado");
+    });
+}
+
 export const deleteDepartamento = (req,res) => {
     const dept_id = req.params.dept_id;
     const q = "DELETE FROM departamento WHERE dept_id=$1";

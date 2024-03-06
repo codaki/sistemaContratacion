@@ -38,6 +38,22 @@ export const updatePersonalAcademico = (req, res) => {
   });
 };
 
+export const cambiarEstadoPersonalAcademico = (req, res) => {
+  const pa_id = req.params.id;
+  const { pa_estado } = req.body;
+  const q = `
+        UPDATE personal_academico
+        SET pa_estado = $1
+        WHERE pa_id = $2;
+    `;
+  const values = [pa_estado, pa_id];
+
+  db.query(q, values, (err, data) => {
+    if (err) return res.status(500).send(err);
+    return res.status(200).send("Estado del personal académico actualizado exitosamente.");
+  });
+}
+
 export const deletePersonalAcademico = (req, res) => {
   const pa_id = req.params.id;
   const q = `

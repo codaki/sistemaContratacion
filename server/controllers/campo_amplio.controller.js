@@ -27,6 +27,18 @@ export const updateCampoAmplio = (req,res) => {
         return res.status(200).json("Campo amplio actualizado");
     });
 }
+
+export const cambiarEstadoCampoAmplio = (req,res) => {
+    const ca_id = req.params.ca_id;
+    const {ca_estado} = req.body;
+    const q = "UPDATE campo_amplio SET ca_estado=$1 WHERE ca_id=$2";
+    const values = [ca_estado,ca_id];
+    db.query(q, values, (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.status(200).json("Estado del campo amplio actualizado");
+    });
+}
+
 export const deleteCampoAmplio = (req,res) => {
     const ca_id = req.params.ca_id;
     const q = "DELETE FROM campo_amplio WHERE ca_id=$1";

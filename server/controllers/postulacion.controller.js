@@ -33,6 +33,21 @@ export const updatePostulacion = (req, res) => {
   });
 };
 
+export const updatePostulacionEstado = (req, res) => {
+  const post_id = req.params.id;
+  const { post_estado } = req.body;
+  console.log(post_id, post_estado);
+  const q = "UPDATE postulacion SET post_estado = $1 WHERE post_id = $2;";
+  const values = [post_estado, post_id];
+
+  db.query(q, values, (err, data) => {
+    if (err) return res.status(500).send(err);
+    if (data.rowCount === 0)
+      return res.status(404).send("Postulación no encontrada.");
+    return res.status(200).send("Postulación actualizada exitosamente.");
+  });
+}
+
 export const deletePostulacion = (req, res) => {
   const post_id = req.params.id;
   const q = "DELETE FROM postulacion WHERE post_id = $1;";

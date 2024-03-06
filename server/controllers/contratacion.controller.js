@@ -27,6 +27,18 @@ export const updateContratacion = (req,res) => {
         return res.status(200).json("Contatación actualizada");
     });
 }
+
+export const cambiarEstadoContratacion = (req,res) => {
+    const con_id = req.params.con_id;
+    const {con_estado} = req.body;
+    const q = "UPDATE contratacion SET con_estado=$1 WHERE con_id=$2";
+    const values = [con_estado,con_id];
+    db.query(q, values, (err, data) => {
+        if (err) return res.status(500).json(err);
+        return res.status(200).json("Estado de la contratación actualizado");
+    });
+}
+
 export const deleteContratacion = (req,res) => {
     const con_id = req.params.con_id;
     const q = "DELETE FROM contratacion WHERE con_id=$1";
