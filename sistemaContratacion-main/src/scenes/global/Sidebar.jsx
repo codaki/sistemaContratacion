@@ -129,13 +129,18 @@ const Sidebar = () => {
           )}
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item
-              title="Inicio"
-              to="/"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {userRole === "candidato" && (
+              <>
+                <Item
+                  title="Inicio"
+                  to="/"
+                  icon={<HomeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </>
+            )}
+
             <Item
               title="Perfil"
               to="/perfil"
@@ -183,13 +188,6 @@ const Sidebar = () => {
                 <Item
                   title="Tabla Candidatos"
                   to="/tabla-candidatos"
-                  icon={<RecentActorsRoundedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-                <Item
-                  title="Calificaciones"
-                  to="/tablas-calificacion"
                   icon={<RecentActorsRoundedIcon />}
                   selected={selected}
                   setSelected={setSelected}
