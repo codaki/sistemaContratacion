@@ -1,24 +1,30 @@
-import React, { useState, useEffect } from "react";
 import {
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   TextField,
 } from "@mui/material";
-import { useAuth } from "../../context/AuthContext";
+import React, { useEffect, useState } from "react";
 import { updateNotaSolicitud } from "../../api/solicitud";
- 
+import Popup from "../../components/Popup";
+import { useAuth } from "../../context/AuthContext";
 
 export const TableComponent = ({ data }) => {
   const { user } = useAuth();
-  const [calificaciones, setCalificaciones] = useState(new Array(data.length).fill(""));
+  const [showPopup, setShowPopup] = useState(false);
+  const [calificaciones, setCalificaciones] = useState(
+    new Array(data.length).fill("")
+  );
   const [sumaCalificaciones, setSumaCalificaciones] = useState(0); // Estado para la suma acumulada
 
   const handleCalificacionChange = (index, value) => {
+    // if (value < 0 || value > 4) {
+    //   setShowPopup(true);
+    // }
     const parsedValue = parseInt(value);
     if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 20) {
       const newCalificaciones = [...calificaciones];
@@ -28,39 +34,42 @@ export const TableComponent = ({ data }) => {
       // Calcular la nueva suma acumulada
       const newSumaCalificaciones = sumaCalificaciones + parsedValue;
       setSumaCalificaciones(newSumaCalificaciones);
-      console.log(newCalificaciones)
+      console.log(newCalificaciones);
       console.log(sumaCalificaciones);
-      console.log(user.calificado)
+      console.log(user.calificado);
     } else if (value === "") {
       const newCalificaciones = [...calificaciones];
       newCalificaciones[index] = "";
       setCalificaciones(newCalificaciones);
 
       // Calcular la nueva suma acumulada
-      const newSumaCalificaciones = sumaCalificaciones - parseInt(calificaciones[index] || 0);
+      const newSumaCalificaciones =
+        sumaCalificaciones - parseInt(calificaciones[index] || 0);
       setSumaCalificaciones(newSumaCalificaciones);
-      console.log(newCalificaciones)
-      console.log(sumaCalificaciones); 
-    
+      console.log(newCalificaciones);
+      console.log(sumaCalificaciones);
     }
   };
   useEffect(() => {
     // This effect will run whenever `sumaCalificaciones` changes.
     // Here, you can call the `updateNotaSolicitud` function.
-      const updateNota = async () => {
-    try {
-      const success = await updateNotaSolicitud(user.calificado, sumaCalificaciones);
-      if (success) {
-        console.log("Nota de solicitud actualizada con éxito");
-      } else {
-        console.error("Error al actualizar la nota de solicitud");
+    const updateNota = async () => {
+      try {
+        const success = await updateNotaSolicitud(
+          user.calificado,
+          sumaCalificaciones
+        );
+        if (success) {
+          console.log("Nota de solicitud actualizada con éxito");
+        } else {
+          console.error("Error al actualizar la nota de solicitud");
+        }
+      } catch (error) {
+        console.error("Error en la solicitud:", error);
       }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
-  };
+    };
 
-  updateNota();
+    updateNota();
   }, [sumaCalificaciones, user.calificado]);
 
   return (
@@ -92,12 +101,14 @@ export const TableComponent = ({ data }) => {
                 ))}
               </TableCell>
 
-              <TableCell style={{ minWidth: 300 ,textAlign: "justify"}}>
+              <TableCell style={{ minWidth: 300, textAlign: "justify" }}>
                 {row.detalleTiempo.length > 1 ? (
                   <>
                     {row.detalleTiempo.map((minimo, i) => (
                       <TableRow key={i}>
-                        <TableCell style={{ textAlign: "justify"  }}>{minimo}</TableCell>
+                        <TableCell style={{ textAlign: "justify" }}>
+                          {minimo}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </>
@@ -111,7 +122,7 @@ export const TableComponent = ({ data }) => {
                   <>
                     {row.minimo.map((minimo, i) => (
                       <TableRow key={i}>
-                        <TableCell >{minimo}</TableCell>
+                        <TableCell>{minimo}</TableCell>
                       </TableRow>
                     ))}
                   </>
@@ -138,7 +149,9 @@ export const TableComponent = ({ data }) => {
                 <>
                   {row.observaciones.map((titulo, i) => (
                     <TableRow key={i}>
-                      <TableCell style={{ textAlign: "justify"  }}>{titulo}</TableCell>
+                      <TableCell style={{ textAlign: "justify" }}>
+                        {titulo}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </>
@@ -152,6 +165,12 @@ export const TableComponent = ({ data }) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    inputProps: {
+                      min: 0,
+                      max: 2,
+                    },
+                  }}
                   value={calificaciones[index]}
                   onChange={(e) =>
                     handleCalificacionChange(index, e.target.value)
@@ -162,6 +181,14 @@ export const TableComponent = ({ data }) => {
           ))}
         </TableBody>
       </Table>
+      {showPopup && (
+        <Popup
+          titulo="¡Atención!"
+          mensaje="El valor ingresado está fuera de los rangos"
+          //ruta="/tabla-candidatos" // Ajusta la ruta de redirección que deseas
+          onClose={() => setShowPopup(false)} // Función para cerrar el Popup
+        />
+      )}
     </TableContainer>
   );
 };

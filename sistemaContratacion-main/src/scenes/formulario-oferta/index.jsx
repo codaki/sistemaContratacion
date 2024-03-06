@@ -165,7 +165,7 @@ const FormulariOferta = () => {
         >
           <MenuItem value="academico1">Principal Nivel 1</MenuItem>
           <MenuItem value="academico2">Auxiliar Nivel 1</MenuItem>
-          <MenuItem value="academico2">Técnico de Investigación</MenuItem>
+          <MenuItem value="academico3">Técnico de Investigación</MenuItem>
         </Select>
         <label>Actividad:</label>
         <Select
@@ -177,7 +177,7 @@ const FormulariOferta = () => {
         >
           <MenuItem value="actividad1">Docencia</MenuItem>
           <MenuItem value="actividad2">Investigación</MenuItem>
-          <MenuItem value="actividad1">Vinculación</MenuItem>
+          <MenuItem value="actividad3">Vinculación</MenuItem>
         </Select>
         <label>Oferta Vacantes:</label>
         <Select

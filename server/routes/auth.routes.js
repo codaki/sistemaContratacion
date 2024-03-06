@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   editarCandidato,
   getUsuario,
+  getUsuarioCorreo,
   login,
   logout,
   obtenerUsuario,
@@ -36,4 +37,5 @@ router.get("/profile", authRequired, profile);
 router.put("/usuarios/:id", editarCandidato);
 router.get("/verify", verifyToken);
 router.get("/getUsuario/:id", getUsuario);
+router.get("/getUsuarioC/:id", getUsuarioCorreo);
 export default router;

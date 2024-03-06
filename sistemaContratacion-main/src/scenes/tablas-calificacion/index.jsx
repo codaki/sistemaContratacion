@@ -1,18 +1,19 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import Header from "../../components/Header";
-
 import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import Toolbar from "@mui/material/Toolbar";
 import Paper from "@mui/material/Paper";
-import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Button from "@mui/material/Button";
+import Stepper from "@mui/material/Stepper";
+import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import React, { useEffect, useState } from "react";
+import { getUsuarioCorreo, obtenerUsuario } from "../../api/auth";
+import Header from "../../components/Header";
+import Popup from "../../components/Popup";
+import { useAuth } from "../../context/AuthContext";
 import { TableComponent } from "./TableComponent";
-
 const dataFormacion = [
   {
     requisito:
@@ -60,8 +61,8 @@ const dataFormacion = [
       "96 horas de capacitaciön  el campo de  en  conocimiento vinculado a  actividades de  sus  investigaciön  docencia,  y/o vinculaciön con la  sociedad",
       "32 horas sobre temas pedagögicos",
     ],
-    minimo: [2, 2.5],
-    maximo: [1.75, 2],
+    minimo: [0, 0],
+    maximo: [2, 2.5],
     observaciones: [
       "puntaje   Para asignar el   realizarå   adicional,   se   proporcionalmente al nümero de   horas e capacitaciån, hasta 64   horas adicionales a las minimas   requeridas, si suma mås se   pondrå el puntaje måximo   indicadoa",
       "Para asignar un puntaje adicional, se deberå realizar proporcionalmente al nümero de horas de apacitaciönt hasta 32  horas adicionales a las minimas requeridas, si suma mås se pondrå el måximo puntaje indicado.",
@@ -153,7 +154,6 @@ function getStepContent(step) {
 
 export const Calificaciones = () => {
   const [activeStep, setActiveStep] = React.useState(0);
-
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };

@@ -33,3 +33,7 @@ export const getUsuarioApi = (id) =>
   axios.get(`${API}/getUsuario/${id}`, {
     withCredentials: true,
   });
+export const getUsuarioCorreo = (id) =>
+  axios.get(`${API}/getUsuarioC/${id}`, {
+    withCredentials: true,
+  });

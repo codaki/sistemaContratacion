@@ -259,3 +259,20 @@ export const getUsuario = (req, res) => {
     });
   });
 };
+export const getUsuarioCorreo = (req, res) => {
+  const id = req.params.id;
+  const q = "SELECT * FROM candidato WHERE cand_id = $1;";
+  //Llamado a la base de datos
+  db.query(q, [id], (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
+    return res.json({
+      //información que se recopila
+      correo: data.rows[0].cand_correo,
+      nombre: data.rows[0].cand_nombre1,
+      apellido: data.rows[0].cand_apellido1,
+    });
+  });
+};
