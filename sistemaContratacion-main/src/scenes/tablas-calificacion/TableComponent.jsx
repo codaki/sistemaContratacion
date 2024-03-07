@@ -13,46 +13,60 @@ import { updateNotaSolicitud } from "../../api/solicitud";
 import Popup from "../../components/Popup";
 import { useAuth } from "../../context/AuthContext";
 
-export const TableComponent = ({ data }) => {
+export const TableComponent = ({ data, position }) => {
   const { user } = useAuth();
   const [showPopup, setShowPopup] = useState(false);
   const [calificaciones, setCalificaciones] = useState(
     new Array(data.length).fill("")
   );
+  const [calificacion, setCalificacion] = useState(
+    new Array(data.length).fill("")
+  );
   const [sumaCalificaciones, setSumaCalificaciones] = useState(0); // Estado para la suma acumulada
 
   const handleCalificacionChange = (index, value) => {
-    // if (value < 0 || value > 4) {
-    //   setShowPopup(true);
-    // }
+    console.log("06/03/2024");
+    console.log("Calificacion" + index);
     const parsedValue = parseInt(value);
-    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 20) {
-      const newCalificaciones = [...calificaciones];
-      newCalificaciones[index] = parsedValue.toString();
-      setCalificaciones(newCalificaciones);
-
-      // Calcular la nueva suma acumulada
-      const newSumaCalificaciones = sumaCalificaciones + parsedValue;
-      setSumaCalificaciones(newSumaCalificaciones);
-      console.log(newCalificaciones);
-      console.log(sumaCalificaciones);
-      console.log(user.calificado);
-    } else if (value === "") {
-      const newCalificaciones = [...calificaciones];
-      newCalificaciones[index] = "";
-      setCalificaciones(newCalificaciones);
-
-      // Calcular la nueva suma acumulada
-      const newSumaCalificaciones =
-        sumaCalificaciones - parseInt(calificaciones[index] || 0);
-      setSumaCalificaciones(newSumaCalificaciones);
-      console.log(newCalificaciones);
-      console.log(sumaCalificaciones);
+    if (position === 1 && parsedValue >= 0 && parsedValue <= 4) {
+      calificacion[index] = parsedValue;
+    } else if (position === 2) {
+      calificacion[index + 3] = parsedValue;
+    } else if (position === 3) {
+      calificacion[index + 5] = parsedValue;
+    } else if (position === 4) {
+      calificacion[index + 6] = parsedValue;
     }
+    const sumaCalificacion = calificacion.reduce(
+      (total, valor) => total + (parseInt(valor) || 0),
+      0
+    );
+    console.log(sumaCalificacion);
+    setSumaCalificaciones(sumaCalificacion);
+    console.log(calificacion);
+    // if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 20) {
+    //   const newCalificaciones = [...calificaciones];
+    //   newCalificaciones[index] = parsedValue.toString();
+    //   setCalificaciones(newCalificaciones);
+
+    //   const newSumaCalificaciones = sumaCalificaciones + parsedValue;
+    //   setSumaCalificaciones(newSumaCalificaciones);
+    //   console.log(newCalificaciones);
+    //   console.log(sumaCalificaciones);
+    //   console.log(user.calificado);
+    // } else if (value === "") {
+    //   const newCalificaciones = [...calificaciones];
+    //   newCalificaciones[index] = "";
+    //   setCalificaciones(newCalificaciones);
+
+    //   const newSumaCalificaciones =
+    //     sumaCalificaciones - parseInt(calificaciones[index] || 0);
+    //   setSumaCalificaciones(newSumaCalificaciones);
+    //   console.log(newCalificaciones);
+    //   console.log(sumaCalificaciones);
+    // }
   };
   useEffect(() => {
-    // This effect will run whenever `sumaCalificaciones` changes.
-    // Here, you can call the `updateNotaSolicitud` function.
     const updateNota = async () => {
       try {
         const success = await updateNotaSolicitud(
@@ -89,11 +103,11 @@ export const TableComponent = ({ data }) => {
         <TableBody>
           {data.map((row, index) => (
             <TableRow key={index}>
-              <TableCell style={{ minWidth: 300, textAlign: "justify" }}>
+              <TableCell style={{ minWidth: 250, textAlign: "justify" }}>
                 {row.requisito}
               </TableCell>
 
-              <TableCell style={{ minWidth: 300 }}>
+              <TableCell style={{ minWidth: 250 }}>
                 {row.titulos.map((titulo, i) => (
                   <TableRow key={i}>
                     <TableCell>{titulo}</TableCell>
@@ -101,7 +115,7 @@ export const TableComponent = ({ data }) => {
                 ))}
               </TableCell>
 
-              <TableCell style={{ minWidth: 300, textAlign: "justify" }}>
+              <TableCell style={{ minWidth: 250, textAlign: "justify" }}>
                 {row.detalleTiempo.length > 1 ? (
                   <>
                     {row.detalleTiempo.map((minimo, i) => (
@@ -157,7 +171,7 @@ export const TableComponent = ({ data }) => {
                 </>
               </TableCell>
 
-              <TableCell style={{ minWidth: 250 }}>
+              <TableCell style={{ minWidth: 130 }}>
                 <TextField
                   id="outlined-number"
                   label="Calificación"
@@ -165,13 +179,13 @@ export const TableComponent = ({ data }) => {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  defaultValue={""}
                   InputProps={{
                     inputProps: {
                       min: 0,
                       max: 2,
                     },
                   }}
-                  value={calificaciones[index]}
                   onChange={(e) =>
                     handleCalificacionChange(index, e.target.value)
                   }

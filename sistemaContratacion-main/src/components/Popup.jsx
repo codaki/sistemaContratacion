@@ -5,7 +5,6 @@ import "./style.css";
 const Popup = ({ titulo, mensaje, ruta, onClose }) => {
   const handleAceptar = () => {
     onClose();
-    window.location.href = ruta;
   };
 
   return (

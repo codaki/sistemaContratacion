@@ -70,7 +70,7 @@ const Candidatos = () => {
         return date.toLocaleDateString(); // Formatear la fecha como lo desees
       },
       headerAlign: "center",
-      align: "left",
+
       flex: 0.7,
     },
     {
@@ -327,7 +327,7 @@ const Candidatos = () => {
           <Popup
             titulo="¡Su selección ha sido guardada exitosamente!"
             mensaje="Un correo de validación llegara al candidato seleccionado"
-            //ruta="/tabla-candidatos" // Ajusta la ruta de redirección que deseas
+            ruta="/tabla-candidatos" // Ajusta la ruta de redirección que deseas
             onClose={() => setShowPopup(false)} // Función para cerrar el Popup
           />
         )}

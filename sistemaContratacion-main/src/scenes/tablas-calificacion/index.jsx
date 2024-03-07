@@ -140,13 +140,13 @@ const steps = [
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <TableComponent data={dataFormacion} />;
+      return <TableComponent data={dataFormacion} position={1} />;
     case 1:
-      return <TableComponent data={dataDocencia} />;
+      return <TableComponent data={dataDocencia} position={2} />;
     case 2:
-      return <TableComponent data={dataProd} />;
+      return <TableComponent data={dataProd} position={3} />;
     case 3:
-      return <TableComponent data={dataExperiencia} />;
+      return <TableComponent data={dataExperiencia} position={4} />;
     default:
       throw new Error("Unknown step");
   }

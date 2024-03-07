@@ -29,6 +29,10 @@ import Word from "./word.png";
 const Dashboard = () => {
   const { user, updateUser } = useAuth();
   const theme = useTheme();
+  console.log(user.role);
+  if (user.role === "admin") {
+    window.location.href = "/tabla-candidatos";
+  }
   const colors = tokens(theme.palette.mode);
   let result = null;
   const CustomBox = styled(Box)(({ theme }) => ({
