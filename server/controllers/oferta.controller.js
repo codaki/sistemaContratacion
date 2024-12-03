@@ -101,7 +101,7 @@ export const deleteOferta = (req, res) => {
 };
 
 
-export const postulacionUnica = (req,res)=>{
+export const postulacionUnica = (req, res) => {
   const q = `SELECT DISTINCT o.post_id, p.post_periodo
   FROM public.oferta o
   INNER JOIN public.postulacion p ON o.post_id = p.post_id;`
@@ -111,7 +111,7 @@ export const postulacionUnica = (req,res)=>{
   });
 }
 
-export const contratacionUnica = (req,res)=> {
+export const contratacionUnica = (req, res) => {
   const post_id = req.params.post_id;
   const q = `SELECT DISTINCT  o.con_id, c.con_nombre
   FROM public.contratacion c
@@ -134,7 +134,7 @@ export const sedeUnica = (req, res) => {
   INNER JOIN public.contratacion c ON o.con_id = c.con_id
   WHERE p.post_id = $1
     AND c.con_id = $2;`
-  db.query(q, [post_id,con_id], (err, data) => {
+  db.query(q, [post_id, con_id], (err, data) => {
     if (err) return res.status(500).send(err);
     return res.status(200).json(data.rows);
   });
@@ -153,13 +153,13 @@ export const departamentoUnico = (req, res) => {
   WHERE p.post_id = $1
     AND c.con_id = $2
     AND s.sede_id = $3;`
-  db.query(q, [post_id,con_id,sede_id], (err, data) => {
+  db.query(q, [post_id, con_id, sede_id], (err, data) => {
     if (err) return res.status(500).send(err);
     return res.status(200).json(data.rows);
   });
 }
 
-export const campoAmplioUnico = (req,res) =>{
+export const campoAmplioUnico = (req, res) => {
   const con_id = req.params.con_id;
   const post_id = req.params.post_id
   const sede_id = req.params.sede_id
@@ -175,12 +175,12 @@ export const campoAmplioUnico = (req,res) =>{
     AND c.con_id = $2
     AND s.sede_id = $3
     AND d.dept_id = $4;`
-  db.query(q, [post_id,con_id,sede_id,dept_id], (err, data) => {
+  db.query(q, [post_id, con_id, sede_id, dept_id], (err, data) => {
     if (err) return res.status(500).send(err);
     return res.status(200).json(data.rows);
   });
 }
-export const campoEspecificoUnico = (req,res) =>{
+export const campoEspecificoUnico = (req, res) => {
   const con_id = req.params.con_id;
   const post_id = req.params.post_id
   const sede_id = req.params.sede_id
@@ -199,14 +199,14 @@ export const campoEspecificoUnico = (req,res) =>{
     AND s.sede_id = $3
     AND d.dept_id = $4
     AND ca.ca_id = $5;`
-  db.query(q, [post_id,con_id,sede_id,dept_id,ca_id], (err, data) => {
+  db.query(q, [post_id, con_id, sede_id, dept_id, ca_id], (err, data) => {
     if (err) return res.status(500).send(err);
     return res.status(200).json(data.rows);
   });
 
 }
 
-export const personalUnico = (req,res) =>{
+export const personalUnico = (req, res) => {
   const con_id = req.params.con_id;
   const post_id = req.params.post_id
   const sede_id = req.params.sede_id
@@ -228,13 +228,13 @@ export const personalUnico = (req,res) =>{
     AND d.dept_id = $4
     AND ca.ca_id = $5
     AND ce.ce_id = $6;`
-  db.query(q, [post_id,con_id,sede_id,dept_id,ca_id,ce_id], (err, data) => {
+  db.query(q, [post_id, con_id, sede_id, dept_id, ca_id, ce_id], (err, data) => {
     if (err) return res.status(500).send(err);
     return res.status(200).json(data.rows);
   });
 }
 
-export const actividadUnica = (req,res) =>{
+export const actividadUnica = (req, res) => {
   const con_id = req.params.con_id;
   const post_id = req.params.post_id
   const sede_id = req.params.sede_id
@@ -259,12 +259,12 @@ export const actividadUnica = (req,res) =>{
     AND ca.ca_id = $5
     AND ce.ce_id = $6
     AND pa.pa_id = $7;`
-  db.query(q, [post_id,con_id,sede_id,dept_id,ca_id,ce_id,pa_id], (err, data) => {
+  db.query(q, [post_id, con_id, sede_id, dept_id, ca_id, ce_id, pa_id], (err, data) => {
     if (err) return res.status(500).send(err);
     return res.status(200).json(data.rows);
   });
 }
-export const obtenerOferta = (req,res) => {
+export const obtenerOferta = (req, res) => {
   const con_id = req.params.con_id;
   const post_id = req.params.post_id
   const sede_id = req.params.sede_id
@@ -291,9 +291,9 @@ export const obtenerOferta = (req,res) => {
     AND ce.ce_id = $6
     AND pa.pa_id = $7
     AND a.act_id = $8;`
-  db.query(q, [post_id,con_id,sede_id,dept_id,ca_id,ce_id,pa_id,act_id], (err, data) => {
+  db.query(q, [post_id, con_id, sede_id, dept_id, ca_id, ce_id, pa_id, act_id], (err, data) => {
     if (err) return res.status(500).send(err);
     return res.status(200).json(data.rows[0]);
   });
-  };
+};
 
